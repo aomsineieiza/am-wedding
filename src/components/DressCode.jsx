@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check, Sparkles, Shirt } from 'lucide-react';
+import { Copy, Check, Sparkles, Shirt, ClipboardList, Heart } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 
 export default function DressCode() {
@@ -32,9 +32,9 @@ export default function DressCode() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-serif text-3xl sm:text-5xl text-[#2D2926] font-light tracking-tight"
+            className="font-serif text-3xl sm:text-5xl text-[#2D2926] font-light tracking-tight uppercase"
           >
-            Dress Code &amp; Palette
+            DRESS CODE
           </motion.h2>
           <motion.div
             initial={{ scaleX: 0 }}
@@ -51,10 +51,10 @@ export default function DressCode() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E8E2D8] shadow-xl shadow-[#2D2926]/5"
+          className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E8E2D8] shadow-xl shadow-[#2D2926]/5 text-center"
         >
           {/* Theme Title */}
-          <div className="text-center max-w-2xl mx-auto mb-10">
+          <div className="max-w-2xl mx-auto mb-10">
             <span className="font-serif italic text-xl text-[#C8B89E] block mb-1">
               {dressCode.subtitle}
             </span>
@@ -66,18 +66,18 @@ export default function DressCode() {
             </p>
           </div>
 
-          {/* Interactive Color Palette Swatches */}
+          {/* Interactive Color Palette Swatches (Pastel circles from reference video) */}
           <div className="mb-12">
             <p className="text-center text-xs uppercase tracking-[0.2em] text-[#A38F70] mb-6 font-medium">
               Click any swatch to copy color code
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6 justify-center">
               {dressCode.palette.map((color, index) => (
                 <button
                   key={index}
                   type="button"
                   onClick={() => copyHex(color.hex)}
-                  className="group flex flex-col items-center focus:outline-none transition-transform hover:-translate-y-1"
+                  className="group flex flex-col items-center focus:outline-none transition-transform hover:-translate-y-1 cursor-pointer"
                 >
                   {/* Swatch Circle */}
                   <div
@@ -104,7 +104,7 @@ export default function DressCode() {
           </div>
 
           {/* Styling Guidelines for Guests */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 border-t border-[#E8E2D8]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 border-t border-[#E8E2D8] text-left mb-12">
             <div className="bg-[#FAF8F5] p-5 sm:p-6 rounded-2xl border border-[#E8E2D8]/80">
               <div className="flex items-center gap-2 mb-2">
                 <Shirt className="w-4 h-4 text-[#C8B89E]" />
@@ -125,9 +125,29 @@ export default function DressCode() {
               </p>
             </div>
           </div>
+
+          {/* RSVP Call-to-Action Card (Matching Frame 025 of Canva reference) */}
+          <div className="bg-[#FAF8F5] p-8 sm:p-10 rounded-3xl border border-[#E8E2D8] max-w-lg mx-auto flex flex-col items-center text-center">
+            <div className="w-14 h-14 rounded-2xl bg-white border border-[#E8E2D8] flex items-center justify-center text-[#E5B5BC] mb-4 shadow-xs">
+              <ClipboardList className="w-7 h-7 text-[#C8B89E]" />
+            </div>
+
+            <p className="text-xs sm:text-sm text-[#6B635B] leading-relaxed font-light mb-6">
+              เพื่อให้การจัดเตรียมงานเป็นไปอย่างเหมาะสม<br />
+              ขอความกรุณาแขกผู้มีเกียรติ<br />
+              ตอบรับการเข้าร่วมงานนี้ด้วยนะคะ
+            </p>
+
+            <a
+              href="#rsvp"
+              className="px-8 py-3.5 rounded-full bg-[#E5B5BC] hover:bg-[#d89ea7] text-[#2D2926] font-serif text-sm tracking-wider uppercase transition-all shadow-md flex items-center gap-2 font-medium"
+            >
+              <Heart className="w-4 h-4 text-rose-600 fill-current" />
+              <span>RSVP ตอบกลับคำเชิญ</span>
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>
   );
 }
-

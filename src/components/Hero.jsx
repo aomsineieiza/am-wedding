@@ -45,9 +45,9 @@ export default function Hero() {
   }, [couple.date]);
 
   return (
-    <header className="relative min-h-screen flex flex-col items-center justify-between pt-12 pb-16 px-4 sm:px-6 overflow-hidden bg-[#FAF8F5]">
+    <header className="relative min-h-screen flex flex-col items-center justify-between pt-16 pb-16 px-4 sm:px-6 overflow-hidden bg-[#FAF8F5]">
       {/* Delicate background decorative pattern */}
-      <div className="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(#C8B89E_0.75px,transparent_0.75px)] [background-size:24px_24px]" />
+      <div className="absolute inset-0 pointer-events-none opacity-30 bg-[radial-gradient(#C8B89E_0.75px,transparent_0.75px)] [background-size:24px_24px]" />
 
       {/* Top Monogram Initials Emblem */}
       <motion.div
@@ -70,26 +70,39 @@ export default function Hero() {
 
       {/* Main Editorial Hero Centerpiece */}
       <div className="relative z-10 max-w-4xl w-full mx-auto flex flex-col items-center text-center my-auto">
-        {/* Intro invitation line */}
-        <motion.p
+        {/* Editorial "WELCOME TO OUR love STORY" Badge (from reference video) */}
+        <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.2 }}
-          className="text-xs sm:text-sm tracking-[0.25em] uppercase text-[#6B635B] font-sans mb-3"
+          className="relative inline-block mb-4"
         >
-          Save Our Date
-        </motion.p>
+          <p className="font-serif text-sm sm:text-base tracking-[0.35em] uppercase text-[#6B635B] font-light leading-relaxed">
+            WELCOME TO OUR
+          </p>
+          <div className="relative my-0.5">
+            <span className="font-serif italic text-4xl sm:text-6xl text-[#C8B89E] font-normal block transform -rotate-3 select-none">
+              love
+            </span>
+            <p className="font-serif text-xl sm:text-3xl tracking-[0.4em] uppercase text-[#2D2926] font-light -mt-2">
+              STORY
+            </p>
+          </div>
+          <p className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-[#A38F70] font-sans mt-2">
+            WE ARE SO HAPPY YOU ARE HERE!
+          </p>
+        </motion.div>
 
         {/* Bride & Groom Names in Serif Luxury */}
         <motion.h1
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-[#2D2926] tracking-tight font-light leading-none"
+          className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-[#2D2926] tracking-tight font-light leading-none mt-2"
         >
           <span>{couple.bride}</span>
           <span className="inline-block mx-3 sm:mx-6 font-serif italic text-[#C8B89E] font-normal text-3xl sm:text-5xl md:text-6xl">
-            &
+            &amp;
           </span>
           <span>{couple.groom}</span>
         </motion.h1>
@@ -104,14 +117,14 @@ export default function Hero() {
           {couple.brideFull} &amp; {couple.groomFull}
         </motion.p>
 
-        {/* High-Impact Editorial Photo Frame with Subtle Border */}
+        {/* High-Impact Editorial Photo Frame with Clear Umbrella Urban Look */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-sm sm:max-w-md mx-auto aspect-[3/4] rounded-2xl p-2 bg-white shadow-xl shadow-[#2D2926]/5 border border-[#E8E2D8]"
+          className="relative w-full max-w-sm sm:max-w-md mx-auto aspect-[3/4] rounded-3xl p-2 bg-white shadow-xl shadow-[#2D2926]/5 border border-[#E8E2D8]"
         >
-          <div className="w-full h-full rounded-xl overflow-hidden relative group">
+          <div className="w-full h-full rounded-2xl overflow-hidden relative group">
             <img
               src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85"
               alt={`${couple.bride} and ${couple.groom}`}
@@ -119,7 +132,7 @@ export default function Hero() {
               className="w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105"
             />
             {/* Soft editorial gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-70" />
 
             {/* Bottom Photo Caption */}
             <div className="absolute bottom-4 left-4 right-4 text-center text-white">
@@ -134,6 +147,34 @@ export default function Hero() {
           <div className="absolute -top-1.5 -right-1.5 w-4 h-4 border-t-2 border-r-2 border-[#C8B89E]" />
           <div className="absolute -bottom-1.5 -left-1.5 w-4 h-4 border-b-2 border-l-2 border-[#C8B89E]" />
           <div className="absolute -bottom-1.5 -right-1.5 w-4 h-4 border-b-2 border-r-2 border-[#C8B89E]" />
+        </motion.div>
+
+        {/* Traditional Thai Formal Invitation Header (matching reference video) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.6 }}
+          className="mt-12 max-w-lg mx-auto bg-white/70 backdrop-blur-sm p-6 sm:p-8 rounded-3xl border border-[#E8E2D8] shadow-sm"
+        >
+          <p className="text-xs sm:text-sm text-[#8C827A] font-light tracking-wide leading-relaxed">
+            ขอเรียนเชิญท่านเพื่อเป็นเกียรติเนื่องในพิธีมงคลสมรส
+          </p>
+          <p className="font-serif text-sm sm:text-base text-[#2D2926] my-1 font-medium">
+            ระหว่าง
+          </p>
+          <div className="flex items-center justify-center gap-3 my-3">
+            <span className="font-serif text-xl sm:text-2xl text-[#2D2926] font-normal">
+              {couple.bride}
+            </span>
+            <span className="font-serif italic text-xl text-[#C8B89E]">&amp;</span>
+            <span className="font-serif text-xl sm:text-2xl text-[#2D2926] font-normal">
+              {couple.groom}
+            </span>
+          </div>
+          <p className="text-xs text-[#8C827A] font-light">
+            {couple.thaiDateFormatted} ณ {venue.name}
+          </p>
         </motion.div>
 
         {/* Date and Location Badge */}
@@ -195,16 +236,16 @@ export default function Hero() {
         >
           <a
             href="#rsvp"
-            className="px-8 py-3 rounded-full bg-[#2D2926] text-white font-sans text-xs sm:text-sm uppercase tracking-[0.2em] hover:bg-[#A38F70] transition-colors duration-300 shadow-md flex items-center gap-2 group"
+            className="px-8 py-3.5 rounded-full bg-[#E5B5BC] hover:bg-[#d89ea7] text-[#2D2926] font-serif text-sm uppercase tracking-[0.2em] transition-colors duration-300 shadow-md flex items-center gap-2 group font-medium"
           >
-            <Heart className="w-3.5 h-3.5 text-[#C8B89E] fill-current group-hover:scale-110 transition-transform" />
-            <span>RSVP Attendance</span>
+            <Heart className="w-4 h-4 text-rose-600 fill-current group-hover:scale-110 transition-transform" />
+            <span>RSVP ตอบกลับคำเชิญ</span>
           </a>
           <a
             href="#schedule"
-            className="px-6 py-3 rounded-full bg-white/80 border border-[#E8E2D8] text-[#2D2926] font-sans text-xs sm:text-sm uppercase tracking-[0.15em] hover:border-[#C8B89E] hover:bg-white transition-colors duration-300 shadow-xs"
+            className="px-6 py-3.5 rounded-full bg-white/80 border border-[#E8E2D8] text-[#2D2926] font-sans text-xs sm:text-sm uppercase tracking-[0.15em] hover:border-[#C8B89E] hover:bg-white transition-colors duration-300 shadow-xs"
           >
-            Event Details
+            กำหนดการพิธี
           </a>
         </motion.div>
       </div>
@@ -221,4 +262,3 @@ export default function Hero() {
     </header>
   );
 }
-
