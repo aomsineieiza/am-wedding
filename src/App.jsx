@@ -7,6 +7,7 @@ import Gallery from './components/Gallery';
 import DressCode from './components/DressCode';
 import Location from './components/Location';
 import RSVPForm from './components/RSVPForm';
+import WishesWall from './components/WishesWall';
 import GiftRegistry from './components/GiftRegistry';
 import Footer from './components/Footer';
 import MobileNav from './components/MobileNav';
@@ -39,14 +40,17 @@ export default function App() {
         {/* 7. Interactive RSVP Form */}
         <RSVPForm />
 
-        {/* 8. Gift Registry / Congratulatory Bank Account */}
+        {/* 8. Wishes Wall / Guestbook */}
+        <WishesWall />
+
+        {/* 9. Gift Registry / Congratulatory Bank Account */}
         <GiftRegistry />
       </main>
 
-      {/* 9. Footer with Monogram, Couple Hashtag, & RSVP Admin */}
+      {/* 10. Footer with Monogram, Couple Hashtag, & RSVP Admin */}
       <Footer />
 
-      {/* 10. Floating Quick Navigation Bar for Mobile */}
+      {/* 11. Floating Quick Navigation Bar for Mobile */}
       <MobileNav />
     </div>
   );
