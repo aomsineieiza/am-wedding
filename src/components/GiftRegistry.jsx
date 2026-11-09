@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Gift, ChevronDown, Copy, Check, CreditCard, Heart, QrCode } from 'lucide-react';
+import { Gift, ChevronDown, Copy, Check, CreditCard, QrCode } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import PromptPayCard from './PromptPayCard';
 
 export default function GiftRegistry() {
   const { bankAccounts } = weddingData;
   const [isOpen, setIsOpen] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(null);
+  const [activeTab, setActiveTab] = useState('bank'); // 'bank' or 'qr'
 
   const copyAccountNumber = (accNumber, index) => {
     navigator.clipboard.writeText(accNumber);
@@ -61,7 +63,7 @@ export default function GiftRegistry() {
           <h3 className="font-serif text-2xl text-[#2D2926] mb-3">Your Presence Is Our Present</h3>
           <p className="text-sm text-[#6B635B] font-light leading-relaxed max-w-xl mx-auto mb-8">
             The greatest gift you can give us is your warm presence and blessing as we celebrate our marriage.
-            Should you wish to honor us with a monetary gift towards our honeymoon and future home, bank transfer details are provided below.
+            Should you wish to honor us with a monetary gift towards our honeymoon and future home, bank transfer details and PromptPay QR codes are provided below.
           </p>
 
           {/* Collapsible Accordion Trigger Button */}
@@ -72,7 +74,7 @@ export default function GiftRegistry() {
             className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-[#FAF8F5] border border-[#E8E2D8] hover:border-[#C8B89E] hover:bg-white text-xs sm:text-sm font-sans tracking-wider uppercase text-[#2D2926] transition-all shadow-xs cursor-pointer group"
           >
             <CreditCard className="w-4 h-4 text-[#C8B89E]" />
-            <span>{isOpen ? 'Hide Bank Account Details' : 'View Bank Transfer & PromptPay'}</span>
+            <span>{isOpen ? 'Hide Gift Details' : 'View Bank Transfer & PromptPay QR'}</span>
             <ChevronDown
               className={`w-4 h-4 text-[#A38F70] transition-transform duration-300 ${
                 isOpen ? 'rotate-180' : ''
@@ -90,66 +92,111 @@ export default function GiftRegistry() {
                 transition={{ duration: 0.4, ease: 'easeInOut' }}
                 className="overflow-hidden"
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 pt-8 text-left">
-                  {bankAccounts.map((acc, index) => (
-                    <div
-                      key={index}
-                      className="bg-[#FAF8F5] rounded-2xl p-6 border border-[#E8E2D8] flex flex-col justify-between relative group hover:border-[#C8B89E] transition-colors"
+                {/* Switch between Bank Accounts & PromptPay QR */}
+                <div className="flex justify-center mt-8 mb-6">
+                  <div className="inline-flex p-1 rounded-full bg-[#FAF8F5] border border-[#E8E2D8]">
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('bank')}
+                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-sans tracking-wider transition-all ${
+                        activeTab === 'bank'
+                          ? 'bg-white text-[#2D2926] shadow-xs font-medium border border-[#E8E2D8]'
+                          : 'text-[#6B635B] hover:text-[#2D2926]'
+                      }`}
                     >
-                      {/* Bank Header */}
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <p className="font-serif text-lg text-[#2D2926] font-medium">
-                            {acc.bank}
-                          </p>
-                          <p className="text-xs text-[#A38F70]">{acc.bankThai}</p>
-                        </div>
-                        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center border border-[#E8E2D8]">
-                          <QrCode className="w-4 h-4 text-[#A38F70]" />
-                        </div>
-                      </div>
-
-                      {/* Account Details */}
-                      <div className="space-y-1 mb-6">
-                        <span className="text-[10px] uppercase tracking-wider text-[#A38F70] font-medium block">
-                          Account Number
-                        </span>
-                        <div className="font-mono text-xl sm:text-2xl text-[#2D2926] font-medium tracking-wider">
-                          {acc.accountNumber}
-                        </div>
-                        <p className="text-xs text-[#6B635B] pt-1 font-light">
-                          Account Name: <strong>{acc.accountName}</strong>
-                        </p>
-                        <p className="text-xs text-[#6B635B] font-light">
-                          PromptPay: <strong className="font-mono">{acc.promptPay}</strong>
-                        </p>
-                      </div>
-
-                      {/* Copy Action Button with Toast Feedback */}
-                      <button
-                        type="button"
-                        onClick={() => copyAccountNumber(acc.cleanNumber, index)}
-                        className={`w-full py-2.5 px-4 rounded-xl text-xs font-sans uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-all ${
-                          copiedIndex === index
-                            ? 'bg-emerald-600 text-white'
-                            : 'bg-white text-[#2D2926] border border-[#E8E2D8] hover:border-[#C8B89E] shadow-xs'
-                        }`}
-                      >
-                        {copiedIndex === index ? (
-                          <>
-                            <Check className="w-3.5 h-3.5" />
-                            <span>Account Number Copied!</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3.5 h-3.5 text-[#C8B89E]" />
-                            <span>Copy Account Number</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  ))}
+                      <CreditCard className="w-3.5 h-3.5" />
+                      <span>Bank Accounts</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('qr')}
+                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-sans tracking-wider transition-all ${
+                        activeTab === 'qr'
+                          ? 'bg-white text-[#2D2926] shadow-xs font-medium border border-[#E8E2D8]'
+                          : 'text-[#6B635B] hover:text-[#2D2926]'
+                      }`}
+                    >
+                      <QrCode className="w-3.5 h-3.5" />
+                      <span>PromptPay QR</span>
+                    </button>
+                  </div>
                 </div>
+
+                {activeTab === 'bank' ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 text-left">
+                    {bankAccounts.map((acc, index) => (
+                      <div
+                        key={index}
+                        className="bg-[#FAF8F5] rounded-2xl p-6 border border-[#E8E2D8] flex flex-col justify-between relative group hover:border-[#C8B89E] transition-colors"
+                      >
+                        {/* Bank Header */}
+                        <div className="flex items-center justify-between mb-4">
+                          <div>
+                            <p className="font-serif text-lg text-[#2D2926] font-medium">
+                              {acc.bank}
+                            </p>
+                            <p className="text-xs text-[#A38F70]">{acc.bankThai}</p>
+                          </div>
+                          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center border border-[#E8E2D8]">
+                            <CreditCard className="w-4 h-4 text-[#A38F70]" />
+                          </div>
+                        </div>
+
+                        {/* Account Details */}
+                        <div className="space-y-1 mb-6">
+                          <span className="text-[10px] uppercase tracking-wider text-[#A38F70] font-medium block">
+                            Account Number
+                          </span>
+                          <div className="font-mono text-xl sm:text-2xl text-[#2D2926] font-medium tracking-wider">
+                            {acc.accountNumber}
+                          </div>
+                          <p className="text-xs text-[#6B635B] pt-1 font-light">
+                            Account Name: <strong>{acc.accountName}</strong>
+                          </p>
+                          <p className="text-xs text-[#6B635B] font-light">
+                            PromptPay: <strong className="font-mono">{acc.promptPay}</strong>
+                          </p>
+                        </div>
+
+                        {/* Copy Action Button with Toast Feedback */}
+                        <button
+                          type="button"
+                          onClick={() => copyAccountNumber(acc.cleanNumber, index)}
+                          className={`w-full py-2.5 px-4 rounded-xl text-xs font-sans uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                            copiedIndex === index
+                              ? 'bg-emerald-600 text-white'
+                              : 'bg-white text-[#2D2926] border border-[#E8E2D8] hover:border-[#C8B89E] shadow-xs'
+                          }`}
+                        >
+                          {copiedIndex === index ? (
+                            <>
+                              <Check className="w-3.5 h-3.5" />
+                              <span>Account Number Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5 text-[#C8B89E]" />
+                              <span>Copy Account Number</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 text-left">
+                    {bankAccounts.map((acc, index) => (
+                      <PromptPayCard
+                        key={index}
+                        bank={acc.bank}
+                        accountName={acc.accountName}
+                        accountNumber={acc.accountNumber}
+                        cleanNumber={acc.cleanNumber}
+                        promptPayId={acc.promptPay}
+                      />
+                    ))}
+                  </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
@@ -158,4 +205,3 @@ export default function GiftRegistry() {
     </section>
   );
 }
-

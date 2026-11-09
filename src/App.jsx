@@ -2,13 +2,14 @@ import React from 'react';
 import AudioToggle from './components/AudioToggle';
 import Hero from './components/Hero';
 import Story from './components/Story';
-import Gallery from './components/Gallery';
 import Timeline from './components/Timeline';
+import Gallery from './components/Gallery';
 import DressCode from './components/DressCode';
 import Location from './components/Location';
 import RSVPForm from './components/RSVPForm';
 import GiftRegistry from './components/GiftRegistry';
 import Footer from './components/Footer';
+import MobileNav from './components/MobileNav';
 
 export default function App() {
   return (
@@ -42,9 +43,11 @@ export default function App() {
         <GiftRegistry />
       </main>
 
-      {/* 9. Footer with Monogram & Couple Hashtag */}
+      {/* 9. Footer with Monogram, Couple Hashtag, & RSVP Admin */}
       <Footer />
+
+      {/* 10. Floating Quick Navigation Bar for Mobile */}
+      <MobileNav />
     </div>
   );
 }
-

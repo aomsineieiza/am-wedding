@@ -4,11 +4,11 @@
 export const weddingData = {
   couple: {
     bride: "Aomsin",
-    groom: "Mike",
-    brideFull: "Pimchanok V.",
-    groomFull: "Michael R.",
+    groom: "Mild",
+    brideFull: "Aomsin P.",
+    groomFull: "Mild T.",
     initials: "A & M",
-    hashtag: "#AMForever2026",
+    hashtag: "#AomsinMild2026",
     quote: "Every love story is beautiful, but ours is our favorite.",
     date: "2026-11-28T09:09:00+07:00", // Wedding date ISO string
     dateFormatted: "Saturday, November 28, 2026",
@@ -96,7 +96,7 @@ export const weddingData = {
       year: "2025",
       title: "The Kyoto Proposal",
       subtitle: "Underneath the autumn maple leaves",
-      desc: "In an ancient temple garden at dusk, surrounded by crimson autumn leaves, Mike got down on one knee. With tears and the easiest 'Yes' ever spoken, our forever was sealed.",
+      desc: "In an ancient temple garden at dusk, surrounded by crimson autumn leaves, Mild got down on one knee. With tears and the easiest 'Yes' ever spoken, our forever was sealed.",
       image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1000&q=80",
     },
     {
@@ -159,7 +159,7 @@ export const weddingData = {
       bankThai: "ธนาคารกสิกรไทย",
       accountNumber: "045-8-91234-5",
       cleanNumber: "0458912345",
-      accountName: "Aomsin P. & Michael R.",
+      accountName: "Aomsin P. & Mild T.",
       promptPay: "089-123-4567",
       color: "#13805B",
     },
@@ -168,10 +168,9 @@ export const weddingData = {
       bankThai: "ธนาคารไทยพาณิชย์",
       accountNumber: "408-2-78901-2",
       cleanNumber: "4082789012",
-      accountName: "Michael R. (Wedding Fund)",
+      accountName: "Mild T. (Wedding Fund)",
       promptPay: "081-987-6543",
       color: "#4E2A84",
     },
   ],
 };
-

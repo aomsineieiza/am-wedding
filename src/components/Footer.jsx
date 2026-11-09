@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUp, Heart } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import RSVPAdminModal from './RSVPAdminModal';
 
 export default function Footer() {
   const { couple } = weddingData;
@@ -10,7 +11,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="py-16 sm:py-20 px-4 sm:px-6 bg-[#2D2926] text-[#FAF8F5] relative overflow-hidden">
+    <footer className="py-16 sm:py-20 px-4 sm:px-6 bg-[#2D2926] text-[#FAF8F5] relative overflow-hidden pb-24 sm:pb-20">
       {/* Subtle background decoration */}
       <div className="absolute inset-0 pointer-events-none opacity-5 bg-[radial-gradient(#FAF8F5_1px,transparent_1px)] [background-size:24px_24px]" />
 
@@ -42,7 +43,7 @@ export default function Footer() {
           type="button"
           onClick={scrollToTop}
           aria-label="Back to top"
-          className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-[#C8B89E] transition-colors mb-10"
+          className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-[#C8B89E] transition-colors mb-10 cursor-pointer"
         >
           <ArrowUp className="w-4 h-4" />
         </button>
@@ -54,8 +55,10 @@ export default function Footer() {
           </p>
           <p>&copy; {new Date().getFullYear()} {couple.bride} &amp; {couple.groom}. All rights reserved.</p>
         </div>
+
+        {/* Discreet RSVP Admin Access */}
+        <RSVPAdminModal />
       </div>
     </footer>
   );
 }
-
