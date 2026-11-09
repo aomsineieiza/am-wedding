@@ -250,3 +250,4 @@ export default function EnvelopeIntro({ onOpen }) {
     </AnimatePresence>
   );
 }
+
