@@ -141,14 +141,14 @@ export default function GiftRegistry() {
                           <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">
                             เลขที่บัญชี
                           </span>
-                          <div className="font-mono text-xl text-slate-900 font-bold tracking-wider">
+                          <div className="text-xl text-slate-900 font-bold tracking-wider">
                             {acc.accountNumber}
                           </div>
                           <p className="text-xs text-slate-600 pt-1 font-light">
                             ชื่อบัญชี: <strong>{acc.accountName}</strong>
                           </p>
                           <p className="text-xs text-slate-600 font-light">
-                            พร้อมเพย์: <strong className="font-mono text-[#0074E2]">{acc.promptPay}</strong>
+                            พร้อมเพย์: <strong className="text-[#0074E2]">{acc.promptPay}</strong>
                           </p>
                         </div>
 

@@ -29,7 +29,7 @@ export default function Footer() {
         </p>
 
         {/* Official Hashtag Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-mono font-medium text-white mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-semibold text-white mb-8">
           <span>{couple.hashtag}</span>
         </div>
 

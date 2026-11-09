@@ -193,7 +193,7 @@ export default function Timeline() {
 
                 <div className="flex-1">
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-                    <span className="text-base font-bold text-[#0074E2] font-mono">
+                    <span className="text-base font-bold text-[#0074E2]">
                       {item.time}
                     </span>
                     <h4 className="text-base font-semibold text-slate-900">

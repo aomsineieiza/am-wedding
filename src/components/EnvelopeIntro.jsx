@@ -13,14 +13,12 @@ export default function EnvelopeIntro({ onOpen }) {
     if (isOpening) return;
     setIsOpening(true);
 
-    // Try starting ambient music on user click
     try {
       weddingAudio.play();
     } catch {
-      // Audio context will start on next interaction
+      // Audio fallback
     }
 
-    // Trigger open animation sequence
     setTimeout(() => {
       setIsOpen(true);
       if (onOpen) onOpen();
@@ -35,26 +33,12 @@ export default function EnvelopeIntro({ onOpen }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-between p-4 sm:p-8 bg-[#FBF9F5] overflow-hidden select-none"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-between p-4 sm:p-8 bg-[#F8FAFC] overflow-hidden select-none"
         >
-          {/* Subtle Watercolor Floral Background Overlays */}
-          <div className="absolute top-0 left-0 w-48 sm:w-80 h-48 sm:h-80 opacity-40 pointer-events-none bg-[radial-gradient(ellipse_at_top_left,#E6D2C9_0%,transparent_70%)]" />
-          <div className="absolute top-0 right-0 w-48 sm:w-80 h-48 sm:h-80 opacity-40 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,#E8ECE6_0%,transparent_70%)]" />
-          <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#C8B89E_1px,transparent_1px)] [background-size:24px_24px]" />
-
-          {/* Decorative Branch SVGs */}
-          <svg className="absolute -top-10 -left-10 w-48 h-48 sm:w-72 sm:h-72 opacity-25 text-[#9EAB9C] pointer-events-none" viewBox="0 0 200 200" fill="currentColor">
-            <path d="M20,180 Q60,120 120,80 Q160,50 180,20 Q140,50 90,90 Q40,130 20,180 Z" />
-            <ellipse cx="60" cy="130" rx="15" ry="8" transform="rotate(-30 60 130)" opacity="0.6" />
-            <ellipse cx="100" cy="95" rx="16" ry="9" transform="rotate(-40 100 95)" opacity="0.6" />
-            <ellipse cx="140" cy="60" rx="14" ry="7" transform="rotate(-50 140 60)" opacity="0.6" />
-          </svg>
-          <svg className="absolute -top-10 -right-10 w-48 h-48 sm:w-72 sm:h-72 opacity-25 text-[#9EAB9C] pointer-events-none -scale-x-100" viewBox="0 0 200 200" fill="currentColor">
-            <path d="M20,180 Q60,120 120,80 Q160,50 180,20 Q140,50 90,90 Q40,130 20,180 Z" />
-            <ellipse cx="60" cy="130" rx="15" ry="8" transform="rotate(-30 60 130)" opacity="0.6" />
-            <ellipse cx="100" cy="95" rx="16" ry="9" transform="rotate(-40 100 95)" opacity="0.6" />
-            <ellipse cx="140" cy="60" rx="14" ry="7" transform="rotate(-50 140 60)" opacity="0.6" />
-          </svg>
+          {/* Subtle Glows */}
+          <div className="absolute top-0 left-0 w-48 sm:w-80 h-48 sm:h-80 opacity-30 pointer-events-none bg-[radial-gradient(ellipse_at_top_left,#0074E2_0%,transparent_70%)]" />
+          <div className="absolute top-0 right-0 w-48 sm:w-80 h-48 sm:h-80 opacity-30 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,#CBD5E1_0%,transparent_70%)]" />
+          <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] [background-size:24px_24px]" />
 
           {/* Header Area */}
           <motion.div
@@ -63,18 +47,19 @@ export default function EnvelopeIntro({ onOpen }) {
             transition={{ duration: 0.9 }}
             className="text-center pt-4 sm:pt-8 z-10"
           >
-            <p className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[#A38F70] font-medium mb-1">
-              SAVE THE DATE
-            </p>
-            <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl text-[#2D2926] tracking-wide font-light">
-              <span className="uppercase">{couple.bride}</span>
-              <span className="font-serif italic text-2xl sm:text-4xl text-[#C8B89E] mx-2 font-normal">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] border border-[#C4DDFB] text-[#0074E2] text-xs font-semibold mb-3">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>SAVE THE DATE</span>
+            </div>
+            <h1 className="text-3xl sm:text-5xl md:text-6xl text-slate-900 tracking-tight font-bold">
+              <span>{couple.bride}</span>
+              <span className="text-2xl sm:text-4xl text-[#0074E2] mx-2 font-normal">
                 and
               </span>
-              <span className="uppercase">{couple.groom}</span>
+              <span>{couple.groom}</span>
             </h1>
-            <p className="text-xs sm:text-sm text-[#8C827A] mt-2 font-light tracking-wider">
-              เรียนเชิญร่วมงานฉลองมงคลสมรส (กดที่ซองจดหมาย)
+            <p className="text-xs sm:text-sm text-slate-500 mt-2 font-normal tracking-wide">
+              เรียนเชิญร่วมงานฉลองมงคลสมรส (กดที่ซองจดหมายเพื่อเปิดคำเชิญ)
             </p>
           </motion.div>
 
@@ -88,7 +73,7 @@ export default function EnvelopeIntro({ onOpen }) {
               style={{ perspective: 1200 }}
             >
               {/* Envelope Back Base */}
-              <div className="absolute inset-0 bg-[#E8E0D2] rounded-2xl shadow-2xl border border-[#D8CEBC]" />
+              <div className="absolute inset-0 bg-[#E2E8F0] rounded-2xl shadow-2xl border border-slate-300" />
 
               {/* Letter Card (slides up when opening) */}
               <motion.div
@@ -99,45 +84,42 @@ export default function EnvelopeIntro({ onOpen }) {
                     : { y: 0, opacity: 0.9 }
                 }
                 transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-x-4 top-4 bottom-4 bg-[#FAF8F5] rounded-xl p-5 shadow-md border border-[#E8E2D8] flex flex-col items-center justify-center text-center z-10"
+                className="absolute inset-x-4 top-4 bottom-4 bg-white rounded-xl p-5 shadow-md border border-slate-200 flex flex-col items-center justify-center text-center z-10"
               >
-                <div className="w-10 h-10 rounded-full border border-[#C8B89E]/60 flex items-center justify-center mb-2">
-                  <span className="font-serif text-sm tracking-widest text-[#2D2926] font-medium">
+                <div className="w-10 h-10 rounded-full bg-[#EBF4FE] border border-[#C4DDFB] flex items-center justify-center mb-2">
+                  <span className="text-sm font-bold text-[#0074E2]">
                     {couple.initials}
                   </span>
                 </div>
-                <h3 className="font-serif text-xl sm:text-2xl text-[#2D2926] font-normal leading-tight">
+                <h3 className="text-xl sm:text-2xl text-slate-900 font-bold leading-tight">
                   {couple.bride} &amp; {couple.groom}
                 </h3>
-                <p className="text-[11px] text-[#A38F70] uppercase tracking-widest mt-1">
+                <p className="text-[11px] text-[#0074E2] font-semibold uppercase tracking-widest mt-1">
                   {couple.dateFormatted}
                 </p>
-                <p className="font-serif italic text-xs text-[#6B635B] mt-2">
+                <p className="text-xs text-slate-500 mt-2 font-normal">
                   &ldquo;Forever Begins Today&rdquo;
                 </p>
               </motion.div>
 
-              {/* Envelope Pocket Front (Triangles Left, Right & Bottom) */}
+              {/* Envelope Pocket Front */}
               <div className="absolute inset-0 z-20 pointer-events-none">
-                {/* Left fold */}
                 <div
-                  className="absolute inset-0 bg-[#EDE5D8] rounded-2xl"
+                  className="absolute inset-0 bg-[#EDF2F7] rounded-2xl"
                   style={{
                     clipPath: 'polygon(0% 0%, 50% 50%, 0% 100%)',
                     filter: 'drop-shadow(1px 0 2px rgba(0,0,0,0.06))',
                   }}
                 />
-                {/* Right fold */}
                 <div
-                  className="absolute inset-0 bg-[#EDE5D8] rounded-2xl"
+                  className="absolute inset-0 bg-[#EDF2F7] rounded-2xl"
                   style={{
                     clipPath: 'polygon(100% 0%, 50% 50%, 100% 100%)',
                     filter: 'drop-shadow(-1px 0 2px rgba(0,0,0,0.06))',
                   }}
                 />
-                {/* Bottom fold */}
                 <div
-                  className="absolute inset-0 bg-[#E5DCCF] rounded-2xl border-b border-[#D8CEBC]"
+                  className="absolute inset-0 bg-[#E2E8F0] rounded-2xl border-b border-slate-300"
                   style={{
                     clipPath: 'polygon(0% 100%, 50% 45%, 100% 100%)',
                     filter: 'drop-shadow(0 -2px 3px rgba(0,0,0,0.08))',
@@ -145,7 +127,7 @@ export default function EnvelopeIntro({ onOpen }) {
                 />
               </div>
 
-              {/* Top Envelope Flap (Flips open 180 degrees) */}
+              {/* Top Envelope Flap */}
               <motion.div
                 initial={{ rotateX: 0 }}
                 animate={isOpening ? { rotateX: 180 } : { rotateX: 0 }}
@@ -157,7 +139,7 @@ export default function EnvelopeIntro({ onOpen }) {
                 className="absolute inset-x-0 top-0 h-1/2 z-30 pointer-events-none"
               >
                 <div
-                  className="w-full h-full bg-[#E5DCCF] rounded-t-2xl border-t border-[#D8CEBC]"
+                  className="w-full h-full bg-[#E2E8F0] rounded-t-2xl border-t border-slate-300"
                   style={{
                     clipPath: 'polygon(0% 0%, 50% 100%, 100% 0%)',
                     filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.12))',
@@ -165,7 +147,7 @@ export default function EnvelopeIntro({ onOpen }) {
                 />
               </motion.div>
 
-              {/* Wax Seal & Dried Flower Ornament */}
+              {/* Wax Seal Stamp with AM monogram */}
               <motion.div
                 initial={{ scale: 1 }}
                 animate={isOpening ? { scale: 0, opacity: 0 } : { scale: [1, 1.04, 1] }}
@@ -176,22 +158,12 @@ export default function EnvelopeIntro({ onOpen }) {
                 }
                 className="absolute left-1/2 top-[50%] -translate-x-1/2 -translate-y-1/2 z-40 flex flex-col items-center pointer-events-none"
               >
-                {/* Dried Baby's Breath / Flower sprig behind seal */}
-                <div className="absolute -top-6 w-12 h-12 flex items-center justify-center opacity-85">
-                  <span className="text-xl select-none">🌾</span>
-                </div>
-
-                {/* Golden Wax Seal Stamp with AM monogram */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#E2D4BF] via-[#C8B89E] to-[#A38F70] shadow-lg border-2 border-[#FAF8F5]/80 flex items-center justify-center p-1 relative">
-                  {/* Subtle inner seal stamp ring */}
-                  <div className="w-full h-full rounded-full border border-dashed border-[#FAF8F5]/60 flex items-center justify-center shadow-inner">
-                    <span className="font-serif text-sm sm:text-base font-bold text-[#FAF8F5] tracking-widest drop-shadow-xs">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#0074E2] to-[#0055A5] shadow-lg border-2 border-white flex items-center justify-center p-1 relative">
+                  <div className="w-full h-full rounded-full border border-dashed border-white/60 flex items-center justify-center">
+                    <span className="text-sm sm:text-base font-bold text-white tracking-widest drop-shadow-xs">
                       {couple.initials}
                     </span>
                   </div>
-                  {/* Wax drip edge simulation */}
-                  <div className="absolute -bottom-1 left-2 w-3 h-3 bg-[#A38F70] rounded-full blur-[0.5px]" />
-                  <div className="absolute -right-1 top-2 w-2.5 h-2.5 bg-[#C8B89E] rounded-full blur-[0.5px]" />
                 </div>
               </motion.div>
             </motion.div>
@@ -200,9 +172,9 @@ export default function EnvelopeIntro({ onOpen }) {
             <motion.div
               animate={{ y: [0, -4, 0] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-              className="mt-6 flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-[#E8E2D8] text-xs font-serif text-[#2D2926] shadow-xs"
+              className="mt-6 flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 text-xs text-slate-800 shadow-xs font-semibold"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#C8B89E]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#0074E2]" />
               <span>แตะที่ซองจดหมายเพื่อเปิดคำเชิญ • Tap to open</span>
             </motion.div>
           </div>
@@ -214,25 +186,15 @@ export default function EnvelopeIntro({ onOpen }) {
             transition={{ duration: 1, delay: 0.3 }}
             className="w-full max-w-lg mx-auto flex flex-col items-center z-10"
           >
-            {/* Romantic Watercolor Flower Border */}
-            <div className="flex items-center justify-center gap-2 text-2xl select-none opacity-80 mb-2">
-              <span>🌸</span>
-              <span>🌿</span>
-              <span>🤍</span>
-              <span>🌿</span>
-              <span>🌸</span>
-            </div>
-
-            {/* Couple Illustration Badge */}
             <div className="relative flex items-end justify-center -space-x-3">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-white shadow-lg overflow-hidden bg-[#FAF8F5]">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-white shadow-lg overflow-hidden bg-slate-100">
                 <img
                   src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80"
                   alt={couple.groom}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-white shadow-lg overflow-hidden bg-[#FAF8F5] relative z-10">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-white shadow-lg overflow-hidden bg-slate-100 relative z-10">
                 <img
                   src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=400&q=80"
                   alt={couple.bride}
@@ -241,7 +203,7 @@ export default function EnvelopeIntro({ onOpen }) {
               </div>
             </div>
 
-            <p className="font-serif italic text-xs text-[#8C827A] mt-2 mb-2">
+            <p className="text-xs text-slate-500 mt-2 mb-2 font-medium">
               With Love, {couple.bride} &amp; {couple.groom}
             </p>
           </motion.div>
@@ -250,4 +212,3 @@ export default function EnvelopeIntro({ onOpen }) {
     </AnimatePresence>
   );
 }
-

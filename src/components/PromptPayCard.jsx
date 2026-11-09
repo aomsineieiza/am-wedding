@@ -70,10 +70,10 @@ export default function PromptPayCard({ bank, promptPayId, accountName, cleanNum
         </svg>
       </div>
 
-      <div className="space-y-0.5 text-xs text-[#2D2926]">
-        <p className="font-serif font-medium text-sm">{accountName}</p>
-        <p className="font-mono text-[#A38F70]">PromptPay: {promptPayId}</p>
-        <p className="text-[11px] text-[#6B635B]">{bank}: {accountNumber}</p>
+      <div className="space-y-0.5 text-xs text-slate-800">
+        <p className="font-semibold text-sm">{accountName}</p>
+        <p className="text-[#0074E2] font-medium">PromptPay: {promptPayId}</p>
+        <p className="text-[11px] text-slate-500">{bank}: {accountNumber}</p>
       </div>
 
       <button

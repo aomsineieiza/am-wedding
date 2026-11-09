@@ -7,10 +7,15 @@
     <meta name="description" content="Wedding Celebration of Aomsin & Mild — งานฉลองมงคลสมรส ออมสิน และ มายด์" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>" />
     <title>Aomsin & Mild — Wedding Celebration</title>
-    <!-- Google Fonts: Google Sans / Inter style + Prompt (Modern Thai Sans as seen in Fastwork) + Cormorant Garamond for luxury accents -->
+
+    <!-- Preload local Google Sans fonts for instant zero-layout-shift rendering -->
+    <link rel="preload" href="/fonts/google-sans-thai.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="/fonts/google-sans-latin.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <!-- Google Fonts: Google Sans (Thai & Latin) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
   <body class="bg-[#F8FAFC] text-[#111827] antialiased selection:bg-[#0074E2]/15 selection:text-[#0074E2]">
     <div id="root"></div>

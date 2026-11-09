@@ -83,7 +83,7 @@ export default function DressCode() {
                   <span className="mt-2.5 text-xs font-semibold text-slate-800">
                     {color.name}
                   </span>
-                  <span className="text-[11px] font-mono text-slate-500 mt-0.5">
+                  <span className="text-[11px] text-slate-500 mt-0.5">
                     {copiedHex === color.hex ? 'คัดลอกแล้ว!' : color.hex}
                   </span>
                 </button>

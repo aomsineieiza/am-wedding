@@ -202,7 +202,7 @@ export default function WishesWall() {
                         {item.relation}
                       </span>
                     </div>
-                    <span className="text-[11px] text-slate-400 font-mono">{item.date}</span>
+                    <span className="text-[11px] text-slate-400 font-medium">{item.date}</span>
                   </div>
 
                   <p className="text-xs sm:text-sm text-slate-600 font-light leading-relaxed mb-4">

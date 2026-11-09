@@ -73,12 +73,12 @@ export default function Hero() {
           </p>
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-slate-900 tracking-tight leading-tight">
             <span>{couple.bride}</span>
-            <span className="inline-block mx-3 sm:mx-5 font-serif italic text-[#0074E2] font-normal text-3xl sm:text-5xl md:text-6xl">
+            <span className="inline-block mx-3 sm:mx-5 text-[#0074E2] font-normal text-3xl sm:text-5xl md:text-6xl">
               &amp;
             </span>
             <span>{couple.groom}</span>
           </h1>
-          <p className="font-serif italic text-base sm:text-lg text-slate-600 mt-2 font-light">
+          <p className="text-base sm:text-lg text-slate-600 mt-2 font-normal">
             &ldquo;{couple.quote}&rdquo;
           </p>
         </motion.div>
@@ -149,7 +149,7 @@ export default function Hero() {
                 key={idx}
                 className="flex flex-col items-center justify-center py-3 px-2 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-[#0074E2] transition-colors"
               >
-                <span className="text-2xl sm:text-3xl font-bold text-slate-900 font-mono leading-none">
+                <span className="text-2xl sm:text-3xl font-bold text-slate-900 leading-none">
                   {unit.value}
                 </span>
                 <span className="text-[10px] text-slate-500 mt-1 font-medium text-center">
