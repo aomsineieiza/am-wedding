@@ -7,7 +7,7 @@ export default function Story() {
   const { story } = weddingData;
 
   return (
-    <section id="story" className="py-20 sm:py-28 px-4 sm:px-6 max-w-5xl mx-auto">
+    <section id="story" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 max-w-5xl mx-auto">
       {/* Section Header */}
       <div className="text-center max-w-xl mx-auto mb-16 sm:mb-20">
         <motion.div

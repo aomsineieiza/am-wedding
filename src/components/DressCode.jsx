@@ -14,7 +14,7 @@ export default function DressCode() {
   };
 
   return (
-    <section id="dress-code" className="py-20 sm:py-28 px-4 sm:px-6 bg-white">
+    <section id="dress-code" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 bg-white">
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-14">

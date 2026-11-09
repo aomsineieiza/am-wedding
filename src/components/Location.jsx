@@ -14,7 +14,7 @@ export default function Location() {
   };
 
   return (
-    <section id="location" className="py-20 sm:py-28 px-4 sm:px-6 bg-slate-50/70">
+    <section id="location" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 bg-slate-50/70">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-14">

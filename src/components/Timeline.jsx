@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Sparkles, CalendarPlus, Check, Sun, Moon, Clock } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import { CeremonyAnimatedIcon } from './TimelineIcons';
 
 export default function Timeline() {
   const { schedule, couple, venue } = weddingData;
@@ -55,7 +56,7 @@ export default function Timeline() {
   const currentSchedule = schedule.find((s) => s.id === activeTab) || schedule[0];
 
   return (
-    <section id="schedule" className="py-20 sm:py-28 px-4 sm:px-6 max-w-4xl mx-auto">
+    <section id="schedule" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 max-w-4xl mx-auto">
       {/* Section Header */}
       <div className="text-center max-w-xl mx-auto mb-12">
         <motion.div
@@ -170,43 +171,36 @@ export default function Timeline() {
           </div>
         </div>
 
-        {/* Timeline Items */}
+        {/* Timeline Items with Animated Lottie-Style Vector Icons */}
         <div className="space-y-4">
-          {currentSchedule.items.map((item, idx) => {
-            let iconEmoji = "✨";
-            if (item.title.includes("Monk") || item.desc.includes("สงฆ์")) iconEmoji = "🙏";
-            else if (item.title.includes("Khan Maak") || item.desc.includes("ขันหมาก")) iconEmoji = "🌺";
-            else if (item.title.includes("Ring") || item.desc.includes("แหวน")) iconEmoji = "💍";
-            else if (item.title.includes("Water") || item.desc.includes("หลั่งน้ำ")) iconEmoji = "🐚";
-            else if (item.title.includes("Cake") || item.desc.includes("เค้ก")) iconEmoji = "🎂";
-            else if (item.title.includes("Toast") || item.title.includes("Cocktail")) iconEmoji = "🥂";
-            else if (item.title.includes("Party") || item.desc.includes("ปาร์ตี้")) iconEmoji = "🎶";
-
-            return (
-              <div
-                key={idx}
-                className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50/70 border border-slate-100 hover:border-[#C4DDFB] hover:bg-[#EBF4FE]/30 transition-all"
-              >
-                <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-center text-xl shrink-0">
-                  {iconEmoji}
-                </div>
-
-                <div className="flex-1">
-                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-                    <span className="text-base font-bold text-[#0074E2]">
-                      {item.time}
-                    </span>
-                    <h4 className="text-base font-semibold text-slate-900">
-                      {item.title}
-                    </h4>
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-normal">
-                    {item.desc}
-                  </p>
-                </div>
+          {currentSchedule.items.map((item, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: idx * 0.06 }}
+              className="group flex items-start gap-4 p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 hover:border-[#C4DDFB] hover:bg-[#EBF4FE]/20 transition-all duration-300"
+            >
+              {/* Animated Lottie-Style Icon Container */}
+              <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 group-hover:border-[#C4DDFB] shadow-xs group-hover:shadow-md flex items-center justify-center shrink-0 transition-all">
+                <CeremonyAnimatedIcon title={item.title} desc={item.desc} />
               </div>
-            );
-          })}
+
+              <div className="flex-1">
+                <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+                  <span className="text-base font-bold text-[#0074E2]">
+                    {item.time}
+                  </span>
+                  <h4 className="text-base font-semibold text-slate-900 group-hover:text-[#0074E2] transition-colors">
+                    {item.title}
+                  </h4>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-normal leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
         {/* Dress code note */}
