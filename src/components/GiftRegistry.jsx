@@ -17,7 +17,7 @@ export default function GiftRegistry() {
   };
 
   return (
-    <section id="registry" className="py-20 sm:py-28 px-4 sm:px-6 bg-white">
+    <section id="registry" className="py-20 sm:py-28 px-4 sm:px-6 bg-transparent">
       <div className="max-w-3xl mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-14">

@@ -62,7 +62,7 @@ export default function Gallery() {
   }, [selectedPhoto]);
 
   return (
-    <section id="gallery" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 bg-slate-50/60">
+    <section id="gallery" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 bg-transparent">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-16">

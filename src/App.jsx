@@ -17,7 +17,7 @@ export default function App() {
   const [hasOpenedEnvelope, setHasOpenedEnvelope] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 selection:bg-[#0074E2]/15 selection:text-[#0074E2]">
+    <div className="min-h-screen figjam-bg text-slate-900 selection:bg-[#0074E2]/15 selection:text-[#0074E2]">
       {/* 1. Envelope Opening Screen (First view - Click to open website) */}
       {!hasOpenedEnvelope && (
         <EnvelopeIntro onOpen={() => setHasOpenedEnvelope(true)} />

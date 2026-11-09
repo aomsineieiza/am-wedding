@@ -44,13 +44,40 @@ export default function Hero() {
   }, [couple.date]);
 
   return (
-    <header className="relative min-h-screen flex flex-col items-center justify-between pt-28 pb-16 px-4 sm:px-6 bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
-      {/* Background Subtle Grid / Soft Glow */}
-      <div className="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(#CBD5E1_0.75px,transparent_0.75px)] [background-size:24px_24px]" />
+    <header className="relative min-h-screen flex flex-col items-center justify-between pt-28 pb-16 px-4 sm:px-6 bg-transparent">
+      {/* Background Soft Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[#0074E2]/5 rounded-full blur-3xl pointer-events-none" />
 
       {/* Main Center Container */}
       <div className="relative z-10 max-w-4xl w-full mx-auto flex flex-col items-center text-center my-auto">
+        {/* FigJam Collaborative Cursors */}
+        <motion.div
+          initial={{ opacity: 0, x: -20, y: 15 }}
+          animate={{ opacity: 1, x: 0, y: [0, -6, 0] }}
+          transition={{ opacity: { duration: 0.8 }, y: { repeat: Infinity, duration: 4, ease: "easeInOut" } }}
+          className="absolute -top-6 -left-4 sm:top-4 sm:-left-12 hidden md:flex items-center gap-1.5 z-20 pointer-events-none"
+        >
+          <svg className="w-5 h-5 text-[#0074E2] drop-shadow-xs fill-[#0074E2]" viewBox="0 0 24 24">
+            <path d="M5.5 3.21a.5.5 0 0 0-.82.42v14.74a.5.5 0 0 0 .86.35l3.87-4.14 3.75 6.5a.5.5 0 0 0 .68.18l2.5-1.44a.5.5 0 0 0 .18-.69l-3.72-6.43 5.48-.36a.5.5 0 0 0 .34-.84L5.5 3.21z" />
+          </svg>
+          <span className="px-2.5 py-1 rounded-full bg-[#0074E2] text-white text-xs font-semibold shadow-md whitespace-nowrap">
+            Aomsin 🤵🏻
+          </span>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 20, y: -15 }}
+          animate={{ opacity: 1, x: 0, y: [0, 6, 0] }}
+          transition={{ opacity: { duration: 0.8, delay: 0.2 }, y: { repeat: Infinity, duration: 3.5, ease: "easeInOut" } }}
+          className="absolute -bottom-6 -right-4 sm:bottom-8 sm:-right-12 hidden md:flex items-center gap-1.5 z-20 pointer-events-none"
+        >
+          <svg className="w-5 h-5 text-[#E11D48] drop-shadow-xs fill-[#E11D48]" viewBox="0 0 24 24">
+            <path d="M5.5 3.21a.5.5 0 0 0-.82.42v14.74a.5.5 0 0 0 .86.35l3.87-4.14 3.75 6.5a.5.5 0 0 0 .68.18l2.5-1.44a.5.5 0 0 0 .18-.69l-3.72-6.43 5.48-.36a.5.5 0 0 0 .34-.84L5.5 3.21z" />
+          </svg>
+          <span className="px-2.5 py-1 rounded-full bg-[#E11D48] text-white text-xs font-semibold shadow-md whitespace-nowrap">
+            Mild 👰🏻
+          </span>
+        </motion.div>
         {/* Fastwork-style Pill Badge */}
         <motion.div
           initial={{ opacity: 0, y: -15 }}

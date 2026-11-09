@@ -30,6 +30,14 @@ const DEFAULT_WISHES = [
   },
 ];
 
+const STICKY_STYLES = [
+  { bg: 'bg-[#FEFCE8] border-[#FEF08A] hover:border-[#FDE047]', tape: 'bg-amber-300/40', rotate: '-rotate-1' },
+  { bg: 'bg-[#FDF2F8] border-[#FCE7F3] hover:border-[#FBCFE8]', tape: 'bg-pink-300/40', rotate: 'rotate-1' },
+  { bg: 'bg-[#F0FDF4] border-[#DCFCE7] hover:border-[#BBF7D0]', tape: 'bg-emerald-300/40', rotate: '-rotate-0.5' },
+  { bg: 'bg-[#F0F9FF] border-[#E0F2FE] hover:border-[#BAE6FD]', tape: 'bg-sky-300/40', rotate: 'rotate-1' },
+  { bg: 'bg-[#FAF5FF] border-[#F3E8FF] hover:border-[#E9D5FF]', tape: 'bg-purple-300/40', rotate: '-rotate-1' },
+];
+
 export default function WishesWall() {
   const [wishes, setWishes] = useState([]);
   const [likedMap, setLikedMap] = useState({});
@@ -114,7 +122,7 @@ export default function WishesWall() {
   };
 
   return (
-    <section id="guestbook" className="py-20 sm:py-28 px-4 sm:px-6 bg-slate-50/70">
+    <section id="guestbook" className="py-20 sm:py-28 px-4 sm:px-6 bg-transparent">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-14">
@@ -179,10 +187,11 @@ export default function WishesWall() {
           </form>
         </motion.div>
 
-        {/* Wishes Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Wishes Cards Grid (FigJam Sticky Notes style) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {wishes.map((item, idx) => {
             const isLiked = !!likedMap[item.id];
+            const stickyStyle = STICKY_STYLES[idx % STICKY_STYLES.length];
             return (
               <motion.div
                 key={item.id}
@@ -190,34 +199,37 @@ export default function WishesWall() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.05 }}
-                className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs hover:border-[#C4DDFB] hover:shadow-md transition-all flex flex-col justify-between"
+                className={`relative ${stickyStyle.bg} ${stickyStyle.rotate} rounded-2xl p-5 border shadow-sm hover:shadow-lg transition-all flex flex-col justify-between hover:rotate-0 hover:scale-[1.02] duration-200`}
               >
+                {/* FigJam Sticky Tape */}
+                <div className={`absolute -top-2.5 left-1/2 -translate-x-1/2 w-14 h-4 ${stickyStyle.tape} rounded-xs shadow-2xs backdrop-blur-xs`} />
+
                 <div>
-                  <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start justify-between mb-3 pt-1">
                     <div>
                       <h4 className="text-base font-bold text-slate-900">
                         {item.name}
                       </h4>
-                      <span className="text-[10px] font-semibold text-[#0074E2] bg-[#EBF4FE] px-2 py-0.5 rounded-full border border-[#C4DDFB]">
+                      <span className="text-[10px] font-semibold text-slate-600 bg-black/5 px-2 py-0.5 rounded-full">
                         {item.relation}
                       </span>
                     </div>
                     <span className="text-[11px] text-slate-400 font-medium">{item.date}</span>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-slate-600 font-light leading-relaxed mb-4">
+                  <p className="text-xs sm:text-sm text-slate-700 font-normal leading-relaxed mb-4">
                     &ldquo;{item.message}&rdquo;
                   </p>
                 </div>
 
-                <div className="flex items-center justify-end pt-3 border-t border-slate-100">
+                <div className="flex items-center justify-end pt-3 border-t border-black/5">
                   <button
                     type="button"
                     onClick={() => handleLike(item.id)}
                     className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs transition-colors cursor-pointer ${
                       isLiked
-                        ? 'bg-rose-50 text-rose-600 font-semibold'
-                        : 'text-slate-500 hover:text-slate-800'
+                        ? 'bg-rose-100 text-rose-600 font-semibold shadow-xs'
+                        : 'bg-white/70 text-slate-600 hover:bg-white hover:text-slate-900'
                     }`}
                   >
                     <Heart

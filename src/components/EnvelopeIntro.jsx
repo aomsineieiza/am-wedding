@@ -33,7 +33,7 @@ export default function EnvelopeIntro({ onOpen }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-between p-4 sm:p-8 bg-[#F8FAFC] overflow-hidden select-none"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-between p-4 sm:p-8 figjam-bg overflow-hidden select-none"
         >
           {/* Subtle Glows */}
           <div className="absolute top-0 left-0 w-48 sm:w-80 h-48 sm:h-80 opacity-30 pointer-events-none bg-[radial-gradient(ellipse_at_top_left,#0074E2_0%,transparent_70%)]" />
