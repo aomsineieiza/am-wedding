@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-editorial: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --color-ivory: #FAF8F5;
+  --color-ivory-warm: #F7F4EF;
+  --color-sand: #EFE9DF;
+  --color-charcoal: #2D2926;
+  --color-charcoal-muted: #6B635B;
+  --color-champagne: #C8B89E;
+  --color-champagne-light: #E8E2D8;
+  --color-champagne-dark: #A38F70;
+  --color-sage: #9EAB9C;
+  --color-sage-light: #E8ECE6;
+  --color-blush: #E6D2C9;
+}
+
+/* Base typography and smooth scrolling */
+html {
+  font-family: var(--font-sans);
+  background-color: #FAF8F5;
+  color: #2D2926;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Modern Web Guidance for Native <dialog> Modal Overlays */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: rgba(45, 41, 38, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #C8B89E;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A38F70;
+}
+
+/* Subtle luxury borders & shine */
+.editorial-border {
+  border: 1px solid rgba(200, 184, 158, 0.35);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #7A6648 0%, #C8B89E 50%, #947E5B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
