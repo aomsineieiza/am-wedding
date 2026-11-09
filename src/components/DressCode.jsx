@@ -14,62 +14,53 @@ export default function DressCode() {
   };
 
   return (
-    <section id="dress-code" className="py-20 sm:py-28 px-4 sm:px-6 bg-[#FAF8F5]">
+    <section id="dress-code" className="py-20 sm:py-28 px-4 sm:px-6 bg-white">
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-14">
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-xs uppercase tracking-[0.3em] text-[#A38F70] font-medium mb-3"
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
           >
-            Attire Inspiration
-          </motion.p>
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>DRESS CODE &amp; ATTIRE</span>
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-serif text-3xl sm:text-5xl text-[#2D2926] font-light tracking-tight uppercase"
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
           >
-            DRESS CODE
+            ธีมสีและการแต่งกาย
           </motion.h2>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-16 h-px bg-[#C8B89E] mx-auto mt-6"
-          />
+          <p className="text-sm text-slate-500 mt-2 font-normal">
+            โทนสีแนะนำเพื่อความกลมกลืนและภาพถ่ายที่สวยงามร่วมกัน
+          </p>
         </div>
 
-        {/* Dress Code Card */}
+        {/* Dress Code Card - Fastwork Elevation */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E8E2D8] shadow-xl shadow-[#2D2926]/5 text-center"
+          transition={{ duration: 0.6 }}
+          className="bg-slate-50/70 rounded-3xl p-6 sm:p-10 border border-slate-200 text-center"
         >
-          {/* Theme Title */}
-          <div className="max-w-2xl mx-auto mb-10">
-            <span className="font-serif italic text-xl text-[#C8B89E] block mb-1">
-              {dressCode.subtitle}
-            </span>
-            <h3 className="font-serif text-2xl sm:text-3xl text-[#2D2926] font-normal mb-3">
-              {dressCode.title}
-            </h3>
-            <p className="text-sm sm:text-base text-[#6B635B] leading-relaxed font-light">
-              {dressCode.description}
-            </p>
-          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
+            {dressCode.title}
+          </h3>
+          <p className="text-sm text-slate-600 leading-relaxed max-w-2xl mx-auto mb-8 font-light">
+            {dressCode.description}
+          </p>
 
-          {/* Interactive Color Palette Swatches (Pastel circles from reference video) */}
-          <div className="mb-12">
-            <p className="text-center text-xs uppercase tracking-[0.2em] text-[#A38F70] mb-6 font-medium">
-              Click any swatch to copy color code
+          {/* Color Palette Swatches */}
+          <div className="mb-10">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-6">
+              คลิกที่วงกลมสีเพื่อคัดลอกรหัสสี (HEX CODE)
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6 justify-center">
               {dressCode.palette.map((color, index) => (
@@ -79,70 +70,66 @@ export default function DressCode() {
                   onClick={() => copyHex(color.hex)}
                   className="group flex flex-col items-center focus:outline-none transition-transform hover:-translate-y-1 cursor-pointer"
                 >
-                  {/* Swatch Circle */}
                   <div
                     style={{ backgroundColor: color.hex }}
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-md border-2 border-white ring-1 ring-[#E8E2D8] relative flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg"
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-sm border-2 border-white ring-1 ring-slate-200 relative flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md"
                   >
                     {copiedHex === color.hex ? (
-                      <Check className="w-5 h-5 text-emerald-600 animate-scale" />
+                      <Check className="w-5 h-5 text-emerald-600" />
                     ) : (
                       <Copy className="w-4 h-4 text-black/30 opacity-0 group-hover:opacity-100 transition-opacity" />
                     )}
                   </div>
-
-                  {/* Swatch Labels */}
-                  <span className="mt-3 text-xs font-serif font-medium text-[#2D2926]">
+                  <span className="mt-2.5 text-xs font-semibold text-slate-800">
                     {color.name}
                   </span>
-                  <span className="text-[11px] font-mono text-[#6B635B] mt-0.5">
-                    {copiedHex === color.hex ? 'Copied!' : color.hex}
+                  <span className="text-[11px] font-mono text-slate-500 mt-0.5">
+                    {copiedHex === color.hex ? 'คัดลอกแล้ว!' : color.hex}
                   </span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Styling Guidelines for Guests */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 border-t border-[#E8E2D8] text-left mb-12">
-            <div className="bg-[#FAF8F5] p-5 sm:p-6 rounded-2xl border border-[#E8E2D8]/80">
-              <div className="flex items-center gap-2 mb-2">
-                <Shirt className="w-4 h-4 text-[#C8B89E]" />
-                <h4 className="font-serif text-lg text-[#2D2926] font-medium">Gentlemen</h4>
+          {/* Men & Women Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left pt-6 border-t border-slate-200 mb-8">
+            <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+              <div className="flex items-center gap-2 mb-1.5 text-slate-900 font-semibold text-sm">
+                <Shirt className="w-4 h-4 text-[#0074E2]" />
+                <span>สุภาพบุรุษ (Gentlemen)</span>
               </div>
-              <p className="text-xs sm:text-sm text-[#6B635B] leading-relaxed font-light">
-                Classic tailored suits in warm beige, charcoal, olive sage, or navy. Crisp white or ivory dress shirt with a subtle neutral tie or pocket square.
+              <p className="text-xs text-slate-600 leading-relaxed font-light">
+                สูทสากล เสื้อเชิ้ต หรือชุดสุภาพในโทนสีเบจ เทา น้ำตาล หรือน้ำเงินเข้ม
               </p>
             </div>
 
-            <div className="bg-[#FAF8F5] p-5 sm:p-6 rounded-2xl border border-[#E8E2D8]/80">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-4 h-4 text-[#C8B89E]" />
-                <h4 className="font-serif text-lg text-[#2D2926] font-medium">Ladies</h4>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+              <div className="flex items-center gap-2 mb-1.5 text-slate-900 font-semibold text-sm">
+                <Sparkles className="w-4 h-4 text-[#0074E2]" />
+                <span>สุภาพสตรี (Ladies)</span>
               </div>
-              <p className="text-xs sm:text-sm text-[#6B635B] leading-relaxed font-light">
-                Floor-length gowns, elegant midi dresses, or refined modern Thai silk in champagne, muted taupe, rose blush, or sage green. (Kindly avoid solid bridal white).
+              <p className="text-xs text-slate-600 leading-relaxed font-light">
+                ชุดเดรสสั้น/ยาว หรือชุดผ้าไทยประยุกต์ในโทนสีแชมเปญ ชานม โรสบลัช หรือเอิร์ธโทน
               </p>
             </div>
           </div>
 
-          {/* RSVP Call-to-Action Card (Matching Frame 025 of Canva reference) */}
-          <div className="bg-[#FAF8F5] p-8 sm:p-10 rounded-3xl border border-[#E8E2D8] max-w-lg mx-auto flex flex-col items-center text-center">
-            <div className="w-14 h-14 rounded-2xl bg-white border border-[#E8E2D8] flex items-center justify-center text-[#E5B5BC] mb-4 shadow-xs">
-              <ClipboardList className="w-7 h-7 text-[#C8B89E]" />
+          {/* RSVP Prompt Card */}
+          <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 max-w-lg mx-auto flex flex-col items-center text-center shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-[#EBF4FE] text-[#0074E2] flex items-center justify-center mb-3">
+              <ClipboardList className="w-6 h-6" />
             </div>
 
-            <p className="text-xs sm:text-sm text-[#6B635B] leading-relaxed font-light mb-6">
-              เพื่อให้การจัดเตรียมงานเป็นไปอย่างเหมาะสม<br />
-              ขอความกรุณาแขกผู้มีเกียรติ<br />
-              ตอบรับการเข้าร่วมงานนี้ด้วยนะคะ
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-light mb-5">
+              เพื่อให้การจัดเตรียมงานและที่นั่งเป็นไปอย่างราบรื่น<br />
+              ขอความกรุณาแขกผู้มีเกียรติตอบรับการเข้าร่วมงานด้วยนะคะ
             </p>
 
             <a
               href="#rsvp"
-              className="px-8 py-3.5 rounded-full bg-[#E5B5BC] hover:bg-[#d89ea7] text-[#2D2926] font-serif text-sm tracking-wider uppercase transition-all shadow-md flex items-center gap-2 font-medium"
+              className="px-6 py-3 rounded-full bg-[#0074E2] hover:bg-[#0060B8] text-white text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition-all flex items-center gap-2 cursor-pointer"
             >
-              <Heart className="w-4 h-4 text-rose-600 fill-current" />
+              <Heart className="w-4 h-4 fill-current text-white/90" />
               <span>RSVP ตอบกลับคำเชิญ</span>
             </a>
           </div>

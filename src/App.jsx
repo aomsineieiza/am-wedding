@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import EnvelopeIntro from './components/EnvelopeIntro';
-import AudioToggle from './components/AudioToggle';
+import FastworkNavbar from './components/FastworkNavbar';
 import Hero from './components/Hero';
 import Story from './components/Story';
 import Timeline from './components/Timeline';
@@ -17,59 +17,60 @@ export default function App() {
   const [hasOpenedEnvelope, setHasOpenedEnvelope] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#2D2926] selection:bg-[#C8B89E]/30 selection:text-[#2D2926]">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 selection:bg-[#0074E2]/15 selection:text-[#0074E2]">
       {/* 1. Envelope Opening Screen (First view - Click to open website) */}
       {!hasOpenedEnvelope && (
         <EnvelopeIntro onOpen={() => setHasOpenedEnvelope(true)} />
       )}
 
-      {/* Floating Ambient Music Audio Player */}
-      <AudioToggle />
+      {/* 2. Fastwork-Style Morphing Floating Navbar */}
+      <FastworkNavbar />
 
       {/* Floating Re-open Envelope Button */}
       {hasOpenedEnvelope && (
         <button
           type="button"
           onClick={() => setHasOpenedEnvelope(false)}
-          className="fixed top-5 left-5 z-40 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[#E8E2D8] text-[11px] font-serif text-[#6B635B] hover:text-[#2D2926] hover:border-[#C8B89E] shadow-sm transition-all"
+          className="fixed bottom-20 right-5 sm:bottom-6 sm:right-6 z-40 px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 text-xs font-medium text-slate-700 hover:text-[#0074E2] hover:border-[#0074E2] shadow-md transition-all cursor-pointer flex items-center gap-1.5"
         >
-          ✉️ ซองจดหมาย • Envelope
+          <span>✉️</span>
+          <span>ซองจดหมาย</span>
         </button>
       )}
 
       <main>
-        {/* 2. Hero Header & Live Countdown */}
+        {/* 3. Hero Header & Live Countdown */}
         <Hero />
 
-        {/* 3. Our Story / Photo Moments */}
+        {/* 4. Our Story / Photo Moments */}
         <Story />
 
-        {/* 4. Event Schedule & Timeline with Thai Wedding Illustrated Icons */}
+        {/* 5. Event Schedule & Timeline */}
         <Timeline />
 
-        {/* 5. Curated Gallery & Lightbox Preview */}
+        {/* 6. Curated Gallery & Lightbox Preview */}
         <Gallery />
 
-        {/* 6. Dress Code & Color Palette Swatches + RSVP Prompt */}
+        {/* 7. Dress Code & Color Palette Swatches */}
         <DressCode />
 
-        {/* 7. Venue Location & Google Maps */}
+        {/* 8. Venue Location & Google Maps */}
         <Location />
 
-        {/* 8. Interactive RSVP Form */}
+        {/* 9. Interactive RSVP Form */}
         <RSVPForm />
 
-        {/* 9. Wishes Wall / Guestbook */}
+        {/* 10. Wishes Wall / Guestbook */}
         <WishesWall />
 
-        {/* 10. Gift Registry / Congratulatory Bank Account & PromptPay */}
+        {/* 11. Gift Registry / Congratulatory Bank Account & PromptPay */}
         <GiftRegistry />
       </main>
 
-      {/* 11. Footer with Monogram, Couple Hashtag, & RSVP Admin */}
+      {/* 12. Footer with Monogram, Couple Hashtag, & RSVP Admin */}
       <Footer />
 
-      {/* 12. Floating Quick Navigation Bar for Mobile */}
+      {/* 13. Floating Quick Navigation Bar for Mobile */}
       <MobileNav />
     </div>
   );

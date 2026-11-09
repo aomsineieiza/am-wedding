@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Sparkles, Calendar } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 
 export default function Story() {
@@ -8,86 +9,71 @@ export default function Story() {
   return (
     <section id="story" className="py-20 sm:py-28 px-4 sm:px-6 max-w-5xl mx-auto">
       {/* Section Header */}
-      <div className="text-center max-w-xl mx-auto mb-16 sm:mb-24">
-        <motion.p
+      <div className="text-center max-w-xl mx-auto mb-16 sm:mb-20">
+        <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-xs uppercase tracking-[0.3em] text-[#A38F70] font-medium mb-3"
+          transition={{ duration: 0.6 }}
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
         >
-          Our Journey
-        </motion.p>
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>OUR LOVE JOURNEY</span>
+        </motion.div>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="font-serif text-3xl sm:text-5xl text-[#2D2926] font-light tracking-tight"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
         >
-          How Our Story Unfolded
+          เส้นทางความรักของเรา
         </motion.h2>
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="w-16 h-px bg-[#C8B89E] mx-auto mt-6"
-        />
+        <p className="text-sm text-slate-500 mt-2 font-normal">
+          เรื่องราวและความทรงจำอันแสนอบอุ่นในทุกช่วงเวลาสำคัญ
+        </p>
       </div>
 
-      {/* Alternating Photo & Story Grid */}
-      <div className="space-y-16 sm:space-y-24">
-        {story.map((item, index) => {
-          const isEven = index % 2 === 0;
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.9, delay: 0.1 }}
-              className={`flex flex-col ${
-                isEven ? 'md:flex-row' : 'md:flex-row-reverse'
-              } items-center gap-8 md:gap-14`}
-            >
-              {/* Photo Frame */}
-              <div className="w-full md:w-1/2">
-                <div className="relative p-2 bg-white rounded-2xl shadow-lg shadow-[#2D2926]/5 border border-[#E8E2D8] group overflow-hidden">
-                  <div className="aspect-[4/3] rounded-xl overflow-hidden relative">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    />
-                    <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[11px] font-serif tracking-widest text-[#2D2926] font-medium shadow-xs">
-                      {item.year}
-                    </div>
-                  </div>
-                </div>
+      {/* Fastwork Card Grid with Modern Elevation */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+        {story.map((item, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className="group bg-white rounded-3xl p-5 border border-slate-200 hover:border-[#C4DDFB] shadow-xs hover:shadow-xl hover:shadow-[#0074E2]/8 transition-all duration-300 flex flex-col justify-between"
+          >
+            {/* Image Frame */}
+            <div className="aspect-[16/10] rounded-2xl overflow-hidden relative mb-5 bg-slate-100">
+              <img
+                src={item.image}
+                alt={item.title}
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+              <div className="absolute top-3 left-3 flex items-center gap-1 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-xs font-semibold text-slate-800 shadow-xs border border-white/40">
+                <Calendar className="w-3.5 h-3.5 text-[#0074E2]" />
+                <span>{item.year}</span>
               </div>
+            </div>
 
-              {/* Story Content */}
-              <div className="w-full md:w-1/2 text-center md:text-left">
-                <span className="font-serif text-3xl sm:text-4xl text-[#C8B89E] italic block mb-1">
-                  0{index + 1}
-                </span>
-                <h3 className="font-serif text-2xl sm:text-3xl text-[#2D2926] font-normal mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-xs uppercase tracking-wider text-[#A38F70] font-medium mb-4">
-                  {item.subtitle}
-                </p>
-                <p className="text-sm sm:text-base text-[#6B635B] leading-relaxed font-sans font-light">
-                  {item.desc}
-                </p>
-              </div>
-            </motion.div>
-          );
-        })}
+            {/* Content */}
+            <div className="flex-1 flex flex-col">
+              <h3 className="text-xl font-bold text-slate-900 group-hover:text-[#0074E2] transition-colors">
+                {item.title}
+              </h3>
+              <p className="text-xs font-medium text-[#0074E2] mt-0.5 mb-2">
+                {item.subtitle}
+              </p>
+              <p className="text-sm text-slate-600 leading-relaxed font-light">
+                {item.desc}
+              </p>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
 }
-

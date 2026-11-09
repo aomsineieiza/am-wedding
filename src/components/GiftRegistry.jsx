@@ -8,7 +8,7 @@ export default function GiftRegistry() {
   const { bankAccounts } = weddingData;
   const [isOpen, setIsOpen] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(null);
-  const [activeTab, setActiveTab] = useState('bank'); // 'bank' or 'qr'
+  const [activeTab, setActiveTab] = useState('bank');
 
   const copyAccountNumber = (accNumber, index) => {
     navigator.clipboard.writeText(accNumber);
@@ -17,66 +17,62 @@ export default function GiftRegistry() {
   };
 
   return (
-    <section id="registry" className="py-20 sm:py-28 px-4 sm:px-6 bg-[#F7F4EF]/50">
+    <section id="registry" className="py-20 sm:py-28 px-4 sm:px-6 bg-white">
       <div className="max-w-3xl mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-14">
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-xs uppercase tracking-[0.3em] text-[#A38F70] font-medium mb-3"
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
           >
-            With Our Gratitude
-          </motion.p>
+            <Gift className="w-3.5 h-3.5" />
+            <span>GIFT REGISTRY &amp; BLESSINGS</span>
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-serif text-3xl sm:text-5xl text-[#2D2926] font-light tracking-tight"
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
           >
-            Gift Registry &amp; Blessings
+            ของขวัญและบัญชีแสดงความยินดี
           </motion.h2>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-16 h-px bg-[#C8B89E] mx-auto mt-6"
-          />
+          <p className="text-sm text-slate-500 mt-2 font-normal">
+            การได้พบและร่วมฉลองกับทุกท่านคือของขวัญที่มีค่าที่สุดสำหรับเรา
+          </p>
         </div>
 
-        {/* Introduction note */}
+        {/* Note Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="bg-white rounded-3xl p-6 sm:p-10 border border-[#E8E2D8] shadow-xl shadow-[#2D2926]/5 text-center"
+          transition={{ duration: 0.6 }}
+          className="bg-slate-50/70 rounded-3xl p-6 sm:p-10 border border-slate-200 text-center shadow-xl shadow-slate-900/5"
         >
-          <div className="w-12 h-12 rounded-full bg-[#FAF8F5] border border-[#C8B89E]/40 flex items-center justify-center mx-auto mb-4 text-[#C8B89E]">
-            <Gift className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-2xl bg-[#EBF4FE] text-[#0074E2] flex items-center justify-center mx-auto mb-4">
+            <Gift className="w-6 h-6" />
           </div>
 
-          <h3 className="font-serif text-2xl text-[#2D2926] mb-3">Your Presence Is Our Present</h3>
-          <p className="text-sm text-[#6B635B] font-light leading-relaxed max-w-xl mx-auto mb-8">
-            The greatest gift you can give us is your warm presence and blessing as we celebrate our marriage.
-            Should you wish to honor us with a monetary gift towards our honeymoon and future home, bank transfer details and PromptPay QR codes are provided below.
+          <h3 className="text-xl font-bold text-slate-900 mb-2">Your Presence Is Our Present</h3>
+          <p className="text-sm text-slate-600 font-light leading-relaxed max-w-xl mx-auto mb-8">
+            การมาร่วมแสดงความยินดีของทุกท่านคือเกียรติและความสุขอันสูงสุด หากท่านมีความประสงค์จะร่วมอวยพรเป็นของขวัญเริ่มต้นครอบครัวใหม่ สามารถดูรายละเอียดบัญชีและ PromptPay QR ได้ด้านล่างนี้ค่ะ
           </p>
 
-          {/* Collapsible Accordion Trigger Button */}
+          {/* Trigger Accordion Button */}
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
-            className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-[#FAF8F5] border border-[#E8E2D8] hover:border-[#C8B89E] hover:bg-white text-xs sm:text-sm font-sans tracking-wider uppercase text-[#2D2926] transition-all shadow-xs cursor-pointer group"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-slate-200 hover:border-[#0074E2] hover:text-[#0074E2] text-xs sm:text-sm font-semibold text-slate-800 transition-all shadow-xs cursor-pointer"
           >
-            <CreditCard className="w-4 h-4 text-[#C8B89E]" />
-            <span>{isOpen ? 'Hide Gift Details' : 'View Bank Transfer & PromptPay QR'}</span>
+            <CreditCard className="w-4 h-4 text-[#0074E2]" />
+            <span>{isOpen ? 'ซ่อนรายละเอียดบัญชี' : 'ดูรายละเอียดเลขที่บัญชี & PromptPay'}</span>
             <ChevronDown
-              className={`w-4 h-4 text-[#A38F70] transition-transform duration-300 ${
+              className={`w-4 h-4 transition-transform duration-300 ${
                 isOpen ? 'rotate-180' : ''
               }`}
             />
@@ -89,31 +85,31 @@ export default function GiftRegistry() {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                transition={{ duration: 0.35, ease: 'easeInOut' }}
                 className="overflow-hidden"
               >
                 {/* Switch between Bank Accounts & PromptPay QR */}
                 <div className="flex justify-center mt-8 mb-6">
-                  <div className="inline-flex p-1 rounded-full bg-[#FAF8F5] border border-[#E8E2D8]">
+                  <div className="inline-flex p-1 rounded-full bg-white border border-slate-200">
                     <button
                       type="button"
                       onClick={() => setActiveTab('bank')}
-                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-sans tracking-wider transition-all ${
+                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                         activeTab === 'bank'
-                          ? 'bg-white text-[#2D2926] shadow-xs font-medium border border-[#E8E2D8]'
-                          : 'text-[#6B635B] hover:text-[#2D2926]'
+                          ? 'bg-[#0074E2] text-white shadow-xs'
+                          : 'text-slate-600 hover:text-slate-900'
                       }`}
                     >
                       <CreditCard className="w-3.5 h-3.5" />
-                      <span>Bank Accounts</span>
+                      <span>โอนผ่านธนาคาร</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setActiveTab('qr')}
-                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-sans tracking-wider transition-all ${
+                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                         activeTab === 'qr'
-                          ? 'bg-white text-[#2D2926] shadow-xs font-medium border border-[#E8E2D8]'
-                          : 'text-[#6B635B] hover:text-[#2D2926]'
+                          ? 'bg-[#0074E2] text-white shadow-xs'
+                          : 'text-slate-600 hover:text-slate-900'
                       }`}
                     >
                       <QrCode className="w-3.5 h-3.5" />
@@ -123,60 +119,57 @@ export default function GiftRegistry() {
                 </div>
 
                 {activeTab === 'bank' ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 text-left">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                     {bankAccounts.map((acc, index) => (
                       <div
                         key={index}
-                        className="bg-[#FAF8F5] rounded-2xl p-6 border border-[#E8E2D8] flex flex-col justify-between relative group hover:border-[#C8B89E] transition-colors"
+                        className="bg-white rounded-2xl p-6 border border-slate-200 flex flex-col justify-between hover:border-[#C4DDFB] transition-colors shadow-xs"
                       >
-                        {/* Bank Header */}
                         <div className="flex items-center justify-between mb-4">
                           <div>
-                            <p className="font-serif text-lg text-[#2D2926] font-medium">
+                            <p className="text-base font-bold text-slate-900">
                               {acc.bank}
                             </p>
-                            <p className="text-xs text-[#A38F70]">{acc.bankThai}</p>
+                            <p className="text-xs text-[#0074E2] font-medium">{acc.bankThai}</p>
                           </div>
-                          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center border border-[#E8E2D8]">
-                            <CreditCard className="w-4 h-4 text-[#A38F70]" />
+                          <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200">
+                            <CreditCard className="w-4 h-4 text-slate-500" />
                           </div>
                         </div>
 
-                        {/* Account Details */}
                         <div className="space-y-1 mb-6">
-                          <span className="text-[10px] uppercase tracking-wider text-[#A38F70] font-medium block">
-                            Account Number
+                          <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">
+                            เลขที่บัญชี
                           </span>
-                          <div className="font-mono text-xl sm:text-2xl text-[#2D2926] font-medium tracking-wider">
+                          <div className="font-mono text-xl text-slate-900 font-bold tracking-wider">
                             {acc.accountNumber}
                           </div>
-                          <p className="text-xs text-[#6B635B] pt-1 font-light">
-                            Account Name: <strong>{acc.accountName}</strong>
+                          <p className="text-xs text-slate-600 pt-1 font-light">
+                            ชื่อบัญชี: <strong>{acc.accountName}</strong>
                           </p>
-                          <p className="text-xs text-[#6B635B] font-light">
-                            PromptPay: <strong className="font-mono">{acc.promptPay}</strong>
+                          <p className="text-xs text-slate-600 font-light">
+                            พร้อมเพย์: <strong className="font-mono text-[#0074E2]">{acc.promptPay}</strong>
                           </p>
                         </div>
 
-                        {/* Copy Action Button with Toast Feedback */}
                         <button
                           type="button"
                           onClick={() => copyAccountNumber(acc.cleanNumber, index)}
-                          className={`w-full py-2.5 px-4 rounded-xl text-xs font-sans uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                          className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                             copiedIndex === index
                               ? 'bg-emerald-600 text-white'
-                              : 'bg-white text-[#2D2926] border border-[#E8E2D8] hover:border-[#C8B89E] shadow-xs'
+                              : 'bg-slate-50 text-slate-800 border border-slate-200 hover:border-[#0074E2] hover:text-[#0074E2]'
                           }`}
                         >
                           {copiedIndex === index ? (
                             <>
                               <Check className="w-3.5 h-3.5" />
-                              <span>Account Number Copied!</span>
+                              <span>คัดลอกเลขบัญชีแล้ว!</span>
                             </>
                           ) : (
                             <>
-                              <Copy className="w-3.5 h-3.5 text-[#C8B89E]" />
-                              <span>Copy Account Number</span>
+                              <Copy className="w-3.5 h-3.5 text-slate-400" />
+                              <span>คัดลอกเลขที่บัญชี</span>
                             </>
                           )}
                         </button>
@@ -184,7 +177,7 @@ export default function GiftRegistry() {
                     ))}
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 text-left">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                     {bankAccounts.map((acc, index) => (
                       <PromptPayCard
                         key={index}

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Send, CheckCircle2, User, Phone, Users, MessageSquare, AlertCircle, X } from 'lucide-react';
+import { Heart, Send, CheckCircle2, User, Phone, Users, MessageSquare, AlertCircle, X, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { weddingData } from '../data/weddingData';
 
@@ -11,7 +11,7 @@ export default function RSVPForm() {
   const [formData, setFormData] = useState({
     fullName: '',
     contact: '',
-    attending: 'yes', // 'yes' or 'no'
+    attending: 'yes',
     guestCount: 1,
     dietary: '',
     wishes: '',
@@ -21,14 +21,13 @@ export default function RSVPForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedData, setSubmittedData] = useState(null);
 
-  // Form Validation
   const validate = () => {
     const newErrors = {};
     if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Please enter your full name.';
+      newErrors.fullName = 'กรุณาระบุชื่อ-นามสกุล';
     }
     if (!formData.contact.trim()) {
-      newErrors.contact = 'Please provide a phone number or email.';
+      newErrors.contact = 'กรุณาระบุเบอร์โทรศัพท์หรืออีเมล';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -51,12 +50,10 @@ export default function RSVPForm() {
 
     setIsSubmitting(true);
 
-    // Simulate clean network dispatch & local storage persistence
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmittedData({ ...formData });
 
-      // Save to localStorage so responses can be reviewed
       try {
         const stored = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
         stored.push({
@@ -68,28 +65,25 @@ export default function RSVPForm() {
         console.error('Storage error:', err);
       }
 
-      // Trigger celebratory confetti if attending
       if (formData.attending === 'yes') {
         confetti({
-          particleCount: 100,
-          spread: 70,
+          particleCount: 120,
+          spread: 80,
           origin: { y: 0.6 },
-          colors: ['#C8B89E', '#A38F70', '#E8E2D8', '#FAF8F5'],
+          colors: ['#0074E2', '#38BDF8', '#F59E0B', '#10B981'],
         });
       }
 
-      // Open native modal dialog
       if (successDialogRef.current) {
         successDialogRef.current.showModal();
       }
-    }, 700);
+    }, 600);
   };
 
   const closeSuccessModal = () => {
     if (successDialogRef.current) {
       successDialogRef.current.close();
     }
-    // Reset form after closing
     setFormData({
       fullName: '',
       contact: '',
@@ -114,60 +108,54 @@ export default function RSVPForm() {
   };
 
   return (
-    <section id="rsvp" className="py-20 sm:py-28 px-4 sm:px-6 bg-[#FAF8F5]">
+    <section id="rsvp" className="py-20 sm:py-28 px-4 sm:px-6 bg-white">
       <div className="max-w-3xl mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-14">
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-xs uppercase tracking-[0.3em] text-[#A38F70] font-medium mb-3"
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
           >
-            Kindly Respond
-          </motion.p>
+            <Heart className="w-3.5 h-3.5 fill-current" />
+            <span>RSVP INVITATION</span>
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-serif text-3xl sm:text-5xl text-[#2D2926] font-light tracking-tight"
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
           >
-            RSVP Attendance
+            แบบฟอร์มตอบรับคำเชิญ
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xs sm:text-sm text-[#6B635B] mt-3 font-light"
-          >
-            Please let us know if you can join us by October 31, 2026.
-          </motion.p>
-          <div className="w-16 h-px bg-[#C8B89E] mx-auto mt-6" />
+          <p className="text-sm text-slate-500 mt-2 font-normal">
+            กรุณาตอบรับคำเชิญภายในวันที่ 31 ตุลาคม 2569 เพื่อความสะดวกในการจัดเตรียมที่นั่ง
+          </p>
         </div>
 
-        {/* RSVP Form Card */}
+        {/* RSVP Card - Fastwork Elevation */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="bg-white rounded-3xl p-6 sm:p-12 border border-[#E8E2D8] shadow-xl shadow-[#2D2926]/5"
+          transition={{ duration: 0.6 }}
+          className="bg-slate-50/70 rounded-3xl p-6 sm:p-12 border border-slate-200 shadow-xl shadow-slate-900/5"
         >
-          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8" noValidate>
-            {/* Attendance Choice Radio Cards */}
+          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+            {/* Attendance Toggle Radio Cards */}
             <div>
-              <label className="block text-xs uppercase tracking-[0.15em] text-[#A38F70] font-medium mb-3">
-                Will you be attending? *
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-3">
+                การเข้าร่วมงาน *
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <label
                   className={`flex items-center gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
                     formData.attending === 'yes'
-                      ? 'border-[#2D2926] bg-[#FAF8F5] ring-1 ring-[#2D2926]'
-                      : 'border-[#E8E2D8] hover:border-[#C8B89E] bg-white'
+                      ? 'border-[#0074E2] bg-[#EBF4FE]/60 ring-2 ring-[#0074E2]/20'
+                      : 'border-slate-200 hover:border-slate-300 bg-white'
                   }`}
                 >
                   <input
@@ -179,10 +167,10 @@ export default function RSVPForm() {
                     className="sr-only"
                   />
                   <div
-                    className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                       formData.attending === 'yes'
-                        ? 'border-[#2D2926] bg-[#2D2926]'
-                        : 'border-[#C8B89E]'
+                        ? 'border-[#0074E2] bg-[#0074E2]'
+                        : 'border-slate-300'
                     }`}
                   >
                     {formData.attending === 'yes' && (
@@ -190,18 +178,18 @@ export default function RSVPForm() {
                     )}
                   </div>
                   <div>
-                    <span className="font-serif text-base text-[#2D2926] font-medium block">
-                      Joyfully Accept
+                    <span className="text-sm font-semibold text-slate-900 block">
+                      ยินดีเข้าร่วมงาน (Joyfully Accept)
                     </span>
-                    <span className="text-xs text-[#6B635B]">I will celebrate with you</span>
+                    <span className="text-xs text-slate-500">พร้อมไปร่วมฉลองความสุข</span>
                   </div>
                 </label>
 
                 <label
                   className={`flex items-center gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
                     formData.attending === 'no'
-                      ? 'border-[#2D2926] bg-[#FAF8F5] ring-1 ring-[#2D2926]'
-                      : 'border-[#E8E2D8] hover:border-[#C8B89E] bg-white'
+                      ? 'border-slate-800 bg-slate-100 ring-2 ring-slate-800/10'
+                      : 'border-slate-200 hover:border-slate-300 bg-white'
                   }`}
                 >
                   <input
@@ -213,10 +201,10 @@ export default function RSVPForm() {
                     className="sr-only"
                   />
                   <div
-                    className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                       formData.attending === 'no'
-                        ? 'border-[#2D2926] bg-[#2D2926]'
-                        : 'border-[#C8B89E]'
+                        ? 'border-slate-800 bg-slate-800'
+                        : 'border-slate-300'
                     }`}
                   >
                     {formData.attending === 'no' && (
@@ -224,22 +212,22 @@ export default function RSVPForm() {
                     )}
                   </div>
                   <div>
-                    <span className="font-serif text-base text-[#2D2926] font-medium block">
-                      Regretfully Decline
+                    <span className="text-sm font-semibold text-slate-900 block">
+                      ขออภัย ไม่สะดวกเข้าร่วม (Decline)
                     </span>
-                    <span className="text-xs text-[#6B635B]">Celebrating from afar</span>
+                    <span className="text-xs text-slate-500">ขอส่งกำลังใจร่วมยินดี</span>
                   </div>
                 </label>
               </div>
             </div>
 
-            {/* Full Name Field */}
+            {/* Full Name */}
             <div>
               <label
                 htmlFor="fullName"
-                className="block text-xs uppercase tracking-[0.15em] text-[#A38F70] font-medium mb-2"
+                className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
               >
-                Full Name (ชื่อ-นามสกุล) *
+                ชื่อ-นามสกุล (Full Name) *
               </label>
               <div className="relative">
                 <input
@@ -248,28 +236,28 @@ export default function RSVPForm() {
                   type="text"
                   value={formData.fullName}
                   onChange={handleChange}
-                  placeholder="e.g., Katherine Reynolds"
-                  className={`w-full px-4 py-3 pl-11 rounded-xl bg-[#FAF8F5] border text-sm text-[#2D2926] placeholder:text-[#A38F70]/60 focus:outline-none focus:ring-2 focus:ring-[#C8B89E] transition-all ${
-                    errors.fullName ? 'border-red-400 ring-1 ring-red-400' : 'border-[#E8E2D8]'
+                  placeholder="เช่น คุณกานต์ พิชญา"
+                  className={`w-full px-4 py-3 pl-11 rounded-xl bg-white border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all ${
+                    errors.fullName ? 'border-rose-400 ring-1 ring-rose-400' : 'border-slate-200'
                   }`}
                 />
-                <User className="w-4 h-4 text-[#A38F70] absolute left-4 top-1/2 -translate-y-1/2" />
+                <User className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
               </div>
               {errors.fullName && (
-                <p className="flex items-center gap-1 text-xs text-red-500 mt-1.5">
+                <p className="flex items-center gap-1 text-xs text-rose-500 mt-1.5">
                   <AlertCircle className="w-3.5 h-3.5" />
                   <span>{errors.fullName}</span>
                 </p>
               )}
             </div>
 
-            {/* Contact Phone / Email */}
+            {/* Contact */}
             <div>
               <label
                 htmlFor="contact"
-                className="block text-xs uppercase tracking-[0.15em] text-[#A38F70] font-medium mb-2"
+                className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
               >
-                Phone Number / Email *
+                เบอร์โทรศัพท์ หรือ อีเมล (Contact Info) *
               </label>
               <div className="relative">
                 <input
@@ -278,15 +266,15 @@ export default function RSVPForm() {
                   type="text"
                   value={formData.contact}
                   onChange={handleChange}
-                  placeholder="e.g., +66 81 234 5678 or guest@example.com"
-                  className={`w-full px-4 py-3 pl-11 rounded-xl bg-[#FAF8F5] border text-sm text-[#2D2926] placeholder:text-[#A38F70]/60 focus:outline-none focus:ring-2 focus:ring-[#C8B89E] transition-all ${
-                    errors.contact ? 'border-red-400 ring-1 ring-red-400' : 'border-[#E8E2D8]'
+                  placeholder="เช่น 081-234-5678"
+                  className={`w-full px-4 py-3 pl-11 rounded-xl bg-white border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all ${
+                    errors.contact ? 'border-rose-400 ring-1 ring-rose-400' : 'border-slate-200'
                   }`}
                 />
-                <Phone className="w-4 h-4 text-[#A38F70] absolute left-4 top-1/2 -translate-y-1/2" />
+                <Phone className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
               </div>
               {errors.contact && (
-                <p className="flex items-center gap-1 text-xs text-red-500 mt-1.5">
+                <p className="flex items-center gap-1 text-xs text-rose-500 mt-1.5">
                   <AlertCircle className="w-3.5 h-3.5" />
                   <span>{errors.contact}</span>
                 </p>
@@ -295,14 +283,13 @@ export default function RSVPForm() {
 
             {/* Conditional fields if Attending */}
             {formData.attending === 'yes' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
-                {/* Guest Count */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                 <div>
                   <label
                     htmlFor="guestCount"
-                    className="block text-xs uppercase tracking-[0.15em] text-[#A38F70] font-medium mb-2"
+                    className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
                   >
-                    Number of Guests (รวมผู้ติดตาม)
+                    จำนวนผู้เข้าร่วมงาน (Guests Count)
                   </label>
                   <div className="relative">
                     <select
@@ -310,24 +297,23 @@ export default function RSVPForm() {
                       name="guestCount"
                       value={formData.guestCount}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 pl-11 rounded-xl bg-[#FAF8F5] border border-[#E8E2D8] text-sm text-[#2D2926] focus:outline-none focus:ring-2 focus:ring-[#C8B89E] transition-all"
+                      className="w-full px-4 py-3 pl-11 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0074E2] transition-all"
                     >
-                      <option value="1">1 Person (Just me)</option>
-                      <option value="2">2 Persons (+1 Guest)</option>
-                      <option value="3">3 Persons</option>
-                      <option value="4">4 Persons (Family)</option>
+                      <option value="1">1 ท่าน (เฉพาะตัวฉัน)</option>
+                      <option value="2">2 ท่าน (+ ผู้ติดตาม 1 ท่าน)</option>
+                      <option value="3">3 ท่าน</option>
+                      <option value="4">4 ท่าน (ครอบครัว)</option>
                     </select>
-                    <Users className="w-4 h-4 text-[#A38F70] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <Users className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                   </div>
                 </div>
 
-                {/* Dietary Restrictions */}
                 <div>
                   <label
                     htmlFor="dietary"
-                    className="block text-xs uppercase tracking-[0.15em] text-[#A38F70] font-medium mb-2"
+                    className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
                   >
-                    Dietary Requirements (แพ้อาหาร)
+                    ข้อจำกัดด้านอาหาร (Dietary Restrictions)
                   </label>
                   <input
                     id="dietary"
@@ -335,20 +321,20 @@ export default function RSVPForm() {
                     type="text"
                     value={formData.dietary}
                     onChange={handleChange}
-                    placeholder="e.g., Vegetarian, Halal, Seafood allergy"
-                    className="w-full px-4 py-3 rounded-xl bg-[#FAF8F5] border border-[#E8E2D8] text-sm text-[#2D2926] placeholder:text-[#A38F70]/60 focus:outline-none focus:ring-2 focus:ring-[#C8B89E] transition-all"
+                    placeholder="เช่น มังสวิรัติ, ฮาลาล, แพ้อาหารทะเล"
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] transition-all"
                   />
                 </div>
               </div>
             )}
 
-            {/* Wishes for the Couple */}
+            {/* Wishes */}
             <div>
               <label
                 htmlFor="wishes"
-                className="block text-xs uppercase tracking-[0.15em] text-[#A38F70] font-medium mb-2"
+                className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
               >
-                Wishes &amp; Congratulations (คำอวยพร)
+                คำอวยพรแด่คู่บ่าวสาว (Wishes for Aomsin &amp; Mild)
               </label>
               <div className="relative">
                 <textarea
@@ -357,26 +343,26 @@ export default function RSVPForm() {
                   rows="3"
                   value={formData.wishes}
                   onChange={handleChange}
-                  placeholder="Share a sweet memory, favorite advice, or blessing for the couple..."
-                  className="w-full px-4 py-3 pl-11 rounded-xl bg-[#FAF8F5] border border-[#E8E2D8] text-sm text-[#2D2926] placeholder:text-[#A38F70]/60 focus:outline-none focus:ring-2 focus:ring-[#C8B89E] transition-all resize-none"
+                  placeholder="พิมพ์ข้อความอวยพรคู่บ่าวสาวที่นี่..."
+                  className="w-full px-4 py-3 pl-11 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] transition-all resize-none"
                 />
-                <MessageSquare className="w-4 h-4 text-[#A38F70] absolute left-4 top-4" />
+                <MessageSquare className="w-4 h-4 text-slate-400 absolute left-4 top-4" />
               </div>
             </div>
 
             {/* Submit Button */}
-            <div className="pt-4">
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 rounded-full bg-[#2D2926] text-white font-sans text-xs sm:text-sm uppercase tracking-[0.2em] font-medium hover:bg-[#A38F70] transition-colors duration-300 shadow-md flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer"
+                className="w-full py-4 rounded-full bg-[#0074E2] hover:bg-[#0060B8] text-white text-sm font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? (
-                  <span>Sending RSVP...</span>
+                  <span>กำลังส่งข้อมูล...</span>
                 ) : (
                   <>
-                    <Send className="w-4 h-4 text-[#C8B89E]" />
-                    <span>Confirm My RSVP</span>
+                    <Send className="w-4 h-4" />
+                    <span>ยืนยันการตอบรับคำเชิญ</span>
                   </>
                 )}
               </button>
@@ -385,59 +371,61 @@ export default function RSVPForm() {
         </motion.div>
       </div>
 
-      {/* Confirmation Modal using Native <dialog> per Modern Web Guidance */}
+      {/* Confirmation Modal using Native <dialog> */}
       <dialog
         ref={successDialogRef}
         aria-labelledby="rsvp-success-title"
         closedby="any"
         onClick={handleDialogBackdropClick}
-        className="fixed inset-0 m-auto max-w-lg w-[90vw] bg-transparent p-0 rounded-3xl border-0 outline-none backdrop:bg-black/60 backdrop:backdrop-blur-md"
+        className="fixed inset-0 m-auto max-w-lg w-[90vw] bg-transparent p-0 rounded-3xl border-0 outline-none backdrop:bg-slate-950/70 backdrop:backdrop-blur-md"
       >
         {submittedData && (
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl p-8 sm:p-10 border border-[#E8E2D8] shadow-2xl text-center relative"
+            className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-100 shadow-2xl text-center relative"
           >
             <button
               type="button"
               onClick={closeSuccessModal}
               aria-label="Close confirmation card"
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#FAF8F5] border border-[#E8E2D8] flex items-center justify-center text-[#2D2926] hover:bg-white"
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
 
-            <div className="w-16 h-16 rounded-full bg-[#F4EFEB] border border-[#C8B89E]/40 flex items-center justify-center mx-auto mb-5 text-[#2D2926]">
-              <Heart className="w-8 h-8 text-[#C8B89E] fill-current animate-pulse" />
+            <div className="w-16 h-16 rounded-2xl bg-[#EBF4FE] text-[#0074E2] flex items-center justify-center mx-auto mb-5 shadow-xs">
+              <CheckCircle2 className="w-8 h-8" />
             </div>
 
-            <h3 id="rsvp-success-title" className="font-serif text-3xl text-[#2D2926] font-normal mb-2">
-              Thank You, {submittedData.fullName}!
+            <h3 id="rsvp-success-title" className="text-2xl font-bold text-slate-900 mb-2">
+              ขอบคุณมากค่ะ, {submittedData.fullName}!
             </h3>
 
-            <p className="font-serif italic text-base text-[#A38F70] mb-4">
+            <p className="text-sm text-slate-600 mb-6">
               {submittedData.attending === 'yes'
-                ? 'We cannot wait to celebrate our magical day with you!'
-                : 'Thank you for your warm thoughts from afar. You will be missed!'}
+                ? 'เราได้รับข้อมูลตอบรับเรียบร้อยแล้ว แล้วพบกันในวันสำคัญนะคะ!'
+                : 'ขอบพระคุณสำหรับคำอวยพรและความระลึกถึงจากใจค่ะ'}
             </p>
 
-            <div className="bg-[#FAF8F5] rounded-2xl p-4 text-xs text-[#6B635B] space-y-1.5 mb-6 text-left border border-[#E8E2D8]/60">
+            <div className="bg-slate-50 rounded-2xl p-4 text-xs text-slate-600 space-y-2 mb-6 text-left border border-slate-200">
               <p>
-                <strong>Status:</strong>{' '}
-                {submittedData.attending === 'yes' ? 'Attending with Joy' : 'Regretfully Declined'}
+                <strong>สถานะ:</strong>{' '}
+                <span className="text-[#0074E2] font-semibold">
+                  {submittedData.attending === 'yes' ? 'ยินดีเข้าร่วมงาน' : 'ขออภัย ไม่สะดวกเข้าร่วม'}
+                </span>
               </p>
               {submittedData.attending === 'yes' && (
                 <p>
-                  <strong>Guest Count:</strong> {submittedData.guestCount}
+                  <strong>จำนวนแขก:</strong> {submittedData.guestCount} ท่าน
                 </p>
               )}
               {submittedData.dietary && (
                 <p>
-                  <strong>Dietary Note:</strong> {submittedData.dietary}
+                  <strong>ข้อจำกัดอาหาร:</strong> {submittedData.dietary}
                 </p>
               )}
               {submittedData.wishes && (
-                <p className="italic pt-1 border-t border-[#E8E2D8]">
+                <p className="italic pt-2 border-t border-slate-200 text-slate-700">
                   &ldquo;{submittedData.wishes}&rdquo;
                 </p>
               )}
@@ -446,9 +434,9 @@ export default function RSVPForm() {
             <button
               type="button"
               onClick={closeSuccessModal}
-              className="w-full py-3 rounded-full bg-[#2D2926] text-white text-xs uppercase tracking-[0.2em] hover:bg-[#A38F70] transition-colors"
+              className="w-full py-3 rounded-full bg-[#0074E2] hover:bg-[#0060B8] text-white text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer shadow-xs"
             >
-              Done
+              เสร็จสิ้น
             </button>
           </div>
         )}
@@ -456,4 +444,3 @@ export default function RSVPForm() {
     </section>
   );
 }
-

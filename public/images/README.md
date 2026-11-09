@@ -10,3 +10,4 @@ Then in [`src/data/weddingData.js`](/src/data/weddingData.js), update the image 
 ```js
 image: "/images/hero.jpg"
 ```
+
