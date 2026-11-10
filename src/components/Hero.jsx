@@ -50,34 +50,6 @@ export default function Hero() {
 
       {/* Main Center Container */}
       <div className="relative z-10 max-w-4xl w-full mx-auto flex flex-col items-center text-center my-auto">
-        {/* FigJam Collaborative Cursors */}
-        <motion.div
-          initial={{ opacity: 0, x: -20, y: 15 }}
-          animate={{ opacity: 1, x: 0, y: [0, -6, 0] }}
-          transition={{ opacity: { duration: 0.8 }, y: { repeat: Infinity, duration: 4, ease: "easeInOut" } }}
-          className="absolute -top-6 -left-4 sm:top-4 sm:-left-12 hidden md:flex items-center gap-1.5 z-20 pointer-events-none"
-        >
-          <svg className="w-5 h-5 text-[#0074E2] drop-shadow-xs fill-[#0074E2]" viewBox="0 0 24 24">
-            <path d="M5.5 3.21a.5.5 0 0 0-.82.42v14.74a.5.5 0 0 0 .86.35l3.87-4.14 3.75 6.5a.5.5 0 0 0 .68.18l2.5-1.44a.5.5 0 0 0 .18-.69l-3.72-6.43 5.48-.36a.5.5 0 0 0 .34-.84L5.5 3.21z" />
-          </svg>
-          <span className="px-2.5 py-1 rounded-full bg-[#0074E2] text-white text-xs font-semibold shadow-md whitespace-nowrap">
-            Aomsin 🤵🏻
-          </span>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 20, y: -15 }}
-          animate={{ opacity: 1, x: 0, y: [0, 6, 0] }}
-          transition={{ opacity: { duration: 0.8, delay: 0.2 }, y: { repeat: Infinity, duration: 3.5, ease: "easeInOut" } }}
-          className="absolute -bottom-6 -right-4 sm:bottom-8 sm:-right-12 hidden md:flex items-center gap-1.5 z-20 pointer-events-none"
-        >
-          <svg className="w-5 h-5 text-[#E11D48] drop-shadow-xs fill-[#E11D48]" viewBox="0 0 24 24">
-            <path d="M5.5 3.21a.5.5 0 0 0-.82.42v14.74a.5.5 0 0 0 .86.35l3.87-4.14 3.75 6.5a.5.5 0 0 0 .68.18l2.5-1.44a.5.5 0 0 0 .18-.69l-3.72-6.43 5.48-.36a.5.5 0 0 0 .34-.84L5.5 3.21z" />
-          </svg>
-          <span className="px-2.5 py-1 rounded-full bg-[#E11D48] text-white text-xs font-semibold shadow-md whitespace-nowrap">
-            Mild 👰🏻
-          </span>
-        </motion.div>
         {/* Fastwork-style Pill Badge */}
         <motion.div
           initial={{ opacity: 0, y: -15 }}
@@ -117,6 +89,35 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="relative w-full max-w-sm sm:max-w-md mx-auto aspect-[3/4] rounded-3xl p-2.5 bg-white shadow-xl shadow-slate-900/5 border border-slate-200 mt-8 group"
         >
+          {/* FigJam Collaborative Cursors (Framing the Photo) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
+            transition={{ opacity: { duration: 0.8 }, y: { repeat: Infinity, duration: 3.5, ease: 'easeInOut' } }}
+            className="absolute -top-4 -left-4 sm:-top-6 sm:-left-8 hidden sm:flex items-center gap-1.5 z-30 pointer-events-none"
+          >
+            <svg className="w-5 h-5 text-[#0074E2] drop-shadow-sm fill-[#0074E2]" viewBox="0 0 24 24">
+              <path d="M5.5 3.21a.5.5 0 0 0-.82.42v14.74a.5.5 0 0 0 .86.35l3.87-4.14 3.75 6.5a.5.5 0 0 0 .68.18l2.5-1.44a.5.5 0 0 0 .18-.69l-3.72-6.43 5.48-.36a.5.5 0 0 0 .34-.84L5.5 3.21z" />
+            </svg>
+            <span className="px-2.5 py-1 rounded-full bg-[#0074E2] text-white text-xs font-semibold shadow-md whitespace-nowrap">
+              Aomsin 🤵🏻
+            </span>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1, y: [0, 6, 0] }}
+            transition={{ opacity: { duration: 0.8, delay: 0.2 }, y: { repeat: Infinity, duration: 3.8, ease: 'easeInOut' } }}
+            className="absolute -bottom-3 -right-4 sm:-bottom-5 sm:-right-8 hidden sm:flex items-center gap-1.5 z-30 pointer-events-none"
+          >
+            <svg className="w-5 h-5 text-[#E11D48] drop-shadow-sm fill-[#E11D48]" viewBox="0 0 24 24">
+              <path d="M5.5 3.21a.5.5 0 0 0-.82.42v14.74a.5.5 0 0 0 .86.35l3.87-4.14 3.75 6.5a.5.5 0 0 0 .68.18l2.5-1.44a.5.5 0 0 0 .18-.69l-3.72-6.43 5.48-.36a.5.5 0 0 0 .34-.84L5.5 3.21z" />
+            </svg>
+            <span className="px-2.5 py-1 rounded-full bg-[#E11D48] text-white text-xs font-semibold shadow-md whitespace-nowrap">
+              Mild 👰🏻
+            </span>
+          </motion.div>
+
           <div className="w-full h-full rounded-2xl overflow-hidden relative">
             <img
               src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85"
