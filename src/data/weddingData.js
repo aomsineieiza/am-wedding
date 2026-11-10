@@ -19,6 +19,8 @@ export const weddingData = {
   venue: {
     name: "The Glasshouse Heritage Bangkok",
     hall: "The Grand Pavilion & Conservatory Lawn",
+    city: "Bangkok, Thailand",
+    thaiCity: "กรุงเทพมหานคร",
     address: "88 Sukhumvit Soi 55, Thonglor, Watthana, Bangkok 10110, Thailand",
     thaiAddress: "88 ซอยสุขุมวิท 55 (ทองหล่อ) แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110",
     phone: "+66 2 712 9988",
