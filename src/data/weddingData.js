@@ -8,11 +8,11 @@ export const weddingData = {
     brideFull: "Aomsin P.",
     groomFull: "Mild T.",
     initials: "A & M",
-    hashtag: "#AomsinMild2026",
+    hashtag: "#AomsinMild2027",
     quote: "Every love story is beautiful, but ours is our favorite.",
-    date: "2026-11-28T09:09:00+07:00", // Wedding date ISO string
-    dateFormatted: "Saturday, November 28, 2026",
-    thaiDateFormatted: "วันเสาร์ที่ 28 พฤศจิกายน 2569",
+    date: "2027-01-23T09:09:00+07:00", // Wedding date ISO string (23/01/2027)
+    dateFormatted: "Saturday, January 23, 2027",
+    thaiDateFormatted: "วันเสาร์ที่ 23 มกราคม 2570",
     tagline: "Together with our families, we joyfully invite you to celebrate our union.",
   },
 
@@ -78,37 +78,6 @@ export const weddingData = {
       { name: "Espresso Charcoal", hex: "#2D2926", textDark: false },
     ],
   },
-
-  story: [
-    {
-      year: "2019",
-      title: "First Encounter",
-      subtitle: "A serendipitous rainy afternoon in Bangkok",
-      desc: "We met by chance over coffee at a quiet book café. A conversation about architecture and favorite travel spots that was supposed to last twenty minutes turned into five hours of laughter.",
-      image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80",
-    },
-    {
-      year: "2022",
-      title: "Adventures Across Borders",
-      subtitle: "From mountain peaks to ocean sunsets",
-      desc: "Through delayed flights, spontaneous road trips, and countless shared bowls of ramen, we discovered that anywhere in the world feels like home as long as we're side by side.",
-      image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=80",
-    },
-    {
-      year: "2025",
-      title: "The Kyoto Proposal",
-      subtitle: "Underneath the autumn maple leaves",
-      desc: "In an ancient temple garden at dusk, surrounded by crimson autumn leaves, Mild got down on one knee. With tears and the easiest 'Yes' ever spoken, our forever was sealed.",
-      image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1000&q=80",
-    },
-    {
-      year: "2026",
-      title: "Our Next Chapter",
-      subtitle: "Two families become one",
-      desc: "Surrounded by our dearest friends and family, we take our next step into a lifetime of partnership, dreams, and endless love.",
-      image: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1000&q=80",
-    },
-  ],
 
   gallery: [
     {

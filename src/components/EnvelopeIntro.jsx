@@ -285,7 +285,7 @@ export default function EnvelopeIntro({ onOpen }) {
           {/* Footer note */}
           <div className="text-center z-10 pb-2">
             <p className="text-[11px] text-slate-400 font-medium tracking-wider uppercase">
-              #AomsinMild2026 • 28.11.2026
+              {couple.hashtag} • 23.01.2027
             </p>
           </div>
         </motion.div>

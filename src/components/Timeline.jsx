@@ -11,8 +11,8 @@ export default function Timeline() {
 
   const getGoogleCalendarUrl = (item) => {
     const isMorning = item.id === 'morning-ceremony';
-    const startDate = isMorning ? '20261128T003000Z' : '20261128T103000Z';
-    const endDate = isMorning ? '20261128T043000Z' : '20261128T160000Z';
+    const startDate = isMorning ? '20270123T003000Z' : '20270123T103000Z';
+    const endDate = isMorning ? '20270123T043000Z' : '20270123T160000Z';
     const title = encodeURIComponent(`${couple.bride} & ${couple.groom}'s Wedding — ${item.period}`);
     const details = encodeURIComponent(`${item.periodThai}\nVenue: ${venue.name} (${item.venueRoom})\nDress Code: ${item.dressCodeNote}`);
     const location = encodeURIComponent(`${venue.name}, ${venue.address}`);
@@ -21,8 +21,8 @@ export default function Timeline() {
 
   const downloadIcsFile = (item) => {
     const isMorning = item.id === 'morning-ceremony';
-    const dtStart = isMorning ? '20261128T073000' : '20261128T173000';
-    const dtEnd = isMorning ? '20261128T113000' : '20261128T230000';
+    const dtStart = isMorning ? '20270123T073000' : '20270123T173000';
+    const dtEnd = isMorning ? '20270123T113000' : '20270123T230000';
 
     const icsContent = [
       'BEGIN:VCALENDAR',

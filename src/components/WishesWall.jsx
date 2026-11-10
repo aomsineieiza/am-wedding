@@ -9,7 +9,7 @@ const DEFAULT_WISHES = [
     name: "คุณพ่อ & คุณแม่",
     relation: "ครอบครัว",
     message: "ขอให้ลูกทั้งสองมีความสุขมากๆ ครองรักกันด้วยความเข้าใจ อดทน และเป็นกำลังใจให้กันในทุกๆ วันนะลูก",
-    date: "2026-11-01",
+    date: "2027-01-10",
     hearts: 32,
   },
   {
@@ -17,7 +17,7 @@ const DEFAULT_WISHES = [
     name: "แก๊งเพื่อนเจ้าสาว (Bridesmaids)",
     relation: "เพื่อนเจ้าสาว",
     message: "ยินดีกับออมสินและมายด์มากๆ ขอให้มีความสุข มีรอยยิ้ม และความรักที่เบ่งบานในทุกวันเลยนะ!",
-    date: "2026-11-02",
+    date: "2027-01-15",
     hearts: 24,
   },
   {
@@ -25,7 +25,7 @@ const DEFAULT_WISHES = [
     name: "เพื่อนๆ มหาวิทยาลัย",
     relation: "เพื่อนสนิท",
     message: "ยินดีด้วยนะมายด์ ดูแลออมสินดีๆ นะ ขอให้รักกันยาวนานและมีความสุขที่สุดเลย!",
-    date: "2026-11-03",
+    date: "2027-01-18",
     hearts: 18,
   },
 ];
@@ -55,7 +55,7 @@ export default function WishesWall() {
           name: entry.fullName,
           relation: 'แขกผู้มีเกียรติ',
           message: entry.wishes,
-          date: entry.submittedAt ? entry.submittedAt.slice(0, 10) : '2026-11-10',
+          date: entry.submittedAt ? entry.submittedAt.slice(0, 10) : new Date().toISOString().slice(0, 10),
           hearts: 8,
         }));
       setWishes([...DEFAULT_WISHES, ...userWishes]);

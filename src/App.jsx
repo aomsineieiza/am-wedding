@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import EnvelopeIntro from './components/EnvelopeIntro';
 import FastworkNavbar from './components/FastworkNavbar';
 import Hero from './components/Hero';
-import Story from './components/Story';
 import Timeline from './components/Timeline';
 import Gallery from './components/Gallery';
 import DressCode from './components/DressCode';
@@ -42,10 +41,7 @@ export default function App() {
         {/* 3. Hero Header & Live Countdown */}
         <Hero />
 
-        {/* 4. Our Story / Photo Moments */}
-        <Story />
-
-        {/* 5. Event Schedule & Timeline */}
+        {/* 4. Event Schedule & Timeline */}
         <Timeline />
 
         {/* 6. Curated Gallery & Lightbox Preview */}

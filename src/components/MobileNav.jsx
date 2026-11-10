@@ -1,9 +1,8 @@
 import React from 'react';
-import { Calendar, MapPin, Heart, Image as ImageIcon, Sparkles, BookOpen } from 'lucide-react';
+import { Calendar, MapPin, Heart, Image as ImageIcon, Sparkles } from 'lucide-react';
 
 export default function MobileNav() {
   const navItems = [
-    { label: 'Story', href: '#story', icon: BookOpen },
     { label: 'Schedule', href: '#schedule', icon: Calendar },
     { label: 'Gallery', href: '#gallery', icon: ImageIcon },
     { label: 'Attire', href: '#dress-code', icon: Sparkles },

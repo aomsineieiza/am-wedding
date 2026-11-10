@@ -58,7 +58,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EBF4FE] border border-[#C4DDFB] text-[#0074E2] text-xs font-semibold shadow-xs mb-6"
         >
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Save The Date • 28 พฤศจิกายน 2569</span>
+          <span>Save The Date • {couple.thaiDateFormatted}</span>
         </motion.div>
 
         {/* Hero Title */}
@@ -133,7 +133,7 @@ export default function Hero() {
                 {couple.brideFull} &amp; {couple.groomFull}
               </span>
               <span className="bg-[#0074E2] text-white px-3 py-1.5 rounded-full font-semibold shadow-xs">
-                #AomsinMild2026
+                {couple.hashtag}
               </span>
             </div>
           </div>

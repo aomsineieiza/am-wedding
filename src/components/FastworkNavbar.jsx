@@ -22,7 +22,6 @@ export default function FastworkNavbar() {
   };
 
   const navLinks = [
-    { label: 'เรื่องราวของเรา', href: '#story' },
     { label: 'กำหนดการ', href: '#schedule' },
     { label: 'แกลเลอรี', href: '#gallery' },
     { label: 'ธีมสีแต่งกาย', href: '#dress-code' },
