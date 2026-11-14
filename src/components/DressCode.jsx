@@ -23,32 +23,33 @@ export default function DressCode() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
+            className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#FAFAFB] text-[#52525B] text-[11px] font-medium tracking-[0.28em] uppercase mb-3 border border-[#E2E5E9]"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>DRESS CODE &amp; ATTIRE</span>
+            <span>DRESS CODE</span>
+            <span className="text-[9px]">♥</span>
+            <span>ATTIRE</span>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
+            className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
           >
             ธีมสีและการแต่งกาย
           </motion.h2>
-          <p className="text-sm text-slate-500 mt-2 font-normal">
+          <p className="text-sm text-[#71717A] mt-2 font-normal">
             โทนสีแนะนำเพื่อความกลมกลืนและภาพถ่ายที่สวยงามร่วมกัน
           </p>
         </div>
 
-        {/* Dress Code Card - Fastwork Elevation */}
+        {/* Dress Code Card - Minimalist Matte Paper */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-slate-50/70 rounded-3xl p-6 sm:p-10 border border-slate-200 text-center"
+          className="bg-[#FAFAFB] rounded-[32px] p-6 sm:p-10 border border-[#E2E5E9] shadow-[0_20px_50px_-15px_rgba(30,41,59,0.06),inset_0_1px_0_#FFFFFF] text-center"
         >
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
             {dressCode.title}

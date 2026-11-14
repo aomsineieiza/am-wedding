@@ -15,7 +15,7 @@ export default function MobileNav() {
       aria-label="Mobile quick navigation"
       className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 sm:hidden w-[94vw] max-w-md"
     >
-      <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-xl shadow-slate-900/10 rounded-full px-3 py-2 flex items-center justify-between">
+      <div className="bg-[#FAFAFB]/95 backdrop-blur-xl border border-[#E2E5E9] shadow-xl shadow-slate-900/10 rounded-full px-3 py-2 flex items-center justify-between">
         {navItems.map((item, idx) => {
           const Icon = item.icon;
           if (item.primary) {
@@ -23,7 +23,7 @@ export default function MobileNav() {
               <a
                 key={idx}
                 href={item.href}
-                className="flex items-center gap-1 px-4 py-2 rounded-full bg-[#0074E2] text-white text-xs font-semibold shadow-xs"
+                className="flex items-center gap-1 px-4 py-2 rounded-full bg-[#27272A] text-[#FAFAFB] text-xs font-semibold shadow-xs"
               >
                 <Icon className="w-3.5 h-3.5 fill-current" />
                 <span>RSVP</span>
@@ -34,7 +34,7 @@ export default function MobileNav() {
             <a
               key={idx}
               href={item.href}
-              className="flex flex-col items-center justify-center p-1.5 text-slate-500 hover:text-[#0074E2] transition-colors"
+              className="flex flex-col items-center justify-center p-1.5 text-[#71717A] hover:text-[#27272A] transition-colors"
             >
               <Icon className="w-4 h-4" />
               <span className="text-[9px] mt-0.5 font-medium">{item.label}</span>

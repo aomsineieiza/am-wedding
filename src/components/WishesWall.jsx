@@ -131,31 +131,32 @@ export default function WishesWall() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
+            className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#FAFAFB] text-[#52525B] text-[11px] font-medium tracking-[0.28em] uppercase mb-3 border border-[#E2E5E9]"
           >
-            <MessageSquareHeart className="w-3.5 h-3.5" />
-            <span>GUESTBOOK &amp; WISHES</span>
+            <span>GUESTBOOK</span>
+            <span className="text-[9px]">♥</span>
+            <span>WISHES</span>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
+            className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
           >
             สมุดประสาทพรและคำอวยพร
           </motion.h2>
-          <p className="text-sm text-slate-500 mt-2 font-normal">
+          <p className="text-sm text-[#71717A] mt-2 font-normal">
             ส่งมอบความรัก ความปรารถนาดี และข้อความแห่งความสุขแด่คู่บ่าวสาว
           </p>
         </div>
 
-        {/* Quick Leave a Wish Form - Fastwork Card */}
+        {/* Quick Leave a Wish Form - Minimalist Matte Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-xl mx-auto mb-14 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md shadow-slate-900/5"
+          className="max-w-xl mx-auto mb-14 bg-[#FAFAFB] p-6 sm:p-8 rounded-[32px] border border-[#E2E5E9] shadow-[0_20px_50px_-15px_rgba(30,41,59,0.06),inset_0_1px_0_#FFFFFF]"
         >
           <div className="flex items-center gap-2 mb-4 text-slate-900">
             <Sparkles className="w-5 h-5 text-[#0074E2]" />

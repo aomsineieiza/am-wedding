@@ -14,7 +14,7 @@ export default function Location() {
   };
 
   return (
-    <section id="location" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 bg-transparent">
+    <section id="location" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 bg-transparent overflow-hidden">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-14">
@@ -23,22 +23,23 @@ export default function Location() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
+            className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#FAFAFB] text-[#52525B] text-[11px] font-medium tracking-[0.28em] uppercase mb-3 border border-[#E2E5E9]"
           >
-            <MapPin className="w-3.5 h-3.5" />
-            <span>VENUE &amp; DIRECTIONS</span>
+            <span>VENUE</span>
+            <span className="text-[9px]">♥</span>
+            <span>DIRECTIONS</span>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
+            className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
           >
             สถานที่จัดงานและการเดินทาง
           </motion.h2>
-          <p className="text-sm text-slate-500 mt-2 font-normal">
-            แผนที่ ข้อมูลที่จอดรถ และการเดินทางโดยรถไฟฟ้า BTS
+          <p className="text-sm text-[#71717A] mt-2 font-normal">
+            แผนที่ ข้อมูลที่จอดรถ และเส้นทางการเดินทางสู่สถานที่จัดงาน
           </p>
         </div>
 
@@ -50,7 +51,7 @@ export default function Location() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl shadow-slate-900/5 space-y-6"
+            className="lg:col-span-5 bg-[#FAFAFB] rounded-[32px] p-6 sm:p-8 border border-[#E2E5E9] shadow-[0_20px_50px_-15px_rgba(30,41,59,0.06),inset_0_1px_0_#FFFFFF] space-y-6"
           >
             <div>
               <span className="text-[11px] font-semibold uppercase tracking-wider text-[#0074E2] bg-[#EBF4FE] px-2.5 py-1 rounded-full border border-[#C4DDFB]">
@@ -63,8 +64,8 @@ export default function Location() {
             </div>
 
             <div className="space-y-1.5 text-xs sm:text-sm text-slate-600 font-light">
-              <p className="leading-relaxed">{venue.address}</p>
-              <p className="text-xs text-slate-500">{venue.thaiAddress}</p>
+              <p className="leading-relaxed font-medium text-slate-700">{venue.thaiAddress}</p>
+              <p className="text-xs text-slate-500">{venue.address}</p>
             </div>
 
             {/* Quick Action Buttons */}
@@ -112,7 +113,7 @@ export default function Location() {
                 className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-medium transition-all cursor-pointer"
               >
                 <Phone className="w-3.5 h-3.5 text-slate-500" />
-                <span>โทรติดต่อสถานที่</span>
+                <span>โทร {venue.phoneDisplay || 'ติดต่อสถานที่'}</span>
               </a>
             </div>
 
@@ -121,16 +122,16 @@ export default function Location() {
               <div className="flex items-start gap-3 text-xs text-slate-600">
                 <Car className="w-4 h-4 text-[#0074E2] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-slate-900 block mb-0.5">บริการ Valet &amp; ที่จอดรถ</strong>
-                  <p className="font-light">มีบริการ Valet Parking ฟรี รองรับรถยนต์ได้มากกว่า 250 คัน</p>
+                  <strong className="text-slate-900 block mb-0.5">{venue.parkingTitle || 'บริการที่จอดรถ'}</strong>
+                  <p className="font-light">{venue.parkingInfo}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3 text-xs text-slate-600">
-                <Train className="w-4 h-4 text-[#0074E2] shrink-0 mt-0.5" />
+                <Navigation className="w-4 h-4 text-[#0074E2] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-slate-900 block mb-0.5">รถไฟฟ้า BTS รถตู้รับ-ส่ง</strong>
-                  <p className="font-light">BTS สถานีทองหล่อ (ทางออก 3) มีรถ Shuttle Van ออกทุกๆ 15 นาที</p>
+                  <strong className="text-slate-900 block mb-0.5">{venue.transitTitle || 'การเดินทาง'}</strong>
+                  <p className="font-light">{venue.transitInfo}</p>
                 </div>
               </div>
             </div>

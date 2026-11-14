@@ -64,28 +64,29 @@ export default function Timeline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
+          className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#FAFAFB] text-[#52525B] text-[11px] font-medium tracking-[0.28em] uppercase mb-3 border border-[#E2E5E9]"
         >
-          <Clock className="w-3.5 h-3.5" />
-          <span>SCHEDULE &amp; TIMELINE</span>
+          <span>SCHEDULE</span>
+          <span className="text-[9px]">♥</span>
+          <span>TIMELINE</span>
         </motion.div>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
+          className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
         >
           กำหนดการและลำดับพิธี
         </motion.h2>
-        <p className="text-sm text-slate-500 mt-2 font-normal">
+        <p className="text-sm text-[#71717A] mt-2 font-normal">
           ร่วมเป็นเกียรติและสักขีพยานในทุกช่วงเวลาแห่งความสุข
         </p>
       </div>
 
-      {/* Fastwork-Style Segmented Control Tabs */}
+      {/* Minimalist Segmented Control Tabs */}
       <div className="flex justify-center mb-10">
-        <div className="inline-flex p-1.5 rounded-full bg-slate-100 border border-slate-200">
+        <div className="inline-flex p-1.5 rounded-full bg-[#E5E8EC] border border-[#D8DCE2] max-w-full">
           {schedule.map((item) => {
             const isActive = activeTab === item.id;
             const isMorning = item.id === 'morning-ceremony';
@@ -94,31 +95,32 @@ export default function Timeline() {
                 key={item.id}
                 type="button"
                 onClick={() => setActiveTab(item.id)}
-                className={`flex items-center gap-2 px-6 sm:px-8 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-8 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer ${
                   isActive
-                    ? 'bg-white text-[#0074E2] shadow-sm border border-slate-200/80'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-[#FAFAFB] text-[#27272A] shadow-xs border border-[#E2E5E9]'
+                    : 'text-[#52525B] hover:text-[#27272A]'
                 }`}
               >
                 {isMorning ? (
-                  <Sun className={`w-4 h-4 ${isActive ? 'text-[#0074E2]' : 'text-slate-500'}`} />
+                  <Sun className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#27272A]' : 'text-[#71717A]'}`} />
                 ) : (
-                  <Moon className={`w-4 h-4 ${isActive ? 'text-[#0074E2]' : 'text-slate-500'}`} />
+                  <Moon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#27272A]' : 'text-[#71717A]'}`} />
                 )}
-                <span>{item.periodThai} • {item.period}</span>
+                <span>{item.periodThai}</span>
+                <span className="hidden sm:inline">• {item.period}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Main Schedule Card - Fastwork Elevation & Border */}
+      {/* Main Schedule Card - Minimalist Matte Paper */}
       <motion.div
         key={currentSchedule.id}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl shadow-slate-900/5"
+        className="bg-[#FAFAFB] rounded-[32px] p-6 sm:p-10 border border-[#E2E5E9] shadow-[0_20px_50px_-15px_rgba(30,41,59,0.06),inset_0_1px_0_#FFFFFF]"
       >
         {/* Card Header & Venue Info */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-slate-100 gap-4">
