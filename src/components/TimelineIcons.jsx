@@ -1,18 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-// Minimal Theme Colors matching Fastwork Blue & Warm Champagne Editorial Palette
+// Minimal Theme Colors matching Dusty Blue, Pastel Blue, Cream & Dusty Brown Wedding Palette
 const THEME = {
-  blue: '#0074E2',
-  blueDark: '#0055A5',
-  blueLight: '#EBF4FE',
-  blueBorder: '#C4DDFB',
-  dark: '#1E293B',
-  muted: '#64748B',
-  subtle: '#94A3B8',
-  champagne: '#C8B89E',
-  champagneLight: '#F7F4EF',
-  champagneBorder: '#E8E2D8',
+  blue: '#7A98B3',
+  blueDark: '#5C7A94',
+  blueLight: '#EBF3F7',
+  blueBorder: '#C8DCE8',
+  dark: '#27272A',
+  muted: '#71717A',
+  subtle: '#A1A1AA',
+  champagne: '#C6AC8F',
+  champagneLight: '#F3ECE1',
+  champagneBorder: '#E5DDD0',
 };
 
 // 1. Auspicious Engagement Ring Exchange (Twin Rings + Minimal Diamond Twinkle + Floating Vector Heart)
@@ -65,7 +65,7 @@ export function AnimatedRingIcon() {
       <motion.div
         animate={{ y: [0, -14, -22], x: [0, 3, 6], opacity: [0, 0.9, 0], scale: [0.5, 0.9, 0.3] }}
         transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut', repeatDelay: 0.5 }}
-        className="absolute top-0 right-1 pointer-events-none select-none text-[#0074E2]"
+        className="absolute top-0 right-1 pointer-events-none select-none text-[#7A98B3]"
       >
         <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
@@ -113,7 +113,7 @@ export function AnimatedConchIcon() {
       <motion.div
         animate={{ scale: [0.6, 1.4], opacity: [0.7, 0] }}
         transition={{ duration: 1.5, repeat: Infinity, ease: 'easeOut', delay: 0.9 }}
-        className="absolute -bottom-1 w-6 h-1.5 rounded-full border border-[#C4DDFB] pointer-events-none"
+        className="absolute -bottom-1 w-6 h-1.5 rounded-full border border-[#C8DCE8] pointer-events-none"
       />
     </div>
   );
@@ -252,12 +252,12 @@ export function AnimatedToastIcon() {
       <motion.div
         animate={{ y: [0, -14], opacity: [0.9, 0] }}
         transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
-        className="absolute top-2 left-5 w-1.5 h-1.5 rounded-full bg-[#0074E2]"
+        className="absolute top-2 left-5 w-1.5 h-1.5 rounded-full bg-[#7A98B3]"
       />
       <motion.div
         animate={{ y: [0, -16], opacity: [0.9, 0] }}
         transition={{ duration: 1.4, repeat: Infinity, ease: 'easeOut', delay: 0.3 }}
-        className="absolute top-1 right-5 w-1.5 h-1.5 rounded-full bg-[#C8B89E]"
+        className="absolute top-1 right-5 w-1.5 h-1.5 rounded-full bg-[#C6AC8F]"
       />
     </div>
   );
@@ -333,7 +333,7 @@ export function AnimatedVowsHeartIcon() {
       <motion.div
         animate={{ scale: [0.8, 1.5], opacity: [0.5, 0] }}
         transition={{ duration: 1.6, repeat: Infinity, ease: 'easeOut' }}
-        className="absolute inset-1 rounded-full border border-[#C4DDFB] pointer-events-none"
+        className="absolute inset-1 rounded-full border border-[#C8DCE8] pointer-events-none"
       />
     </div>
   );

@@ -74,7 +74,18 @@ export default function EnvelopeIntro({ onOpen }) {
           </svg>
 
           {/* Soft Ambient Studio Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] sm:w-[540px] h-[360px] sm:h-[540px] bg-[#BFD8DF]/35 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] sm:w-[540px] h-[360px] sm:h-[540px] bg-[#BFD8DF]/30 rounded-full blur-3xl pointer-events-none" />
+
+          {/* FigJam Board Top-Left Section Pill & Floating Cursor Tag */}
+          <div className="relative z-30 pt-2 sm:pt-4 flex items-center justify-center pointer-events-none">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/95 border border-slate-200/90 shadow-xs text-[11px] sm:text-xs font-medium text-slate-700">
+              <span className="w-2 h-2 rounded-full bg-[#7A98B3]" />
+              <span>{couple.bride} &amp; {couple.groom} — Wedding Invitation Board</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-500 font-mono">
+                23.01.2027
+              </span>
+            </div>
+          </div>
 
           {/* ===============================================================
               CENTER SHOWCASE ENVELOPE ASSEMBLY (Tilted like Reference Image)
@@ -180,7 +191,7 @@ export default function EnvelopeIntro({ onOpen }) {
                 delay: isOpening ? 0.22 : 0,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="absolute inset-x-4 sm:inset-x-6 top-2 h-[220px] sm:h-[295px] md:h-[315px] bg-white shadow-xl border border-slate-200/90 flex flex-col justify-between py-3 sm:py-5 px-4 sm:px-7 text-center z-20"
+              className="envelope-paper-card absolute inset-x-4 sm:inset-x-6 top-2 h-[220px] sm:h-[295px] md:h-[315px] bg-white shadow-xl border border-slate-200/90 flex flex-col justify-between py-3 sm:py-5 px-4 sm:px-7 text-center z-20"
             >
               {/* Top Repeating Script ★ Star Marquee Row */}
               <div className="w-full overflow-hidden whitespace-nowrap text-[11px] sm:text-[13px] text-slate-800 tracking-wide flex items-center justify-center gap-1.5 sm:gap-2 border-b border-slate-100 pb-1.5">

@@ -14,6 +14,7 @@ export const weddingData = {
     dateFormatted: "Saturday, January 23, 2027",
     thaiDateFormatted: "วันเสาร์ที่ 23 มกราคม 2570",
     tagline: "Together with our families, we joyfully invite you to celebrate our union.",
+    logoImage: "/images/couple-logo.jpg",
     heroImage: "/images/prewedding-4.jpg",
     envelopeImage: "/images/prewedding-2.jpg",
   },
@@ -43,7 +44,7 @@ export const weddingData = {
       periodThai: "พิธีเช้า",
       time: "07:30 - 11:30",
       venueRoom: "Le Pasiri Glasshouse Hall",
-      dressCodeNote: "Traditional Formal / Pastel & Earth Tones",
+      dressCodeNote: "Dusty Blue, Pastel Blue, Ivory, Cream & Earth Brown",
       items: [
         { time: "07:30", title: "Monk Blessing Ceremony", desc: "พิธีสงฆ์เจริญพระพุทธมนต์เพื่อความเป็นสิริมงคล" },
         { time: "08:39", title: "Khan Maak Traditional Procession", desc: "ขบวนขันหมากและพิธีสู่ขอ" },
@@ -58,7 +59,7 @@ export const weddingData = {
       periodThai: "งานฉลองมงคลสมรส",
       time: "17:30 - 23:00",
       venueRoom: "Le Pasiri Grand Glasshouse & Fountain Garden",
-      dressCodeNote: "Black Tie Optional / Formal Elegance",
+      dressCodeNote: "Dusty Blue, Pastel Blue, Light Blue, Ivory, Light Brown & Cream",
       items: [
         { time: "17:30", title: "Welcome Cocktail & Photo Call", desc: "ลงทะเบียน ถ่ายภาพร่วมกับคู่บ่าวสาว และค็อกเทลต้อนรับ" },
         { time: "18:45", title: "Grand Entrance & Vow Sharing", desc: "เปิดตัวคู่บ่าวสาวและกล่าวคำมั่นสัญญา" },
@@ -70,17 +71,17 @@ export const weddingData = {
   ],
 
   dressCode: {
-    title: "Warm Earth & Champagne Romance",
+    title: "Soft Blue & Warm Earth Harmony",
     subtitle: "โทนสีการแต่งกาย",
-    description: "To create an atmosphere of warmth and quiet luxury, we kindly request our guests to dress in modern editorial earth tones, warm champagne gold, olive sage, or soft blush.",
-    note: "Gentlemen: Classic dark suit, linen blazer, or formal attire. Ladies: Elegant cocktail dress, silk gowns, or modern Thai contemporary.",
+    description: "ร่วมสร้างบรรยากาศแสนอบอุ่นและละมุนตาในโทนสีฟ้าหม่น (Dusty Blue), ฟ้าพาสเทล (Pastel Blue), ฟ้าอ่อน (Light Blue), ขาวงาช้าง (Ivory), น้ำตาลอ่อน (Light Brown) และสีครีม (Cream)",
+    note: "Gentlemen: Classic suit, blazer, or formal attire in soft blue, beige, cream, or light brown tones. Ladies: Elegant dress, gown, or modern contemporary attire in dusty/pastel blue, ivory, cream, or light brown tones.",
     palette: [
-      { name: "Champagne Cream", hex: "#F4EFEB", textDark: true },
-      { name: "Golden Sand", hex: "#C8B89E", textDark: true },
-      { name: "Warm Taupe", hex: "#A38F70", textDark: false },
-      { name: "Olive Sage", hex: "#9EAB9C", textDark: true },
-      { name: "Soft Blush", hex: "#E6D2C9", textDark: true },
-      { name: "Espresso Charcoal", hex: "#2D2926", textDark: false },
+      { name: "Dusty Blue", hex: "#94AFC4", textDark: true },
+      { name: "Pastel Blue", hex: "#B4CEE6", textDark: true },
+      { name: "Light Blue", hex: "#D6EAF4", textDark: true },
+      { name: "Ivory", hex: "#FAF8F0", textDark: true },
+      { name: "Light Brown", hex: "#D2BEA8", textDark: true },
+      { name: "Cream", hex: "#F3ECE1", textDark: true },
     ],
   },
 

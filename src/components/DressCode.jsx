@@ -63,17 +63,17 @@ export default function DressCode() {
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-6">
               คลิกที่วงกลมสีเพื่อคัดลอกรหัสสี (HEX CODE)
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6 justify-center">
+            <div className="flex flex-wrap items-start justify-center gap-4 sm:gap-6">
               {dressCode.palette.map((color, index) => (
                 <button
                   key={index}
                   type="button"
                   onClick={() => copyHex(color.hex)}
-                  className="group flex flex-col items-center focus:outline-none transition-transform hover:-translate-y-1 cursor-pointer"
+                  className="group w-24 sm:w-24 flex flex-col items-center focus:outline-none transition-transform hover:-translate-y-1 cursor-pointer"
                 >
                   <div
                     style={{ backgroundColor: color.hex }}
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-sm border-2 border-white ring-1 ring-slate-200 relative flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md"
+                    className="w-16 h-16 sm:w-18 sm:h-18 rounded-full shadow-sm border-2 border-white ring-1 ring-slate-200 relative flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md"
                   >
                     {copiedHex === color.hex ? (
                       <Check className="w-5 h-5 text-emerald-600" />
@@ -100,7 +100,7 @@ export default function DressCode() {
                 <span>สุภาพบุรุษ (Gentlemen)</span>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed font-light">
-                สูทสากล เสื้อเชิ้ต หรือชุดสุภาพในโทนสีเบจ เทา น้ำตาล หรือน้ำเงินเข้ม
+                สูทสากล เบลเซอร์ หรือชุดสุภาพในโทนสีฟ้าหม่น (Dusty Blue), ฟ้าอ่อน, ขาวงาช้าง (Ivory), ครีม หรือน้ำตาลอ่อน (Light Brown)
               </p>
             </div>
 
@@ -110,7 +110,7 @@ export default function DressCode() {
                 <span>สุภาพสตรี (Ladies)</span>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed font-light">
-                ชุดเดรสสั้น/ยาว หรือชุดผ้าไทยประยุกต์ในโทนสีแชมเปญ ชานม โรสบลัช หรือเอิร์ธโทน
+                ชุดเดรสสั้น/ยาว หรือชุดร่วมสมัยในโทนสีฟ้าหม่น (Dusty Blue), ฟ้าพาสเทล (Pastel Blue), ฟ้าอ่อน (Light Blue), ขาวงาช้าง, ครีม หรือน้ำตาลละมุน
               </p>
             </div>
           </div>
