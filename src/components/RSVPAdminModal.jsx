@@ -43,9 +43,10 @@ export default function RSVPAdminModal() {
       return;
     }
 
-    const headers = ['Full Name', 'Contact', 'Attending', 'Guests Count', 'Wishes', 'Date Submitted'];
+    const headers = ['Full Name', 'Nickname', 'Contact', 'Attending', 'Guests Count', 'Wishes', 'Date Submitted'];
     const rows = rsvps.map((r) => [
       `"${(r.fullName || '').replace(/"/g, '""')}"`,
+      `"${(r.nickname || '').replace(/"/g, '""')}"`,
       `"${(r.contact || '').replace(/"/g, '""')}"`,
       r.attending === 'yes' ? 'Attending' : 'Declined',
       r.guestCount || 1,
@@ -131,7 +132,10 @@ export default function RSVPAdminModal() {
                   <div key={i} className="p-3 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-slate-50">
                     <div>
                       <div className="flex items-center gap-2">
-                        <strong className="text-sm font-bold text-slate-900">{entry.fullName}</strong>
+                        <strong className="text-sm font-bold text-slate-900">
+                          {entry.fullName}
+                          {entry.nickname ? ` (${entry.nickname})` : ''}
+                        </strong>
                         {entry.attending === 'yes' ? (
                           <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-semibold border border-emerald-200">
                             <CheckCircle2 className="w-2.5 h-2.5" />

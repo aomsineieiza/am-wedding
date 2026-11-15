@@ -2,18 +2,6 @@
  * =========================================================================
  * GOOGLE APPS SCRIPT FOR WEDDING RSVP (AOMSIN & MILD)
  * =========================================================================
- * 
- * วิธีตั้งค่า (ใช้ได้ทั้งเปิดจากใน Sheet หรือเปิดแยกที่ https://script.google.com):
- * 1. เปิด https://script.google.com > กด "+ New project" (หรือใน Google Sheet กด Extensions > Apps Script)
- * 2. ลบโค้ดเดิมออกทั้งหมด แล้ววางโค้ดนี้ลงไป กด Save (Cmd/Ctrl + S)
- * 3. ทดสอบสิทธิ์ครั้งแรก: เลือกฟังก์ชัน "testRun" หรือ "testWriteRow" ด้านบน แล้วกดปุ่ม "Run (เรียกใช้)"
- * 4. กดปุ่มสีน้ำเงิน "Deploy (ทำให้ใช้งานได้)" มุมขวาบน > "New deployment (การทำให้ใช้งานได้รายการใหม่)"
- * 5. กดรูปเฟือง ⚙️ ข้างคำว่า Select type เลือก "Web app (เว็บแอป)"
- * 6. ตั้งค่า:
- *    - Description: "Aomsin & Mild Wedding RSVP"
- *    - Execute as: "Me" (ฉัน)
- *    - Who has access: "Anyone" (ทุกคน) <-- สำคัญมาก!
- * 7. กด "Deploy" แล้วคัดลอก "Web app URL" (ที่ลงท้ายด้วย /exec) มาใส่ในโปรเจกต์
  */
 
 var SPREADSHEET_ID = '1m9eZPR10c332_g9u1wLnhqL7hFH55oC4cLN5ateoNM4';
@@ -26,20 +14,37 @@ function getTargetSpreadsheet() {
 }
 
 /**
- * กด Run ที่ฟังก์ชันนี้เพื่อทดสอบการเชื่อมต่อและอนุญาตสิทธิ์ Google Sheet
+ * กด Run ที่ฟังก์ชันนี้เพื่อล้างหัวตารางเก่า 10 ช่อง และสร้างหัวตารางใหม่ 6 ช่องให้ตรงกับฟอร์มเว็บทันที
  */
-function testRun() {
+function resetSheetHeaders() {
   var ss = getTargetSpreadsheet();
-  if (!ss) {
-    Logger.log('❌ Error: ไม่พบไฟล์ Spreadsheet กรุณาตรวจสอบ SPREADSHEET_ID');
-    return;
+  var sheet = ss.getSheetByName('RSVP') || ss.insertSheet('RSVP');
+  sheet.clear();
+
+  var headers = [
+    'วันเวลาที่ลงทะเบียน (Timestamp)',
+    'สถานะการเข้าร่วม (Attending)',
+    'ชื่อ-นามสกุล (Full Name)',
+    'ชื่อเล่น (Nickname)',
+    'เบอร์โทรศัพท์ / ติดต่อ (Contact)',
+    'จำนวนผู้ร่วมงาน (Guest Count)',
+    'คำอวยพรแด่คู่บ่าวสาว (Wishes)'
+  ];
+
+  sheet.appendRow(headers);
+  var headerRange = sheet.getRange(1, 1, 1, headers.length);
+  headerRange.setBackground('#0074E2');
+  headerRange.setFontColor('#FFFFFF');
+  headerRange.setFontWeight('bold');
+  headerRange.setHorizontalAlignment('center');
+  sheet.setFrozenRows(1);
+
+  for (var col = 1; col <= headers.length; col++) {
+    sheet.autoResizeColumn(col);
   }
-  Logger.log('✅ เชื่อมต่อกับ Spreadsheet สำเร็จ: ' + ss.getName());
+  Logger.log('✅ ล้างตารางเก่าและตั้งค่าหัวตารางใหม่ 6 ช่องเรียบร้อยแล้ว!');
 }
 
-/**
- * กด Run ที่ฟังก์ชันนี้เพื่อทดสอบเขียนข้อมูลจำลอง 1 แถวลงใน Google Sheet จริง
- */
 function testWriteRow() {
   var fakeEvent = {
     postData: {
@@ -100,10 +105,13 @@ function doPost(e) {
       'คำอวยพรแด่คู่บ่าวสาว (Wishes)'
     ];
 
-    // สร้างหัวตารางพร้อมตกแต่งสีอัตโนมัติเมื่อแผ่นงานยังว่าง
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(headers);
-
+    // ตรวจสอบว่าถ้าแถวที่ 1 ยังว่าง หรือยังเป็นหัวตารางเก่า (ทีม / ชื่อเล่น / อาหารที่แพ้) ให้เขียนหัวตารางใหม่ 6 ช่องทับทันที
+    var firstCellB = sheet.getLastRow() > 0 ? String(sheet.getRange(1, 2).getValue()) : '';
+    if (sheet.getLastRow() === 0 || firstCellB.indexOf('ทีม') !== -1) {
+      if (sheet.getLastRow() > 0) {
+        sheet.getRange(1, 1, 1, sheet.getMaxColumns()).clearContent().clearFormat();
+      }
+      sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
       var headerRange = sheet.getRange(1, 1, 1, headers.length);
       headerRange.setBackground('#0074E2');
       headerRange.setFontColor('#FFFFFF');
@@ -121,16 +129,15 @@ function doPost(e) {
       'yyyy-MM-dd HH:mm:ss'
     );
 
-    // ป้องกันเลข 0 นำหน้าเบอร์โทรหายใน Google Sheets
     var contactText = payload.contact || payload.phone || '-';
     var formattedContact = contactText !== '-' ? "'" + String(contactText).trim() : '-';
-
-    var fullNameText = payload.fullName || ((payload.firstName || '') + ' ' + (payload.lastName || '')).trim() || '-';
+    var fullNameText = payload.rawFullName || payload.fullName || ((payload.firstName || '') + ' ' + (payload.lastName || '')).trim() || '-';
 
     var row = [
       formattedDate,
       payload.attending || 'ยินดีเข้าร่วมงาน (Yes)',
       fullNameText,
+      payload.nickname || '-',
       formattedContact,
       payload.guestCount !== undefined ? payload.guestCount : 1,
       payload.wishes || '-'

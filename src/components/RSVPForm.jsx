@@ -10,6 +10,7 @@ export default function RSVPForm() {
 
   const [formData, setFormData] = useState({
     fullName: '',
+    nickname: '',
     contact: '',
     attending: 'yes',
     guestCount: 1,
@@ -53,15 +54,20 @@ export default function RSVPForm() {
     const nameParts = formData.fullName.trim().split(/\s+/);
     const firstName = nameParts[0] || formData.fullName.trim();
     const lastName = nameParts.slice(1).join(' ') || '-';
+    const nicknameText = formData.nickname.trim() || '-';
+    const fullNameWithNickname = formData.nickname.trim()
+      ? `${formData.fullName.trim()} (${formData.nickname.trim()})`
+      : formData.fullName.trim();
     const attendingText =
       formData.attending === 'yes' ? 'ยินดีเข้าร่วมงาน (Yes)' : 'ไม่สะดวกเข้าร่วม (No)';
 
     const payload = {
       type: 'RSVP',
-      fullName: formData.fullName.trim(),
+      fullName: fullNameWithNickname,
+      rawFullName: formData.fullName.trim(),
       firstName,
       lastName,
-      nickname: '-',
+      nickname: nicknameText,
       contact: formData.contact.trim(),
       phone: formData.contact.trim(),
       attending: attendingText,
@@ -125,6 +131,7 @@ export default function RSVPForm() {
     }
     setFormData({
       fullName: '',
+      nickname: '',
       contact: '',
       attending: 'yes',
       guestCount: 1,
@@ -259,34 +266,54 @@ export default function RSVPForm() {
               </div>
             </div>
 
-            {/* Full Name */}
-            <div>
-              <label
-                htmlFor="fullName"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
-              >
-                ชื่อ-นามสกุล (Full Name) *
-              </label>
-              <div className="relative">
-                <input
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  placeholder="เช่น คุณกานต์ พิชญา"
-                  className={`w-full px-4 py-3 pl-11 rounded-xl bg-white border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all ${
-                    errors.fullName ? 'border-rose-400 ring-1 ring-rose-400' : 'border-slate-200'
-                  }`}
-                />
-                <User className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+            {/* Full Name & Nickname */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="fullName"
+                  className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
+                >
+                  ชื่อ-นามสกุล (Full Name) *
+                </label>
+                <div className="relative">
+                  <input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    placeholder="เช่น คุณกานต์ พิชญา"
+                    className={`w-full px-4 py-3 pl-11 rounded-xl bg-white border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all ${
+                      errors.fullName ? 'border-rose-400 ring-1 ring-rose-400' : 'border-slate-200'
+                    }`}
+                  />
+                  <User className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                </div>
+                {errors.fullName && (
+                  <p className="flex items-center gap-1 text-xs text-rose-500 mt-1.5">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    <span>{errors.fullName}</span>
+                  </p>
+                )}
               </div>
-              {errors.fullName && (
-                <p className="flex items-center gap-1 text-xs text-rose-500 mt-1.5">
-                  <AlertCircle className="w-3.5 h-3.5" />
-                  <span>{errors.fullName}</span>
-                </p>
-              )}
+
+              <div>
+                <label
+                  htmlFor="nickname"
+                  className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
+                >
+                  ชื่อเล่น (Nickname)
+                </label>
+                <input
+                  id="nickname"
+                  name="nickname"
+                  type="text"
+                  value={formData.nickname}
+                  onChange={handleChange}
+                  placeholder="เช่น กานต์"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all"
+                />
+              </div>
             </div>
 
             {/* Contact */}
@@ -416,7 +443,8 @@ export default function RSVPForm() {
             </div>
 
             <h3 id="rsvp-success-title" className="text-2xl font-bold text-slate-900 mb-2">
-              ขอบคุณมากค่ะ, {submittedData.fullName}!
+              ขอบคุณมากค่ะ, {submittedData.fullName}
+              {submittedData.nickname ? ` (${submittedData.nickname})` : ''}!
             </h3>
 
             <p className="text-sm text-slate-600 mb-6">
