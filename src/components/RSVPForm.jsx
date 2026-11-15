@@ -55,15 +55,12 @@ export default function RSVPForm() {
     const firstName = nameParts[0] || formData.fullName.trim();
     const lastName = nameParts.slice(1).join(' ') || '-';
     const nicknameText = formData.nickname.trim() || '-';
-    const fullNameWithNickname = formData.nickname.trim()
-      ? `${formData.fullName.trim()} (${formData.nickname.trim()})`
-      : formData.fullName.trim();
     const attendingText =
       formData.attending === 'yes' ? 'ยินดีเข้าร่วมงาน (Yes)' : 'ไม่สะดวกเข้าร่วม (No)';
 
     const payload = {
       type: 'RSVP',
-      fullName: fullNameWithNickname,
+      fullName: formData.fullName.trim(),
       rawFullName: formData.fullName.trim(),
       firstName,
       lastName,

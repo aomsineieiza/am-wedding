@@ -14,7 +14,7 @@ function getTargetSpreadsheet() {
 }
 
 /**
- * กด Run ที่ฟังก์ชันนี้เพื่อล้างหัวตารางเก่า 10 ช่อง และสร้างหัวตารางใหม่ 6 ช่องให้ตรงกับฟอร์มเว็บทันที
+ * กด Run ที่ฟังก์ชันนี้เพื่อล้างหัวตารางเก่า และสร้างหัวตารางใหม่ 7 ช่องให้ตรงกับฟอร์มเว็บทันที
  */
 function resetSheetHeaders() {
   var ss = getTargetSpreadsheet();
@@ -22,19 +22,19 @@ function resetSheetHeaders() {
   sheet.clear();
 
   var headers = [
-    'วันเวลาที่ลงทะเบียน (Timestamp)',
-    'สถานะการเข้าร่วม (Attending)',
-    'ชื่อ-นามสกุล (Full Name)',
-    'ชื่อเล่น (Nickname)',
-    'เบอร์โทรศัพท์ / ติดต่อ (Contact)',
-    'จำนวนผู้ร่วมงาน (Guest Count)',
-    'คำอวยพรแด่คู่บ่าวสาว (Wishes)'
+    'วันเวลาที่ลงทะเบียน',
+    'สถานะการเข้าร่วม',
+    'ชื่อ-นามสกุล',
+    'ชื่อเล่น',
+    'เบอร์โทรศัพท์ / ติดต่อ',
+    'จำนวนผู้ร่วมงาน',
+    'คำอวยพรแด่คู่บ่าวสาว'
   ];
 
   sheet.appendRow(headers);
   var headerRange = sheet.getRange(1, 1, 1, headers.length);
-  headerRange.setBackground('#0074E2');
-  headerRange.setFontColor('#FFFFFF');
+  headerRange.setBackground('#2A2624');
+  headerRange.setFontColor('#FAF6F0');
   headerRange.setFontWeight('bold');
   headerRange.setHorizontalAlignment('center');
   sheet.setFrozenRows(1);
@@ -42,7 +42,7 @@ function resetSheetHeaders() {
   for (var col = 1; col <= headers.length; col++) {
     sheet.autoResizeColumn(col);
   }
-  Logger.log('✅ ล้างตารางเก่าและตั้งค่าหัวตารางใหม่ 6 ช่องเรียบร้อยแล้ว!');
+  Logger.log('✅ ตั้งค่าหัวตารางใหม่ 7 ช่องเรียบร้อยแล้ว!');
 }
 
 function testWriteRow() {
@@ -51,7 +51,8 @@ function testWriteRow() {
       contents: JSON.stringify({
         type: 'RSVP',
         attending: 'ยินดีเข้าร่วมงาน (Yes)',
-        fullName: 'คุณกานต์ พิชญา (ทดสอบระบบ)',
+        fullName: 'คุณกานต์ พิชญา',
+        nickname: 'กานต์',
         contact: '081-234-5678',
         guestCount: 2,
         wishes: 'ยินดีกับออมสินและมายด์ด้วยนะค้าบ ขอให้มีความสุขมากๆ!'
@@ -97,24 +98,21 @@ function doPost(e) {
     }
 
     var headers = [
-      'วันเวลาที่ลงทะเบียน (Timestamp)',
-      'สถานะการเข้าร่วม (Attending)',
-      'ชื่อ-นามสกุล (Full Name)',
-      'เบอร์โทรศัพท์ / ติดต่อ (Contact)',
-      'จำนวนผู้ร่วมงาน (Guest Count)',
-      'คำอวยพรแด่คู่บ่าวสาว (Wishes)'
+      'วันเวลาที่ลงทะเบียน',
+      'สถานะการเข้าร่วม',
+      'ชื่อ-นามสกุล',
+      'ชื่อเล่น',
+      'เบอร์โทรศัพท์ / ติดต่อ',
+      'จำนวนผู้ร่วมงาน',
+      'คำอวยพรแด่คู่บ่าวสาว'
     ];
 
-    // ตรวจสอบว่าถ้าแถวที่ 1 ยังว่าง หรือยังเป็นหัวตารางเก่า (ทีม / ชื่อเล่น / อาหารที่แพ้) ให้เขียนหัวตารางใหม่ 6 ช่องทับทันที
-    var firstCellB = sheet.getLastRow() > 0 ? String(sheet.getRange(1, 2).getValue()) : '';
-    if (sheet.getLastRow() === 0 || firstCellB.indexOf('ทีม') !== -1) {
-      if (sheet.getLastRow() > 0) {
-        sheet.getRange(1, 1, 1, sheet.getMaxColumns()).clearContent().clearFormat();
-      }
+    // ตรวจสอบว่าถ้าแถวที่ 1 ยังว่าง ให้สร้างหัวตาราง 7 ช่องอัตโนมัติ
+    if (sheet.getLastRow() === 0) {
       sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
       var headerRange = sheet.getRange(1, 1, 1, headers.length);
-      headerRange.setBackground('#0074E2');
-      headerRange.setFontColor('#FFFFFF');
+      headerRange.setBackground('#2A2624');
+      headerRange.setFontColor('#FAF6F0');
       headerRange.setFontWeight('bold');
       headerRange.setHorizontalAlignment('center');
       sheet.setFrozenRows(1);

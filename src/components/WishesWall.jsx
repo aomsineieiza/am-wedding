@@ -112,6 +112,8 @@ export default function WishesWall() {
           body: JSON.stringify({
             type: 'WISH',
             fullName: newEntry.name,
+            rawFullName: newEntry.name,
+            nickname: '-',
             contact: 'Guestbook',
             attending: '-',
             guestCount: '-',
