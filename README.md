@@ -2,6 +2,8 @@
 
 An elegant, modern single-page wedding invitation inspired by contemporary Thai & Korean minimalist luxury editorial design.
 
+🌐 **Live Production URL**: [https://am-wedding-e-card.vercel.app/](https://am-wedding-e-card.vercel.app/)
+
 ## Features & Architectural Structure
 
 - **Hero Header**: Couple monogram initials emblem, editorial photo frame, bride & groom names, wedding date, venue tagline, and a live countdown timer.

@@ -25,6 +25,13 @@ export const weddingData = {
     envelopeImage: "/images/prewedding-2.jpg",
   },
 
+  music: {
+    title: "삐그덕 (Seesaw)",
+    artist: "Crush (크러쉬) Feat. IU (아이유)",
+    youtubeId: "IVTYOsaO0Mw",
+    youtubeUrl: "https://www.youtube.com/watch?v=IVTYOsaO0Mw",
+  },
+
   venue: {
     name: "Le Pasiri (เลอปาสิริ)",
     hall: "Modern Classic Glasshouse & European Garden",

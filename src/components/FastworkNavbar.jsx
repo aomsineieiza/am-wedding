@@ -16,9 +16,15 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = weddingAudio.subscribe((playing) => {
+      setIsPlaying(playing);
+    });
+    return unsubscribe;
+  }, []);
+
   const handleAudioToggle = () => {
-    const state = weddingAudio.toggle();
-    setIsPlaying(state);
+    weddingAudio.toggle();
   };
 
   const navLinks = [
@@ -90,7 +96,12 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
           <button
             type="button"
             onClick={handleAudioToggle}
-            aria-label="Toggle ambient music"
+            aria-label={isPlaying ? 'Pause background music' : 'Play background music'}
+            title={
+              weddingData.music
+                ? `${isPlaying ? 'กำลังเล่น' : 'เล่นเพลง'}: ${weddingData.music.title} - ${weddingData.music.artist}`
+                : 'เปิด/ปิดเพลงประกอบ'
+            }
             className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all cursor-pointer shrink-0 ${
               isPlaying
                 ? 'bg-[#E6F0F3] dark:bg-[#233542] text-[#4A7888] dark:text-[#94AFC4] border-[#BFD8DF] dark:border-[#3A5568]'
