@@ -23,32 +23,33 @@ export default function DressCode() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
+            className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#FAFAFB] text-[#52525B] text-[11px] font-medium tracking-[0.28em] uppercase mb-3 border border-[#E2E5E9]"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>DRESS CODE &amp; ATTIRE</span>
+            <span>DRESS CODE</span>
+            <span className="text-[9px]">♥</span>
+            <span>ATTIRE</span>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
+            className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
           >
             ธีมสีและการแต่งกาย
           </motion.h2>
-          <p className="text-sm text-slate-500 mt-2 font-normal">
+          <p className="text-sm text-[#71717A] mt-2 font-normal">
             โทนสีแนะนำเพื่อความกลมกลืนและภาพถ่ายที่สวยงามร่วมกัน
           </p>
         </div>
 
-        {/* Dress Code Card - Fastwork Elevation */}
+        {/* Dress Code Card - Minimalist Matte Paper */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-slate-50/70 rounded-3xl p-6 sm:p-10 border border-slate-200 text-center"
+          className="bg-[#FAFAFB] rounded-[32px] p-6 sm:p-10 border border-[#E2E5E9] shadow-[0_20px_50px_-15px_rgba(30,41,59,0.06),inset_0_1px_0_#FFFFFF] text-center"
         >
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
             {dressCode.title}
@@ -62,17 +63,17 @@ export default function DressCode() {
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-6">
               คลิกที่วงกลมสีเพื่อคัดลอกรหัสสี (HEX CODE)
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6 justify-center">
+            <div className="flex flex-wrap items-start justify-center gap-4 sm:gap-6">
               {dressCode.palette.map((color, index) => (
                 <button
                   key={index}
                   type="button"
                   onClick={() => copyHex(color.hex)}
-                  className="group flex flex-col items-center focus:outline-none transition-transform hover:-translate-y-1 cursor-pointer"
+                  className="group w-24 sm:w-24 flex flex-col items-center focus:outline-none transition-transform hover:-translate-y-1 cursor-pointer"
                 >
                   <div
                     style={{ backgroundColor: color.hex }}
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-sm border-2 border-white ring-1 ring-slate-200 relative flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md"
+                    className="w-16 h-16 sm:w-18 sm:h-18 rounded-full shadow-sm border-2 border-white ring-1 ring-slate-200 relative flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md"
                   >
                     {copiedHex === color.hex ? (
                       <Check className="w-5 h-5 text-emerald-600" />
@@ -99,7 +100,7 @@ export default function DressCode() {
                 <span>สุภาพบุรุษ (Gentlemen)</span>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed font-light">
-                สูทสากล เสื้อเชิ้ต หรือชุดสุภาพในโทนสีเบจ เทา น้ำตาล หรือน้ำเงินเข้ม
+                สูทสากล เบลเซอร์ หรือชุดสุภาพในโทนสีฟ้าหม่น (Dusty Blue), ฟ้าอ่อน, ขาวงาช้าง (Ivory), ครีม หรือน้ำตาลอ่อน (Light Brown)
               </p>
             </div>
 
@@ -109,7 +110,7 @@ export default function DressCode() {
                 <span>สุภาพสตรี (Ladies)</span>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed font-light">
-                ชุดเดรสสั้น/ยาว หรือชุดผ้าไทยประยุกต์ในโทนสีแชมเปญ ชานม โรสบลัช หรือเอิร์ธโทน
+                ชุดเดรสสั้น/ยาว หรือชุดร่วมสมัยในโทนสีฟ้าหม่น (Dusty Blue), ฟ้าพาสเทล (Pastel Blue), ฟ้าอ่อน (Light Blue), ขาวงาช้าง, ครีม หรือน้ำตาลละมุน
               </p>
             </div>
           </div>

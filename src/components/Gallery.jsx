@@ -64,66 +64,86 @@ export default function Gallery() {
   return (
     <section id="gallery" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 bg-transparent">
       <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
+        {/* Section Header (Korean Minimalist Style) */}
         <div className="text-center max-w-xl mx-auto mb-16">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
+            className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#FAFAFB] text-[#52525B] text-[11px] font-medium tracking-[0.28em] uppercase mb-3 border border-[#E2E5E9]"
           >
-            <ImageIcon className="w-3.5 h-3.5" />
-            <span>PHOTO GALLERY</span>
+            <span>MOMENTS</span>
+            <span className="text-[9px]">♥</span>
+            <span>GALLERY</span>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
+            className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
           >
             ภาพความประทับใจ
           </motion.h2>
-          <p className="text-sm text-slate-500 mt-2 font-normal">
+          <p className="text-sm text-[#71717A] mt-2 font-normal">
             ช่วงเวลาแห่งความสุขที่บันทึกไว้ในทุกมุมมอง
           </p>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {gallery.map((photo, index) => (
-            <motion.div
-              key={photo.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, delay: index * 0.08 }}
-              onClick={() => openModal(photo)}
-              className="group cursor-pointer bg-white p-3 rounded-3xl border border-slate-200 hover:border-[#0074E2] shadow-xs hover:shadow-xl hover:shadow-[#0074E2]/10 transition-all duration-300"
-            >
-              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-slate-100">
-                <img
-                  src={photo.src}
-                  alt={photo.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
-                />
+        {/* Gallery Grid (Korean Minimalist Matte Paper Passe-Partout Frames) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-7">
+          {gallery.map((photo, index) => {
+            const spanClass =
+              gallery.length === 5 && index === 3
+                ? 'lg:col-start-2 lg:col-span-2'
+                : 'lg:col-span-2';
 
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 text-white">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-base">{photo.title}</p>
-                      <p className="text-xs text-slate-200 font-light mt-0.5">{photo.caption}</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                      <Maximize2 className="w-4 h-4 text-white" />
+            return (
+              <motion.div
+                key={photo.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.6, delay: index * 0.08 }}
+                onClick={() => openModal(photo)}
+                className={`${spanClass} group cursor-pointer bg-[#FAFAFB] p-5 sm:p-6 rounded-[30px] border border-[#E2E5E9] hover:border-[#A1A1AA] shadow-[0_12px_35px_-10px_rgba(30,41,59,0.06),inset_0_1px_0_#FFFFFF] hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center`}
+              >
+                {/* Top Minimalist Number Tag */}
+                <span className="text-[10px] tracking-[0.3em] text-[#9CA3AF] uppercase mb-3 font-medium">
+                  0{index + 1} &nbsp;•&nbsp; A &amp; M
+                </span>
+
+                {/* Recessed Die-Cut Arch / Capsule Photo Window */}
+                <div className="diecut-window-outer w-full p-2.5 rounded-[999px] mb-4">
+                  <div className="diecut-window-inner relative aspect-[3/4] rounded-[999px] overflow-hidden bg-[#E5E7EB]">
+                    <img
+                      src={photo.src}
+                      alt={photo.title}
+                      loading="lazy"
+                      className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106 ${
+                        photo.objectPosition || 'object-center'
+                      }`}
+                    />
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/55 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-5 text-white">
+                      <div className="w-9 h-9 rounded-full bg-white/25 backdrop-blur-md flex items-center justify-center">
+                        <Maximize2 className="w-4 h-4 text-white" />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+
+                {/* Minimalist Caption Below Window */}
+                <p className="font-editorial-serif text-lg font-semibold text-[#27272A] tracking-wide">
+                  {photo.title}
+                </p>
+                <p className="text-xs text-[#71717A] font-light mt-0.5 line-clamp-1">
+                  {photo.caption}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 

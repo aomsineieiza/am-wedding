@@ -64,28 +64,29 @@ export default function Timeline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF4FE] text-[#0074E2] text-xs font-semibold mb-3 border border-[#C4DDFB]"
+          className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#FAFAFB] text-[#52525B] text-[11px] font-medium tracking-[0.28em] uppercase mb-3 border border-[#E2E5E9]"
         >
-          <Clock className="w-3.5 h-3.5" />
-          <span>SCHEDULE &amp; TIMELINE</span>
+          <span>SCHEDULE</span>
+          <span className="text-[9px]">♥</span>
+          <span>TIMELINE</span>
         </motion.div>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight"
+          className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
         >
           กำหนดการและลำดับพิธี
         </motion.h2>
-        <p className="text-sm text-slate-500 mt-2 font-normal">
+        <p className="text-sm text-[#71717A] mt-2 font-normal">
           ร่วมเป็นเกียรติและสักขีพยานในทุกช่วงเวลาแห่งความสุข
         </p>
       </div>
 
-      {/* Fastwork-Style Segmented Control Tabs */}
+      {/* Minimalist Segmented Control Tabs */}
       <div className="flex justify-center mb-10">
-        <div className="inline-flex p-1.5 rounded-full bg-slate-100 border border-slate-200">
+        <div className="inline-flex p-1.5 rounded-full bg-[#E5E8EC] border border-[#D8DCE2] max-w-full">
           {schedule.map((item) => {
             const isActive = activeTab === item.id;
             const isMorning = item.id === 'morning-ceremony';
@@ -94,48 +95,49 @@ export default function Timeline() {
                 key={item.id}
                 type="button"
                 onClick={() => setActiveTab(item.id)}
-                className={`flex items-center gap-2 px-6 sm:px-8 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-8 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer ${
                   isActive
-                    ? 'bg-white text-[#0074E2] shadow-sm border border-slate-200/80'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-[#FAFAFB] text-[#27272A] shadow-xs border border-[#E2E5E9]'
+                    : 'text-[#52525B] hover:text-[#27272A]'
                 }`}
               >
                 {isMorning ? (
-                  <Sun className={`w-4 h-4 ${isActive ? 'text-[#0074E2]' : 'text-slate-500'}`} />
+                  <Sun className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#27272A]' : 'text-[#71717A]'}`} />
                 ) : (
-                  <Moon className={`w-4 h-4 ${isActive ? 'text-[#0074E2]' : 'text-slate-500'}`} />
+                  <Moon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#27272A]' : 'text-[#71717A]'}`} />
                 )}
-                <span>{item.periodThai} • {item.period}</span>
+                <span>{item.periodThai}</span>
+                <span className="hidden sm:inline">• {item.period}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Main Schedule Card - Fastwork Elevation & Border */}
+      {/* Main Schedule Card - Minimalist Matte Paper */}
       <motion.div
         key={currentSchedule.id}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl shadow-slate-900/5"
+        className="bg-[#FAFAFB] rounded-[32px] p-6 sm:p-10 border border-[#E2E5E9] shadow-[0_20px_50px_-15px_rgba(30,41,59,0.06),inset_0_1px_0_#FFFFFF]"
       >
         {/* Card Header & Venue Info */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-slate-100 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-[#E2E5E9] gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#EBF4FE] text-[#0074E2] font-semibold border border-[#C4DDFB]">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#EBF3F7] text-[#5C7A94] font-semibold border border-[#C8DCE8]">
                 {currentSchedule.time}
               </span>
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs text-[#71717A] font-medium">
                 {currentSchedule.periodThai}
               </span>
             </div>
-            <h3 className="text-2xl font-bold text-slate-900">
+            <h3 className="text-2xl font-bold text-[#27272A]">
               {currentSchedule.period}
             </h3>
-            <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-500 mt-1">
-              <MapPin className="w-3.5 h-3.5 text-[#0074E2]" />
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-[#71717A] mt-1">
+              <MapPin className="w-3.5 h-3.5 text-[#7A98B3]" />
               <span>{currentSchedule.venueRoom}</span>
             </div>
           </div>
@@ -146,15 +148,15 @@ export default function Timeline() {
               href={getGoogleCalendarUrl(currentSchedule)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-50 hover:bg-[#EBF4FE] hover:text-[#0074E2] border border-slate-200 hover:border-[#C4DDFB] text-xs font-semibold text-slate-700 transition-colors shadow-xs"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white hover:bg-[#EBF3F7] hover:text-[#5C7A94] border border-[#E2E5E9] hover:border-[#C8DCE8] text-xs font-medium text-[#3F3F46] transition-colors shadow-2xs"
             >
-              <CalendarPlus className="w-3.5 h-3.5 text-[#0074E2]" />
+              <CalendarPlus className="w-3.5 h-3.5 text-[#7A98B3]" />
               <span>Google Cal</span>
             </a>
             <button
               type="button"
               onClick={() => downloadIcsFile(currentSchedule)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#0074E2] hover:bg-[#0060B8] text-xs font-semibold text-white transition-colors shadow-xs cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#27272A] hover:bg-[#18181B] text-xs font-medium text-[#FAFAFB] transition-colors shadow-2xs cursor-pointer"
             >
               {calendarAdded ? (
                 <>
@@ -163,7 +165,7 @@ export default function Timeline() {
                 </>
               ) : (
                 <>
-                  <CalendarPlus className="w-3.5 h-3.5" />
+                  <CalendarPlus className="w-3.5 h-3.5 text-[#A7C7E7]" />
                   <span>Apple / iCal</span>
                 </>
               )}
@@ -179,23 +181,23 @@ export default function Timeline() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: idx * 0.06 }}
-              className="group flex items-start gap-4 p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 hover:border-[#C4DDFB] hover:bg-[#EBF4FE]/20 transition-all duration-300"
+              className="group flex items-start gap-4 p-4 rounded-2xl bg-white border border-[#E2E5E9] hover:border-[#A7C7E7] hover:bg-[#F5F9FC] transition-all duration-300 shadow-2xs"
             >
               {/* Animated Lottie-Style Icon Container */}
-              <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 group-hover:border-[#C4DDFB] shadow-xs group-hover:shadow-md flex items-center justify-center shrink-0 transition-all">
+              <div className="w-14 h-14 rounded-2xl bg-[#FAFAFB] border border-[#E2E5E9] group-hover:border-[#A7C7E7] shadow-2xs group-hover:shadow-sm flex items-center justify-center shrink-0 transition-all">
                 <CeremonyAnimatedIcon title={item.title} desc={item.desc} />
               </div>
 
               <div className="flex-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-                  <span className="text-base font-bold text-[#0074E2]">
+                  <span className="font-editorial-serif text-lg font-semibold text-[#5C7A94] tracking-wider">
                     {item.time}
                   </span>
-                  <h4 className="text-base font-semibold text-slate-900 group-hover:text-[#0074E2] transition-colors">
+                  <h4 className="text-base font-semibold text-[#27272A] group-hover:text-[#5C7A94] transition-colors">
                     {item.title}
                   </h4>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-normal leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#71717A] mt-0.5 font-normal leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -204,12 +206,12 @@ export default function Timeline() {
         </div>
 
         {/* Dress code note */}
-        <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 bg-slate-50 p-4 rounded-xl">
+        <div className="mt-8 pt-6 border-t border-[#E2E5E9] flex flex-wrap items-center justify-between gap-2 text-xs text-[#52525B] bg-white p-4 rounded-2xl border">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#0074E2]" />
-            <span>Dress Code Note: <strong className="text-slate-900">{currentSchedule.dressCodeNote}</strong></span>
+            <Sparkles className="w-4 h-4 text-[#7A98B3]" />
+            <span>Dress Code Note: <strong className="text-[#27272A]">{currentSchedule.dressCodeNote}</strong></span>
           </div>
-          <a href="#dress-code" className="text-[#0074E2] hover:underline font-semibold">
+          <a href="#dress-code" className="text-[#5C7A94] hover:text-[#27272A] hover:underline font-semibold">
             ดูธีมสี &rarr;
           </a>
         </div>
