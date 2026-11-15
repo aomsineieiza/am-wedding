@@ -1,13 +1,16 @@
 import React from 'react';
 import { Calendar, MapPin, Heart, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function MobileNav() {
+  const { t } = useLanguage();
+
   const navItems = [
-    { label: 'Schedule', href: '#schedule', icon: Calendar },
-    { label: 'Gallery', href: '#gallery', icon: ImageIcon },
-    { label: 'Attire', href: '#dress-code', icon: Sparkles },
-    { label: 'Location', href: '#location', icon: MapPin },
-    { label: 'RSVP', href: '#rsvp', icon: Heart, primary: true },
+    { label: t('mobileNav.schedule', 'กำหนดการ'), href: '#schedule', icon: Calendar },
+    { label: t('mobileNav.gallery', 'แกลเลอรี'), href: '#gallery', icon: ImageIcon },
+    { label: t('mobileNav.dress', 'ธีมสี'), href: '#dress-code', icon: Sparkles },
+    { label: t('mobileNav.location', 'สถานที่'), href: '#location', icon: MapPin },
+    { label: t('mobileNav.rsvp', 'RSVP'), href: '#rsvp', icon: Heart, primary: true },
   ];
 
   return (

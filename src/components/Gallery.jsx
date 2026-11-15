@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Maximize2, Image as ImageIcon } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Gallery() {
+  const { lang, t } = useLanguage();
   const { gallery } = weddingData;
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const dialogRef = useRef(null);
@@ -84,10 +86,10 @@ export default function Gallery() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
           >
-            ภาพความประทับใจ
+            {t('gallery.title', 'ภาพความประทับใจ')}
           </motion.h2>
           <p className="text-sm text-[#71717A] mt-2 font-normal">
-            ช่วงเวลาแห่งความสุขที่บันทึกไว้ในทุกมุมมอง
+            {t('gallery.subtitle', 'ช่วงเวลาแห่งความสุขที่บันทึกไว้ในทุกมุมมอง')}
           </p>
         </div>
 

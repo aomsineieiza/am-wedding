@@ -154,8 +154,8 @@ export const weddingData = {
     {
       bank: "Siam Commercial Bank (SCB)",
       bankThai: "ธนาคารไทยพาณิชย์",
-      accountNumber: "408-2-78901-2",
-      cleanNumber: "4082789012",
+      accountNumber: "409-337914-5",
+      cleanNumber: "4093379145",
       accountName: "Mild T. (Wedding Fund)",
       promptPay: "081-987-6543",
       color: "#4E2A84",

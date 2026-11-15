@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import EnvelopeIntro from './components/EnvelopeIntro';
 import FastworkNavbar from './components/FastworkNavbar';
 import Hero from './components/Hero';
@@ -11,7 +12,8 @@ import GiftRegistry from './components/GiftRegistry';
 import Footer from './components/Footer';
 import MobileNav from './components/MobileNav';
 
-export default function App() {
+function WeddingContent() {
+  const { lang, t } = useLanguage();
   const [hasOpenedEnvelope, setHasOpenedEnvelope] = useState(false);
   const [isDark, setIsDark] = useState(() => {
     try {
@@ -51,7 +53,7 @@ export default function App() {
           className="fixed bottom-20 right-5 sm:bottom-6 sm:right-6 z-40 px-3.5 py-2 rounded-full bg-white/90 dark:bg-[#1E2228]/90 backdrop-blur-md border border-slate-200 dark:border-[#323842] text-xs font-medium text-slate-700 dark:text-zinc-200 hover:text-[#7A98B3] hover:border-[#94AFC4] shadow-md transition-all cursor-pointer flex items-center gap-1.5"
         >
           <span>✉️</span>
-          <span>ซองจดหมาย</span>
+          <span>{t('nav.envelope', 'ซองจดหมาย')}</span>
         </button>
       )}
 
@@ -84,5 +86,13 @@ export default function App() {
       {/* 13. Floating Quick Navigation Bar for Mobile */}
       <MobileNav />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <WeddingContent />
+    </LanguageProvider>
   );
 }

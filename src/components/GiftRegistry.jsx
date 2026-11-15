@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Gift, ChevronDown, Copy, Check, CreditCard, QrCode, X } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 import PromptPayCard from './PromptPayCard';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function GiftRegistry() {
+  const { lang, t } = useLanguage();
   const { bankAccounts } = weddingData;
   const [isOpen, setIsOpen] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(null);
@@ -170,10 +172,10 @@ export default function GiftRegistry() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
           >
-            ของขวัญและบัญชีแสดงความยินดี
+            {t('registry.title', 'ของขวัญและบัญชีแสดงความยินดี')}
           </motion.h2>
           <p className="text-sm text-[#71717A] mt-2 font-normal">
-            การได้พบและร่วมฉลองกับทุกท่านคือของขวัญที่มีค่าที่สุดสำหรับเรา
+            {t('registry.subtitle', 'การได้พบและร่วมฉลองกับทุกท่านคือของขวัญที่มีค่าที่สุดสำหรับเรา')}
           </p>
         </div>
 

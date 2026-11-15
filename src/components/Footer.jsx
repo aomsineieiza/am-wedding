@@ -2,8 +2,10 @@ import React from 'react';
 import { ArrowUp, Heart, Sparkles } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 import RSVPAdminModal from './RSVPAdminModal';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
+  const { lang, t } = useLanguage();
   const { couple } = weddingData;
 
   const scrollToTop = () => {
@@ -25,7 +27,7 @@ export default function Footer() {
 
         {/* Wedding Date */}
         <p className="text-[11px] uppercase tracking-[0.28em] text-[#A1A1AA] font-medium mb-6">
-          {couple.dateFormatted}
+          {lang === 'th' ? couple.thaiDateFormatted : couple.dateFormatted}
         </p>
 
         {/* Official Hashtag Badge */}

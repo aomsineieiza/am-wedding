@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Volume2, VolumeX, Heart, Sun, Moon } from 'lucide-react';
+import { Volume2, VolumeX, Heart, Sun, Moon, Globe } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 import { weddingAudio } from '../utils/audioPlayer';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function FastworkNavbar({ isDark = false, onToggleDark }) {
+  const { lang, toggleLang, t } = useLanguage();
   const { couple } = weddingData;
   const [scrolled, setScrolled] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -28,10 +30,10 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
   };
 
   const navLinks = [
-    { label: 'กำหนดการ', href: '#schedule' },
-    { label: 'แกลเลอรี', href: '#gallery' },
-    { label: 'ธีมสีแต่งกาย', href: '#dress-code' },
-    { label: 'สถานที่', href: '#location' },
+    { label: t('nav.schedule', 'กำหนดการ'), href: '#schedule' },
+    { label: t('nav.gallery', 'แกลเลอรี'), href: '#gallery' },
+    { label: t('nav.dressCode', 'ธีมสีแต่งกาย'), href: '#dress-code' },
+    { label: t('nav.location', 'สถานที่'), href: '#location' },
   ];
 
   return (
@@ -43,23 +45,11 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
             : 'w-full max-w-5xl bg-[#FAFAFB]/82 backdrop-blur-md border border-[#E4E7EB] rounded-full px-3 sm:px-6 py-2.5'
         }`}
       >
-        {/* Brand / Couple Avatar Logo */}
-        <a href="#" className="flex items-center gap-2 sm:gap-2.5 group min-w-0">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-white border border-[#7A98B3]/40 shadow-2xs shrink-0 group-hover:scale-105 transition-transform flex items-center justify-center">
-            <img
-              src={couple.logoImage}
-              alt={`${couple.bride} & ${couple.groom} logo`}
-              className="w-full h-full object-cover scale-[1.08]"
-            />
-          </div>
-          <div className="flex flex-col min-w-0">
-            <span className="font-medium text-xs sm:text-sm text-[#27272A] tracking-[0.18em] uppercase leading-none truncate">
-              {couple.bride} <span className="text-[10px] mx-0.5">♥</span> {couple.groom}
-            </span>
-            <span className="text-[10px] text-[#71717A] font-normal tracking-wider leading-tight mt-0.5 truncate">
-              23 . 01 . 2027
-            </span>
-          </div>
+        {/* Brand / Logo */}
+        <a href="#" className="flex items-center group min-w-0">
+          <span className="font-bold text-sm sm:text-base text-[#27272A] tracking-tight group-hover:text-[#0074E2] transition-colors">
+            AMWedding
+          </span>
         </a>
 
         {/* Desktop Nav Links */}
@@ -77,12 +67,24 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
 
         {/* Right Action Buttons */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Language Switcher (TH / EN) */}
+          <button
+            type="button"
+            onClick={toggleLang}
+            aria-label={`Switch to ${lang === 'th' ? 'English' : 'Thai'}`}
+            title={lang === 'th' ? 'Switch to English' : 'เปลี่ยนเป็นภาษาไทย'}
+            className="h-8 px-2.5 rounded-full flex items-center justify-center gap-1 border transition-all cursor-pointer shrink-0 bg-[#EFF1F3] dark:bg-[#272C35] text-[#27272A] dark:text-[#E4E4E7] border-[#E2E5E9] dark:border-[#363C47] hover:bg-[#E4E7EA] dark:hover:bg-[#323844] text-[11px] sm:text-xs font-bold tracking-wider"
+          >
+            <Globe className="w-3.5 h-3.5 text-[#0074E2] dark:text-[#38BDF8]" />
+            <span>{lang === 'th' ? 'EN' : 'TH'}</span>
+          </button>
+
           {/* Dark Mode Toggle */}
           <button
             type="button"
             onClick={onToggleDark}
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            title={isDark ? 'โหมดสว่าง (Light Mode)' : 'โหมดมืด (Dark Mode)'}
+            title={isDark ? t('nav.lightMode', 'โหมดสว่าง') : t('nav.darkMode', 'โหมดมืด')}
             className="w-8 h-8 rounded-full flex items-center justify-center border transition-all cursor-pointer shrink-0 bg-[#EFF1F3] dark:bg-[#272C35] text-[#52525B] dark:text-[#E4E4E7] border-[#E2E5E9] dark:border-[#363C47] hover:bg-[#E4E7EA] dark:hover:bg-[#323844]"
           >
             {isDark ? (
@@ -99,8 +101,8 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
             aria-label={isPlaying ? 'Pause background music' : 'Play background music'}
             title={
               weddingData.music
-                ? `${isPlaying ? 'กำลังเล่น' : 'เล่นเพลง'}: ${weddingData.music.title} - ${weddingData.music.artist}`
-                : 'เปิด/ปิดเพลงประกอบ'
+                ? `${isPlaying ? t('nav.nowPlaying', 'กำลังเล่น') : t('nav.playMusic', 'เล่นเพลง')}: ${weddingData.music.title} - ${weddingData.music.artist}`
+                : t('nav.audioTitle', 'เปิด/ปิดเพลงประกอบ')
             }
             className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all cursor-pointer shrink-0 ${
               isPlaying
@@ -121,7 +123,7 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
             className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#27272A] dark:bg-[#94AFC4] hover:bg-[#18181B] dark:hover:bg-[#A6BFD2] text-[#FAFAFB] dark:text-[#141619] text-[11px] sm:text-xs font-medium tracking-wider shadow-2xs hover:shadow-md transition-all cursor-pointer whitespace-nowrap"
           >
             <Heart className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#E5B5BC] dark:text-[#141619] shrink-0" />
-            <span>RSVP ตอบรับ</span>
+            <span>{t('nav.rsvp', 'RSVP ตอบรับ')}</span>
           </a>
         </div>
       </div>

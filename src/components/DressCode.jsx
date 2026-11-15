@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check, Sparkles, Shirt, ClipboardList, Heart } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function DressCode() {
+  const { lang, t } = useLanguage();
   const { dressCode } = weddingData;
   const [copiedHex, setCopiedHex] = useState(null);
 
@@ -36,10 +38,10 @@ export default function DressCode() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
           >
-            ธีมสีและการแต่งกาย
+            {t('dressCode.title', 'ธีมสีและการแต่งกาย')}
           </motion.h2>
           <p className="text-sm text-[#71717A] mt-2 font-normal">
-            โทนสีแนะนำเพื่อความกลมกลืนและภาพถ่ายที่สวยงามร่วมกัน
+            {t('dressCode.subtitle', 'โทนสีแนะนำเพื่อความกลมกลืนและภาพถ่ายที่สวยงามร่วมกัน')}
           </p>
         </div>
 
@@ -55,7 +57,7 @@ export default function DressCode() {
             {dressCode.title}
           </h3>
           <p className="text-sm text-slate-600 leading-relaxed max-w-2xl mx-auto mb-8 font-light">
-            {dressCode.description}
+            {lang === 'th' ? dressCode.description : 'We joyfully invite you to celebrate in soft dusty blue, pastel blue, light blue, ivory, light brown, and warm cream tones.'}
           </p>
 
           {/* Color Palette Swatches */}

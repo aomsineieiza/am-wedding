@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Navigation, Phone, Copy, Check, Car, Train } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Location() {
+  const { lang, t } = useLanguage();
   const { venue } = weddingData;
   const [copiedAddress, setCopiedAddress] = useState(false);
 
@@ -36,10 +38,10 @@ export default function Location() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
           >
-            สถานที่จัดงานและการเดินทาง
+            {t('location.title', 'สถานที่จัดงานและการเดินทาง')}
           </motion.h2>
           <p className="text-sm text-[#71717A] mt-2 font-normal">
-            แผนที่ ข้อมูลที่จอดรถ และเส้นทางการเดินทางสู่สถานที่จัดงาน
+            {t('location.subtitle', 'แผนที่ ข้อมูลที่จอดรถ และเส้นทางการเดินทางสู่สถานที่จัดงาน')}
           </p>
         </div>
 
@@ -58,14 +60,15 @@ export default function Location() {
                 Wedding Venue
               </span>
               <h3 className="text-2xl font-bold text-slate-900 mt-3">
-                {venue.name}
+                {lang === 'th' ? venue.name : 'Le Pasiri'}
               </h3>
               <p className="text-sm font-medium text-slate-600 mt-0.5">{venue.hall}</p>
             </div>
 
             <div className="space-y-1.5 text-xs sm:text-sm text-slate-600 font-light">
-              <p className="leading-relaxed font-medium text-slate-700">{venue.thaiAddress}</p>
-              <p className="text-xs text-slate-500">{venue.address}</p>
+              <p className="leading-relaxed font-medium text-slate-700">
+                {lang === 'th' ? venue.thaiAddress : venue.address}
+              </p>
             </div>
 
             {/* Quick Action Buttons */}
@@ -98,12 +101,12 @@ export default function Location() {
                 {copiedAddress ? (
                   <>
                     <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>คัดลอกที่อยู่แล้ว</span>
+                    <span>{t('location.copiedAddress', 'คัดลอกที่อยู่แล้ว')}</span>
                   </>
                 ) : (
                   <>
                     <Copy className="w-3.5 h-3.5 text-slate-500" />
-                    <span>คัดลอกที่อยู่</span>
+                    <span>{t('location.copyAddress', 'คัดลอกที่อยู่')}</span>
                   </>
                 )}
               </button>
@@ -113,7 +116,7 @@ export default function Location() {
                 className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-medium transition-all cursor-pointer"
               >
                 <Phone className="w-3.5 h-3.5 text-slate-500" />
-                <span>โทร {venue.phoneDisplay || 'ติดต่อสถานที่'}</span>
+                <span>{lang === 'th' ? `โทร ${venue.phoneDisplay}` : 'Call Venue'}</span>
               </a>
             </div>
 
@@ -122,16 +125,24 @@ export default function Location() {
               <div className="flex items-start gap-3 text-xs text-slate-600">
                 <Car className="w-4 h-4 text-[#0074E2] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-slate-900 block mb-0.5">{venue.parkingTitle || 'บริการที่จอดรถ'}</strong>
-                  <p className="font-light">{venue.parkingInfo}</p>
+                  <strong className="text-slate-900 block mb-0.5">
+                    {t('location.parkingTitle', venue.parkingTitle)}
+                  </strong>
+                  <p className="font-light">
+                    {lang === 'th' ? venue.parkingInfo : t('location.parkingInfo')}
+                  </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3 text-xs text-slate-600">
                 <Navigation className="w-4 h-4 text-[#0074E2] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-slate-900 block mb-0.5">{venue.transitTitle || 'การเดินทาง'}</strong>
-                  <p className="font-light">{venue.transitInfo}</p>
+                  <strong className="text-slate-900 block mb-0.5">
+                    {t('location.transitTitle', venue.transitTitle)}
+                  </strong>
+                  <p className="font-light">
+                    {lang === 'th' ? venue.transitInfo : t('location.transitInfo')}
+                  </p>
                 </div>
               </div>
             </div>

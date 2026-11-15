@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { Calendar, MapPin, Sparkles, CalendarPlus, Check, Sun, Moon, Clock } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 import { CeremonyAnimatedIcon } from './TimelineIcons';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Timeline() {
+  const { lang, t } = useLanguage();
   const { schedule, couple, venue } = weddingData;
   const [activeTab, setActiveTab] = useState(schedule[0].id);
   const [calendarAdded, setCalendarAdded] = useState(false);
@@ -77,10 +79,10 @@ export default function Timeline() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
         >
-          กำหนดการและลำดับพิธี
+          {t('timeline.title', 'กำหนดการและลำดับพิธี')}
         </motion.h2>
         <p className="text-sm text-[#71717A] mt-2 font-normal">
-          ร่วมเป็นเกียรติและสักขีพยานในทุกช่วงเวลาแห่งความสุข
+          {t('timeline.subtitle', 'ร่วมเป็นเกียรติและสักขีพยานในทุกช่วงเวลาแห่งความสุข')}
         </p>
       </div>
 
@@ -106,8 +108,7 @@ export default function Timeline() {
                 ) : (
                   <Moon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#27272A]' : 'text-[#71717A]'}`} />
                 )}
-                <span>{item.periodThai}</span>
-                <span className="hidden sm:inline">• {item.period}</span>
+                <span>{lang === 'th' ? item.periodThai : item.period}</span>
               </button>
             );
           })}
@@ -130,11 +131,11 @@ export default function Timeline() {
                 {currentSchedule.time}
               </span>
               <span className="text-xs text-[#71717A] font-medium">
-                {currentSchedule.periodThai}
+                {lang === 'th' ? currentSchedule.periodThai : currentSchedule.period}
               </span>
             </div>
             <h3 className="text-2xl font-bold text-[#27272A]">
-              {currentSchedule.period}
+              {lang === 'th' ? currentSchedule.periodThai : currentSchedule.period}
             </h3>
             <div className="flex items-center gap-2 text-xs sm:text-sm text-[#71717A] mt-1">
               <MapPin className="w-3.5 h-3.5 text-[#7A98B3]" />
@@ -161,7 +162,7 @@ export default function Timeline() {
               {calendarAdded ? (
                 <>
                   <Check className="w-3.5 h-3.5" />
-                  <span>บันทึกแล้ว!</span>
+                  <span>{lang === 'th' ? 'บันทึกแล้ว!' : 'Saved!'}</span>
                 </>
               ) : (
                 <>

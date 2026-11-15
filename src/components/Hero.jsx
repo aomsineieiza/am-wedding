@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, MapPin, Heart, ChevronDown } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Hero() {
+  const { lang, t } = useLanguage();
   const { couple, venue, gallery } = weddingData;
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
 
@@ -150,7 +152,7 @@ export default function Hero() {
             </div>
 
             <p className="text-xs sm:text-sm md:text-base text-[#52525B] font-medium tracking-[0.18em] mt-3 sm:mt-4">
-              เรากำลังจะแต่งงานกัน
+              {t('hero.weAreGettingMarried', 'เรากำลังจะแต่งงานกัน')}
             </p>
             <p className="text-[11px] sm:text-xs md:text-sm text-[#71717A] font-light mt-1.5 max-w-xs sm:max-w-md leading-relaxed">
               &ldquo;{couple.quote}&rdquo;
@@ -165,7 +167,7 @@ export default function Hero() {
               2027 . 01 . 23 &nbsp;SAT &nbsp;07:30
             </p>
             <p className="text-xs sm:text-sm text-[#6B7280] font-normal">
-              {couple.thaiDateFormatted} • {venue.name}
+              {lang === 'th' ? couple.thaiDateFormatted : couple.dateFormatted} • {lang === 'th' ? venue.name : 'Le Pasiri'}
             </p>
           </div>
         </motion.div>
@@ -180,14 +182,14 @@ export default function Hero() {
           className="mt-8 sm:mt-10 w-full max-w-[360px] sm:max-w-xl md:max-w-2xl lg:max-w-3xl mx-auto"
         >
           <p className="text-[10px] sm:text-xs font-medium uppercase tracking-[0.28em] text-[#71717A] mb-3 sm:mb-4">
-            COUNTING DOWN TO OUR FOREVER
+            {t('hero.countdownHeading', 'COUNTING DOWN TO OUR FOREVER')}
           </p>
           <div className="grid grid-cols-4 gap-2.5 sm:gap-4">
             {[
-              { label: 'DAYS', thai: 'วัน', value: timeLeft.days },
-              { label: 'HRS', thai: 'ชม.', value: timeLeft.hours },
-              { label: 'MINS', thai: 'นาที', value: timeLeft.minutes },
-              { label: 'SECS', thai: 'วินาที', value: timeLeft.seconds },
+              { label: 'DAYS', unit: t('hero.days', 'วัน'), value: timeLeft.days },
+              { label: 'HRS', unit: t('hero.hours', 'ชม.'), value: timeLeft.hours },
+              { label: 'MINS', unit: t('hero.mins', 'นาที'), value: timeLeft.minutes },
+              { label: 'SECS', unit: t('hero.secs', 'วินาที'), value: timeLeft.seconds },
             ].map((unit, idx) => (
               <div
                 key={idx}
@@ -197,7 +199,7 @@ export default function Hero() {
                   {unit.value}
                 </span>
                 <span className="text-[9px] sm:text-[10px] tracking-[0.15em] text-[#71717A] mt-1.5 font-medium uppercase">
-                  {unit.label}
+                  {lang === 'th' ? unit.unit : unit.label}
                 </span>
               </div>
             ))}
@@ -216,13 +218,13 @@ export default function Hero() {
             className="px-7 py-3 sm:px-9 sm:py-3.5 rounded-full bg-[#27272A] hover:bg-[#18181B] text-[#FAFAFB] text-xs sm:text-sm font-medium tracking-wider shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer"
           >
             <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current text-[#E5B5BC]" />
-            <span>RSVP ตอบรับคำเชิญ</span>
+            <span>{t('hero.rsvpButton', 'RSVP ตอบรับคำเชิญ')}</span>
           </a>
           <a
             href="#schedule"
             className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-full bg-[#FAFAFB] hover:bg-white text-[#3F3F46] border border-[#E2E5E9] hover:border-[#A1A1AA] text-xs sm:text-sm font-medium tracking-wide transition-all shadow-2xs cursor-pointer"
           >
-            ดูกำหนดการพิธี
+            {t('hero.scheduleButton', 'ดูกำหนดการพิธี')}
           </a>
         </motion.div>
       </div>
@@ -233,7 +235,9 @@ export default function Hero() {
         transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
         className="relative z-10 mt-8 flex flex-col items-center text-[#9CA3AF]"
       >
-        <span className="text-[10px] font-medium uppercase tracking-[0.22em] mb-1">Scroll</span>
+        <span className="text-[10px] font-medium uppercase tracking-[0.22em] mb-1">
+          {t('hero.scroll', 'SCROLL')}
+        </span>
         <ChevronDown className="w-4 h-4" />
       </motion.div>
     </header>
