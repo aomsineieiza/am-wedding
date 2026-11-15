@@ -43,13 +43,12 @@ export default function RSVPAdminModal() {
       return;
     }
 
-    const headers = ['Full Name', 'Contact', 'Attending', 'Guests Count', 'Dietary Restrictions', 'Wishes', 'Date Submitted'];
+    const headers = ['Full Name', 'Contact', 'Attending', 'Guests Count', 'Wishes', 'Date Submitted'];
     const rows = rsvps.map((r) => [
       `"${(r.fullName || '').replace(/"/g, '""')}"`,
       `"${(r.contact || '').replace(/"/g, '""')}"`,
       r.attending === 'yes' ? 'Attending' : 'Declined',
       r.guestCount || 1,
-      `"${(r.dietary || '').replace(/"/g, '""')}"`,
       `"${(r.wishes || '').replace(/"/g, '""')}"`,
       `"${r.submittedAt ? new Date(r.submittedAt).toLocaleString() : ''}"`,
     ]);
@@ -145,9 +144,6 @@ export default function RSVPAdminModal() {
                         )}
                       </div>
                       <p className="text-slate-500 text-[11px] mt-0.5">{entry.contact}</p>
-                      {entry.dietary && (
-                        <p className="text-amber-700 text-[10px] mt-0.5">อาหาร: {entry.dietary}</p>
-                      )}
                       {entry.wishes && (
                         <p className="italic text-slate-600 text-[11px] mt-1">&ldquo;{entry.wishes}&rdquo;</p>
                       )}

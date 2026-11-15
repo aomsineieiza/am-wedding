@@ -13,7 +13,6 @@ export default function RSVPForm() {
     contact: '',
     attending: 'yes',
     guestCount: 1,
-    dietary: '',
     wishes: '',
   });
 
@@ -89,7 +88,6 @@ export default function RSVPForm() {
       contact: '',
       attending: 'yes',
       guestCount: 1,
-      dietary: '',
       wishes: '',
     });
   };
@@ -283,47 +281,27 @@ export default function RSVPForm() {
 
             {/* Conditional fields if Attending */}
             {formData.attending === 'yes' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-                <div>
-                  <label
-                    htmlFor="guestCount"
-                    className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
-                  >
-                    จำนวนผู้เข้าร่วมงาน (Guests Count)
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="guestCount"
-                      name="guestCount"
-                      value={formData.guestCount}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 pl-11 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0074E2] transition-all"
-                    >
-                      <option value="1">1 ท่าน (เฉพาะตัวฉัน)</option>
-                      <option value="2">2 ท่าน (+ ผู้ติดตาม 1 ท่าน)</option>
-                      <option value="3">3 ท่าน</option>
-                      <option value="4">4 ท่าน (ครอบครัว)</option>
-                    </select>
-                    <Users className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="dietary"
-                    className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
-                  >
-                    ข้อจำกัดด้านอาหาร (Dietary Restrictions)
-                  </label>
-                  <input
-                    id="dietary"
-                    name="dietary"
-                    type="text"
-                    value={formData.dietary}
+              <div className="pt-1">
+                <label
+                  htmlFor="guestCount"
+                  className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
+                >
+                  จำนวนผู้เข้าร่วมงาน (Guests Count)
+                </label>
+                <div className="relative">
+                  <select
+                    id="guestCount"
+                    name="guestCount"
+                    value={formData.guestCount}
                     onChange={handleChange}
-                    placeholder="เช่น มังสวิรัติ, ฮาลาล, แพ้อาหารทะเล"
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] transition-all"
-                  />
+                    className="w-full px-4 py-3 pl-11 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0074E2] transition-all"
+                  >
+                    <option value="1">1 ท่าน (เฉพาะตัวฉัน)</option>
+                    <option value="2">2 ท่าน (+ ผู้ติดตาม 1 ท่าน)</option>
+                    <option value="3">3 ท่าน</option>
+                    <option value="4">4 ท่าน (ครอบครัว)</option>
+                  </select>
+                  <Users className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
               </div>
             )}
@@ -417,11 +395,6 @@ export default function RSVPForm() {
               {submittedData.attending === 'yes' && (
                 <p>
                   <strong>จำนวนแขก:</strong> {submittedData.guestCount} ท่าน
-                </p>
-              )}
-              {submittedData.dietary && (
-                <p>
-                  <strong>ข้อจำกัดอาหาร:</strong> {submittedData.dietary}
                 </p>
               )}
               {submittedData.wishes && (
