@@ -3,7 +3,10 @@
 
 export const weddingData = {
   // Paste your Google Apps Script Web App URL here to save RSVP & Wishes directly to Google Sheets (docs.google.com/spreadsheets)
-  googleSheetWebAppUrl: import.meta.env.VITE_GOOGLE_SHEET_URL || "",
+  googleSheetWebAppUrl:
+    import.meta.env.VITE_GOOGLE_SHEET_SCRIPT_URL ||
+    import.meta.env.VITE_GOOGLE_SHEET_URL ||
+    "",
 
   couple: {
     bride: "Aomsin",

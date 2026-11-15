@@ -50,12 +50,25 @@ export default function RSVPForm() {
     setIsSubmitting(true);
 
     const submittedAt = new Date().toISOString();
+    const nameParts = formData.fullName.trim().split(/\s+/);
+    const firstName = nameParts[0] || formData.fullName.trim();
+    const lastName = nameParts.slice(1).join(' ') || '-';
+    const attendingText =
+      formData.attending === 'yes' ? 'ยินดีเข้าร่วมงาน (Yes)' : 'ไม่สะดวกเข้าร่วม (No)';
+
     const payload = {
       type: 'RSVP',
       fullName: formData.fullName.trim(),
+      firstName,
+      lastName,
+      nickname: '-',
       contact: formData.contact.trim(),
-      attending: formData.attending === 'yes' ? 'ยินดีเข้าร่วมงาน (Yes)' : 'ไม่สะดวกเข้าร่วม (No)',
+      phone: formData.contact.trim(),
+      attending: attendingText,
+      guestSide: attendingText,
       guestCount: formData.attending === 'yes' ? Number(formData.guestCount) : 0,
+      dietarySummary: '-',
+      alcoholSummary: '-',
       wishes: formData.wishes.trim(),
       submittedAt,
     };
