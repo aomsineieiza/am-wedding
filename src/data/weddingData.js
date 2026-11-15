@@ -6,7 +6,7 @@ export const weddingData = {
   googleSheetWebAppUrl:
     import.meta.env.VITE_GOOGLE_SHEET_SCRIPT_URL ||
     import.meta.env.VITE_GOOGLE_SHEET_URL ||
-    "",
+    "https://script.google.com/macros/s/AKfycbwdJZjGAprlYGi6V_r5DC0Emjtxb6uqBG1jqk5BebO2zyxLvBM9NIkF1a8H6-CszO1S/exec",
 
   couple: {
     bride: "Aomsin",
