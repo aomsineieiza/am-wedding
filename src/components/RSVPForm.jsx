@@ -43,11 +43,37 @@ export default function RSVPForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
+
+    const submittedAt = new Date().toISOString();
+    const payload = {
+      type: 'RSVP',
+      fullName: formData.fullName.trim(),
+      contact: formData.contact.trim(),
+      attending: formData.attending === 'yes' ? 'ยินดีเข้าร่วมงาน (Yes)' : 'ไม่สะดวกเข้าร่วม (No)',
+      guestCount: formData.attending === 'yes' ? Number(formData.guestCount) : 0,
+      wishes: formData.wishes.trim(),
+      submittedAt,
+    };
+
+    if (weddingData.googleSheetWebAppUrl) {
+      try {
+        await fetch(weddingData.googleSheetWebAppUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8',
+          },
+          body: JSON.stringify(payload),
+        });
+      } catch (err) {
+        console.error('Google Sheets sync error:', err);
+      }
+    }
 
     setTimeout(() => {
       setIsSubmitting(false);
@@ -57,9 +83,10 @@ export default function RSVPForm() {
         const stored = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
         stored.push({
           ...formData,
-          submittedAt: new Date().toISOString(),
+          submittedAt,
         });
         localStorage.setItem('wedding_rsvps', JSON.stringify(stored));
+        window.dispatchEvent(new Event('rsvp_updated'));
       } catch (err) {
         console.error('Storage error:', err);
       }
@@ -76,7 +103,7 @@ export default function RSVPForm() {
       if (successDialogRef.current) {
         successDialogRef.current.showModal();
       }
-    }, 600);
+    }, 400);
   };
 
   const closeSuccessModal = () => {

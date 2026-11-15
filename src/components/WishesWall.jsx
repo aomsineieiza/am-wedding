@@ -66,6 +66,8 @@ export default function WishesWall() {
 
   useEffect(() => {
     loadWishes();
+    window.addEventListener('rsvp_updated', loadWishes);
+    return () => window.removeEventListener('rsvp_updated', loadWishes);
   }, []);
 
   const handleLike = (id) => {
@@ -84,19 +86,43 @@ export default function WishesWall() {
     );
   };
 
-  const handleAddWish = (e) => {
+  const handleAddWish = async (e) => {
     e.preventDefault();
     if (!newAuthor.trim() || !newMessage.trim()) return;
 
     setIsSubmitting(true);
+    const submittedAt = new Date().toISOString();
     const newEntry = {
       id: `wish-${Date.now()}`,
       name: newAuthor.trim(),
       relation: 'แขกผู้มีเกียรติ',
       message: newMessage.trim(),
-      date: new Date().toISOString().slice(0, 10),
+      date: submittedAt.slice(0, 10),
       hearts: 1,
     };
+
+    if (weddingData.googleSheetWebAppUrl) {
+      try {
+        await fetch(weddingData.googleSheetWebAppUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8',
+          },
+          body: JSON.stringify({
+            type: 'WISH',
+            fullName: newEntry.name,
+            contact: 'Guestbook',
+            attending: '-',
+            guestCount: '-',
+            wishes: newEntry.message,
+            submittedAt,
+          }),
+        });
+      } catch (err) {
+        console.error('Google Sheets sync error:', err);
+      }
+    }
 
     setTimeout(() => {
       setWishes((prev) => [newEntry, ...prev]);
@@ -112,7 +138,7 @@ export default function WishesWall() {
           attending: 'yes',
           guestCount: 1,
           wishes: newEntry.message,
-          submittedAt: new Date().toISOString(),
+          submittedAt,
         });
         localStorage.setItem('wedding_rsvps', JSON.stringify(stored));
       } catch (err) {

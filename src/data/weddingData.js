@@ -2,6 +2,9 @@
 // You can easily update couple names, dates, venue, bank info, and photos here
 
 export const weddingData = {
+  // Paste your Google Apps Script Web App URL here to save RSVP & Wishes directly to Google Sheets (docs.google.com/spreadsheets)
+  googleSheetWebAppUrl: import.meta.env.VITE_GOOGLE_SHEET_URL || "",
+
   couple: {
     bride: "Aomsin",
     groom: "Mild",
