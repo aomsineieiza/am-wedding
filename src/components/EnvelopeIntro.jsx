@@ -364,12 +364,12 @@ export default function EnvelopeIntro({ onOpen }) {
             initial={{ opacity: 0, scale: 0.8, x: -10, y: 10 }}
             animate={
               isOpening
-                ? { opacity: 0, scale: 0.6, y: -20 }
+                ? { opacity: 0, scale: 0.6, y: 20 }
                 : {
                     opacity: 1,
                     scale: 1,
-                    x: [0, 24, 12, -16, 4, 0],
-                    y: [0, -18, 10, -12, 6, 0],
+                    x: [0, 18, 8, -14, 4, 0],
+                    y: [0, -14, 8, -10, 4, 0],
                   }
             }
             transition={
@@ -378,11 +378,11 @@ export default function EnvelopeIntro({ onOpen }) {
                 : {
                     opacity: { duration: 0.5, delay: 0.2 },
                     scale: { duration: 0.5, delay: 0.2 },
-                    x: { duration: 7, repeat: Infinity, ease: 'easeInOut' },
-                    y: { duration: 7, repeat: Infinity, ease: 'easeInOut' },
+                    x: { duration: 6.5, repeat: Infinity, ease: 'easeInOut' },
+                    y: { duration: 6.5, repeat: Infinity, ease: 'easeInOut' },
                   }
             }
-            className="absolute top-[17%] sm:top-[22%] md:top-[24%] right-[8%] sm:right-[16%] md:right-[22%] z-30 pointer-events-none select-none flex items-start"
+            className="absolute bottom-[10%] sm:bottom-[13%] md:bottom-[15%] right-[6%] sm:right-[12%] md:right-[16%] z-30 pointer-events-none select-none flex items-start"
           >
             {/* Figma Cursor Arrow Tip */}
             <svg
@@ -411,7 +411,7 @@ export default function EnvelopeIntro({ onOpen }) {
           {/* ===============================================================
               CENTER SHOWCASE ENVELOPE ASSEMBLY (Tilted like Reference Image)
              =============================================================== */}
-          <div className="relative my-auto translate-y-7 sm:translate-y-0 z-20 flex flex-col items-center justify-center sm:pt-[220px] md:pt-[245px] scale-100 sm:scale-95 lg:scale-100 transition-transform">
+          <div className="relative my-auto z-20 flex flex-col items-center justify-center pt-[180px] sm:pt-[220px] md:pt-[245px] scale-[0.88] min-[390px]:scale-95 sm:scale-95 lg:scale-100 transition-transform">
             <motion.div
               initial={{ opacity: 0, y: 24, rotate: -3.5, scale: 0.95 }}
               animate={{
