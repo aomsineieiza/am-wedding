@@ -57,9 +57,9 @@ export default function WeddingAlbum() {
   const { lang, t } = useLanguage();
   const { couple } = weddingData;
 
-  // 6 Sheets = 12 Individual Pages in total
-  const TOTAL_SHEETS = 6;
-  const TOTAL_PAGES = 12;
+  // 7 Sheets = 14 Individual Pages in total
+  const TOTAL_SHEETS = 7;
+  const TOTAL_PAGES = 14;
 
   // Responsive Mode: Mobile (< 768px) is strictly Single-Page; Desktop (>= 768px) is strictly 3D Double-Page
   const [isMobile, setIsMobile] = useState(
@@ -195,10 +195,11 @@ export default function WeddingAlbum() {
   const chapters = [
     { label: 'หน้าปก', labelEn: 'Cover', sheetCount: 0, singlePage: 1 },
     { label: 'ประวัติบ่าวสาว', labelEn: 'Profiles', sheetCount: 1, singlePage: 3 },
-    { label: 'วัยเรียน', labelEn: 'Youth', sheetCount: 2, singlePage: 5 },
-    { label: 'ชีวิตประจำวัน', labelEn: 'Daily Life', sheetCount: 3, singlePage: 7 },
-    { label: 'สูท & มินิเดรส', labelEn: 'Romance', sheetCount: 4, singlePage: 9 },
-    { label: 'ทุ่งหญ้า & ขอบคุณ', labelEn: 'Thanks', sheetCount: 5, singlePage: 11 },
+    { label: 'คำสัญญา', labelEn: 'Vows', sheetCount: 2, singlePage: 4 },
+    { label: 'ผ้าคลุมเจ้าสาว', labelEn: 'The Veil', sheetCount: 3, singlePage: 6 },
+    { label: 'วันสดใส & ครัว', labelEn: 'Playful', sheetCount: 4, singlePage: 8 },
+    { label: 'สูท & มินิเดรส', labelEn: 'Editorial', sheetCount: 5, singlePage: 11 },
+    { label: 'ทุ่งหญ้า & ขอบคุณ', labelEn: 'Thanks', sheetCount: 6, singlePage: 13 },
   ];
 
   // Active chapter index calculation for tabs
@@ -354,7 +355,7 @@ export default function WeddingAlbum() {
                 Aomsin (ออมสิน)
               </h4>
               <p className="text-[10px] sm:text-[11px] text-[#4B515B] mt-1 leading-snug italic max-w-[155px]">
-                &ldquo;สัญญาว่าจะดูแลและรักมายด์ตลอดไปในทุกๆ วัน&rdquo;
+                &ldquo;ขอบคุณทุกคนมากนะครับที่สละเวลามาร่วมยินดีและเป็นส่วนหนึ่งในวันสำคัญของเรา รวมถึงทุกความช่วยเหลือและความเอ็นดู ขอบคุณครับ&rdquo;
               </p>
               <div className="mt-2 text-[9px] sm:text-[10px] text-[#64748B] space-y-0.5 font-mono">
                 <div>BIRTH : MAR 1</div>
@@ -380,7 +381,7 @@ export default function WeddingAlbum() {
                 Mild (มายด์)
               </h4>
               <p className="text-[10px] sm:text-[11px] text-[#4B515B] mt-1 leading-snug italic max-w-[155px]">
-                &ldquo;ขอบคุณที่จับมือและเป็นความสุขให้ออมสินเสมอมา&rdquo;
+                &ldquo;ขอบคุณทุกคนมาก ๆ นะคะ ที่มาร่วมสร้างความทรงจำดี ๆ ในวันนี้ ดีใจที่มีทุกคนที่น่ารักคอยอยู่เคียงข้างและซัพพอร์ตกันเสมอมานะคะ&rdquo;
               </p>
               <div className="mt-2 text-[9px] sm:text-[10px] text-[#64748B] space-y-0.5 font-mono">
                 <div>BIRTH : JAN 2</div>
@@ -452,7 +453,7 @@ export default function WeddingAlbum() {
         <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-9 text-[#111317] relative bg-[#F8F9FA] select-none border-l border-[#DFE2E6]">
           <div className="flex items-center justify-between text-[10px] text-[#64748B] tracking-[0.2em] uppercase pb-2 border-b border-[#E2E4E8]">
             <span className="font-serif italic font-normal text-xs text-[#111317]">chapter 01</span>
-            <span className="text-[9px] font-mono">청춘의 달콤한 추억</span>
+            <span className="text-[9px] font-mono">영원한 사랑의 약속</span>
           </div>
 
           <div className="my-auto flex-1 flex flex-col justify-center py-2">
@@ -460,7 +461,7 @@ export default function WeddingAlbum() {
               <div className="aspect-[4/4.8] sm:aspect-[3/4] w-full overflow-hidden bg-slate-100">
                 <img
                   src="/images/album/album-2.jpg"
-                  alt="Where It All Began"
+                  alt="Lean On Me"
                   loading="lazy"
                   decoding="async"
                   className="w-full h-full object-cover object-center"
@@ -469,22 +470,103 @@ export default function WeddingAlbum() {
             </div>
             <div className="mt-2.5 text-left">
               <h4 className="font-serif text-sm sm:text-base font-medium text-[#111317]">
-                Where It All Began
+                Lean On Me
               </h4>
               <p className="text-[11px] text-[#555B66] mt-0.5 font-light leading-relaxed">
-                교실에서 처음 마주친 그날부터, 서로에게 영원을 약속하기까지.
+                서로의 곁에서 가장 편안하고 따뜻하게 웃을 수 있는 우리.
               </p>
             </div>
           </div>
 
           <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-2 border-t border-[#E2E4E8] font-mono">
-            <span>- 04 -</span>
+            <span>- 05 -</span>
           </div>
         </div>
       );
     }
 
     if (sheetIndex === 2 && !isFront) {
+      // NEW Photo 1: Bride in Veil Sitting (Page 06)
+      return (
+        <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-9 text-[#111317] relative bg-[#F8F9FA] select-none border-r border-[#DFE2E6]">
+          <div className="flex items-center justify-between text-[10px] text-[#64748B] tracking-[0.2em] uppercase pb-2 border-b border-[#E2E4E8]">
+            <span className="font-serif italic font-normal text-xs text-[#111317]">pure romance</span>
+            <span className="text-[9px] font-mono">베일 속의 순수한 빛</span>
+          </div>
+
+          <div className="my-auto flex-1 flex flex-col justify-center py-2">
+            <div className="bg-white p-2.5 sm:p-3 shadow-sm border border-[#E2E4E8] rounded-xs">
+              <div className="aspect-[4/4.8] sm:aspect-[3/4] w-full overflow-hidden bg-slate-100">
+                <img
+                  src="/images/album/bride-veil-sitting.jpg"
+                  alt="Pure Bloom"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+            </div>
+            <div className="mt-2.5 text-left">
+              <h4 className="font-serif text-sm sm:text-base font-medium text-[#111317]">
+                Pure Bloom
+              </h4>
+              <p className="text-[11px] text-[#555B66] mt-0.5 font-light leading-relaxed">
+                눈부시게 하얀 베일 아래, 조용히 피어나는 가장 설레는 미소.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-2 border-t border-[#E2E4E8] font-mono">
+            <span>- 06 -</span>
+          </div>
+        </div>
+      );
+    }
+
+    // -------------------------------------------------------------
+    // SHEET 3
+    // Front: NEW Photo 2: Couple Standing with Veil FULL BLEED (Page 07)
+    // Back: Playful Days / Smile With You (album-11) (Page 08)
+    // -------------------------------------------------------------
+    if (sheetIndex === 3 && isFront) {
+      return (
+        <div className="h-full flex-1 w-full relative select-none border-l border-[#DFE2E6] overflow-hidden bg-slate-900 flex flex-col justify-between">
+          <img
+            src="/images/album/couple-veil-standing.jpg"
+            alt="Under The Veil - Full Bleed"
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+          {/* Subtle cinematic gradient overlays for readability and luxury feel */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-black/45 pointer-events-none" />
+
+          {/* Top Header Tag */}
+          <div className="relative top-0 p-4 sm:p-7 flex items-center justify-between text-[10px] text-white/80 tracking-[0.2em] uppercase border-b border-white/20 z-10 font-mono">
+            <span className="font-serif italic font-normal text-xs text-white">the veil</span>
+            <span className="text-[9px]">베일 너머의 약속</span>
+          </div>
+
+          {/* Bottom Caption Overlay */}
+          <div className="relative bottom-0 p-4 sm:p-7 z-10 text-white">
+            <span className="text-[10px] tracking-[0.25em] uppercase text-white/75 font-mono">
+              SILENT PROMISE
+            </span>
+            <h4 className="font-serif text-base sm:text-lg font-medium text-white mt-0.5">
+              Under The Gentle Light
+            </h4>
+            <p className="text-[11px] text-white/85 mt-1 font-light leading-relaxed">
+              서로를 바라보는 그 눈빛 속에 담긴 우리 둘만의 영원한 약속.
+            </p>
+            <div className="flex items-center justify-end text-[10px] text-white/70 pt-2 border-t border-white/20 mt-2 font-mono">
+              <span>- 07 -</span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (sheetIndex === 3 && !isFront) {
       return (
         <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-9 text-[#111317] relative bg-[#F8F9FA] select-none border-r border-[#DFE2E6]">
           <div className="flex items-center justify-between text-[10px] text-[#64748B] tracking-[0.2em] uppercase pb-2 border-b border-[#E2E4E8]">
@@ -515,22 +597,22 @@ export default function WeddingAlbum() {
           </div>
 
           <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-2 border-t border-[#E2E4E8] font-mono">
-            <span>- 05 -</span>
+            <span>- 08 -</span>
           </div>
         </div>
       );
     }
 
     // -------------------------------------------------------------
-    // SHEET 3
-    // Front: Kitchen Cooking (album-10)
-    // Back: Cozy Bedroom & Balloons (album-13 & album-5)
+    // SHEET 4
+    // Front: Kitchen Cooking (album-10) (Page 09)
+    // Back: Warmest Blanket (warmest-blanket.jpg) (Page 10)
     // -------------------------------------------------------------
-    if (sheetIndex === 3 && isFront) {
+    if (sheetIndex === 4 && isFront) {
       return (
         <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-9 text-[#111317] relative bg-[#F8F9FA] select-none border-l border-[#DFE2E6]">
           <div className="flex items-center justify-between text-[10px] text-[#64748B] tracking-[0.2em] uppercase pb-2 border-b border-[#E2E4E8]">
-            <span className="font-serif italic font-normal text-xs text-[#111317]">chapter 02</span>
+            <span className="font-serif italic font-normal text-xs text-[#111317]">chapter 03</span>
             <span className="text-[9px] font-mono">두 사람의 따뜻한 식탁</span>
           </div>
 
@@ -557,13 +639,13 @@ export default function WeddingAlbum() {
           </div>
 
           <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-2 border-t border-[#E2E4E8] font-mono">
-            <span>- 06 -</span>
+            <span>- 09 -</span>
           </div>
         </div>
       );
     }
 
-    if (sheetIndex === 3 && !isFront) {
+    if (sheetIndex === 4 && !isFront) {
       return (
         <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-9 text-[#111317] relative bg-[#F8F9FA] select-none border-r border-[#DFE2E6]">
           <div className="flex items-center justify-between text-[10px] text-[#64748B] tracking-[0.2em] uppercase pb-2 border-b border-[#E2E4E8]">
@@ -593,7 +675,7 @@ export default function WeddingAlbum() {
               23.01 • 세상에서 가장 따뜻한 품에서 시작되는 우리의 이야기.
             </p>
             <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-1.5 font-mono">
-              <span>- 07 -</span>
+              <span>- 10 -</span>
             </div>
           </div>
         </div>
@@ -601,15 +683,15 @@ export default function WeddingAlbum() {
     }
 
     // -------------------------------------------------------------
-    // SHEET 4
-    // Front: Veil & Ribbons (album-7 & album-8)
-    // Back: Chic Sunglasses Editorial (album-3)
+    // SHEET 5
+    // Front: Veil & Ribbons (album-7 & album-8) (Page 11)
+    // Back: Chic Sunglasses Editorial (editorial-chic) (Page 12)
     // -------------------------------------------------------------
-    if (sheetIndex === 4 && isFront) {
+    if (sheetIndex === 5 && isFront) {
       return (
         <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-9 text-[#111317] relative bg-[#F8F9FA] select-none border-l border-[#DFE2E6]">
           <div className="flex items-center justify-between text-[10px] text-[#64748B] tracking-[0.2em] uppercase pb-2 border-b border-[#E2E4E8]">
-            <span className="font-serif italic font-normal text-xs text-[#111317]">chapter 03</span>
+            <span className="font-serif italic font-normal text-xs text-[#111317]">chapter 04</span>
             <span className="text-[9px] font-mono">베일 속 피어난 미소</span>
           </div>
 
@@ -646,14 +728,14 @@ export default function WeddingAlbum() {
               살며시 걷힌 베일 너머, 서로의 눈빛에 담긴 조용한 약속.
             </p>
             <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-1.5 font-mono">
-              <span>- 08 -</span>
+              <span>- 11 -</span>
             </div>
           </div>
         </div>
       );
     }
 
-    if (sheetIndex === 4 && !isFront) {
+    if (sheetIndex === 5 && !isFront) {
       return (
         <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-9 text-[#111317] relative bg-[#F8F9FA] select-none border-r border-[#DFE2E6]">
           <div className="flex items-center justify-between text-[10px] text-[#64748B] tracking-[0.2em] uppercase pb-2 border-b border-[#E2E4E8]">
@@ -684,22 +766,22 @@ export default function WeddingAlbum() {
           </div>
 
           <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-2 border-t border-[#E2E4E8] font-mono">
-            <span>- 09 -</span>
+            <span>- 12 -</span>
           </div>
         </div>
       );
     }
 
     // -------------------------------------------------------------
-    // SHEET 5
-    // Front: Outdoor Lawn & Balloons (album-6 & album-12)
-    // Back: The Iconic Back Cover ("THANK YOU FOR COMING TODAY")
+    // SHEET 6
+    // Front: Outdoor Lawn & Balloons (album-6 & album-12) (Page 13)
+    // Back: The Iconic Back Cover ("THANK YOU FOR COMING TODAY") (Page 14)
     // -------------------------------------------------------------
-    if (sheetIndex === 5 && isFront) {
+    if (sheetIndex === 6 && isFront) {
       return (
         <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-9 text-[#111317] relative bg-[#F8F9FA] select-none border-l border-[#DFE2E6]">
           <div className="flex items-center justify-between text-[10px] text-[#64748B] tracking-[0.2em] uppercase pb-2 border-b border-[#E2E4E8]">
-            <span className="font-serif italic font-normal text-xs text-[#111317]">chapter 04</span>
+            <span className="font-serif italic font-normal text-xs text-[#111317]">chapter 05</span>
             <span className="text-[9px] font-mono">푸른 하늘 아래 함께 달리며</span>
           </div>
 
@@ -736,14 +818,14 @@ export default function WeddingAlbum() {
               너와 함께라면 넓은 푸른 들판도 가장 아늑한 우리 집이 돼.
             </p>
             <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-1.5 font-mono">
-              <span>- 10 -</span>
+              <span>- 13 -</span>
             </div>
           </div>
         </div>
       );
     }
 
-    if (sheetIndex === 5 && !isFront) {
+    if (sheetIndex === 6 && !isFront) {
       // THE ICONIC BACK COVER (MATCHES REFERENCE IMAGE)
       return (
         <div className="h-full flex-1 w-full flex flex-col justify-between p-5 sm:p-9 lg:p-11 text-[#111317] relative bg-[#F5F6F8] select-none border-r border-[#DFE2E6]">

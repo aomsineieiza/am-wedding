@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Send, CheckCircle2, User, Phone, Users, MessageSquare, AlertCircle, X, Sparkles, ChevronDown, Download, Check, Printer, ExternalLink } from 'lucide-react';
+import { Heart, HeartHandshake, Send, CheckCircle2, User, Phone, Users, MessageSquare, AlertCircle, X, Sparkles, ChevronDown, Download, Check, Printer, ExternalLink } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { toBlob as htmlToBlob } from 'html-to-image';
 import { weddingData } from '../data/weddingData';
@@ -662,6 +662,33 @@ export default function RSVPForm() {
       }
     }
 
+    // If guest selects "ไม่สะดวกเข้าร่วม" (attending === 'no'): Show modal immediately without loading
+    if (formData.attending === 'no') {
+      setIsSubmitting(false);
+      setSubmittedData({
+        ...formData,
+        guestCount: 0,
+      });
+
+      try {
+        const stored = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
+        stored.push({
+          ...formData,
+          guestCount: 0,
+          submittedAt,
+        });
+        localStorage.setItem('wedding_rsvps', JSON.stringify(stored));
+        window.dispatchEvent(new Event('rsvp_updated'));
+      } catch (err) {
+        console.error('Storage error:', err);
+      }
+
+      if (successDialogRef.current) {
+        successDialogRef.current.showModal();
+      }
+      return;
+    }
+
     setSubmitProgress(0);
 
     const startTime = performance.now();
@@ -881,7 +908,7 @@ export default function RSVPForm() {
                   </div>
                   <div>
                     <span className="text-sm font-semibold text-slate-900 block">
-                      {t('rsvp.decline', 'ขออภัย ไม่สะดวกเข้าร่วม (Decline)')}
+                      {t('rsvp.decline', 'ไม่สะดวกเข้าร่วม (Decline)')}
                     </span>
                     <span className="text-xs text-slate-500">{t('rsvp.declineDesc', 'ขอส่งกำลังใจร่วมยินดี')}</span>
                   </div>
@@ -1263,278 +1290,346 @@ export default function RSVPForm() {
         className="fixed inset-0 m-auto max-w-sm w-[94vw] max-h-[100dvh] bg-transparent p-0 border-0 outline-none backdrop:bg-slate-950/85 backdrop:backdrop-blur-md overflow-y-auto overscroll-contain z-50 [&:not([open])]:hidden [&[open]]:flex flex-col items-center justify-start sm:justify-center py-2 sm:py-4 no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
         {submittedData && (
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative flex flex-col items-center my-auto py-1 sm:py-2 px-1 w-full shrink-0"
-          >
-            {/* Top Close Button (Floating in Dark Backdrop) */}
-            <div className="w-full max-w-[340px] sm:max-w-[390px] flex justify-end mb-1 sm:mb-1.5 z-40">
+          submittedData.attending === 'no' ? (
+            /* =========================================================
+               DECLINE GRATITUDE MODAL (UI Matching Current Theme)
+               ========================================================= */
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-[28px] p-6 sm:p-8 text-center border border-slate-200 shadow-2xl w-full max-w-[360px] sm:max-w-[400px] my-auto select-none relative"
+            >
+              {/* Top Close Button */}
               <button
                 type="button"
                 onClick={closeSuccessModal}
-                aria-label="Close ticket modal"
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white/30 active:scale-95 transition-all cursor-pointer shadow-lg"
+                aria-label="Close modal"
+                className="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 flex items-center justify-center transition-all cursor-pointer"
               >
-                <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <X className="w-3.5 h-3.5" />
               </button>
-            </div>
 
-            {/* =========================================================
+              {/* Green Circular Icon: Hands forming Heart */}
+              <div className="w-16 h-16 rounded-full bg-[#EBF8F2] text-[#059669] flex items-center justify-center mx-auto mb-4 border border-[#A7F3D0]/60 shadow-xs">
+                <HeartHandshake className="w-8 h-8 stroke-[1.8]" />
+              </div>
+
+              {/* Title & Subtitle */}
+              <h3 id="rsvp-success-title" className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                {lang === 'th' ? 'ขอบคุณที่แจ้งให้เราทราบ' : 'Thank You for Letting Us Know'}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1">
+                {lang === 'th' ? 'Thank you for letting us know!' : 'ขอบคุณที่แจ้งให้เราทราบ'}
+              </p>
+
+              {/* Green Pill Badge */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF8F2] text-[#047857] text-[11px] sm:text-xs font-semibold border border-[#A7F3D0] mt-3.5 shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+                <span>{lang === 'th' ? 'บันทึกคำตอบเรียบร้อยแล้ว' : 'Response Recorded'}</span>
+              </div>
+
+              {/* Divider */}
+              <div className="w-12 h-px bg-slate-200 mx-auto my-5" />
+
+              {/* Message Body */}
+              <div className="space-y-2 text-slate-700 text-xs sm:text-sm leading-relaxed px-1">
+                <p>
+                  {lang === 'th'
+                    ? 'แม้ไม่ได้พบกันในวันพิเศษนี้ แต่เราขอขอบคุณสำหรับความยินดีและคำอวยพรที่ส่งมาให้'
+                    : "Even though we won't see each other on our special day, thank you so much for your warm wishes and blessings."}
+                </p>
+                <p className="text-[#E11D48] font-medium pt-1">
+                  {lang === 'th'
+                    ? 'ขอให้คุณมีความสุขเช่นกัน ♡'
+                    : 'Wishing you all the happiness too ♡'}
+                </p>
+              </div>
+
+              {/* Return to Home / Close Button */}
+              <button
+                type="button"
+                onClick={closeSuccessModal}
+                className="w-full mt-6 py-3 px-4 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm transition-all shadow-md active:scale-98 cursor-pointer"
+              >
+                {lang === 'th' ? 'กลับสู่หน้าหลัก' : 'Back to Home'}
+              </button>
+            </motion.div>
+          ) : (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative flex flex-col items-center my-auto py-1 sm:py-2 px-1 w-full shrink-0"
+            >
+              {/* Top Close Button (Floating in Dark Backdrop) */}
+              <div className="w-full max-w-[340px] sm:max-w-[390px] flex justify-end mb-1 sm:mb-1.5 z-40">
+                <button
+                  type="button"
+                  onClick={closeSuccessModal}
+                  aria-label="Close ticket modal"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white/30 active:scale-95 transition-all cursor-pointer shadow-lg"
+                >
+                  <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+              </div>
+
+              {/* =========================================================
                 1. REALISTIC CHROME / METALLIC DISPENSER SLOT (Printer Head)
                ========================================================= */}
-            <div className="relative w-full max-w-[340px] sm:max-w-[390px] z-30">
-              {/* Metallic Beveled Bar */}
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2 }}
-                className="h-5 sm:h-6.5 rounded-t-xl bg-gradient-to-b from-[#F1F5F9] via-[#CBD5E1] to-[#94A3B8] p-0.5 sm:p-1 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.6),inset_0_1px_2px_rgba(255,255,255,0.95)] border border-slate-300 flex items-center justify-center relative"
-              >
-                {/* Metallic Screws / Rivets on Left & Right */}
-                <div className="absolute left-2.5 w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-slate-300 border border-slate-500 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] flex items-center justify-center">
-                  <div className="w-1 h-0.5 bg-slate-600 rounded-xs rotate-45" />
-                </div>
-                <div className="absolute right-2.5 w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-slate-300 border border-slate-500 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] flex items-center justify-center">
-                  <div className="w-1 h-0.5 bg-slate-600 rounded-xs -rotate-45" />
-                </div>
+              <div className="relative w-full max-w-[340px] sm:max-w-[390px] z-30">
+                {/* Metallic Beveled Bar */}
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="h-5 sm:h-6.5 rounded-t-xl bg-gradient-to-b from-[#F1F5F9] via-[#CBD5E1] to-[#94A3B8] p-0.5 sm:p-1 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.6),inset_0_1px_2px_rgba(255,255,255,0.95)] border border-slate-300 flex items-center justify-center relative"
+                >
+                  {/* Metallic Screws / Rivets on Left & Right */}
+                  <div className="absolute left-2.5 w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-slate-300 border border-slate-500 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] flex items-center justify-center">
+                    <div className="w-1 h-0.5 bg-slate-600 rounded-xs rotate-45" />
+                  </div>
+                  <div className="absolute right-2.5 w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-slate-300 border border-slate-500 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] flex items-center justify-center">
+                    <div className="w-1 h-0.5 bg-slate-600 rounded-xs -rotate-45" />
+                  </div>
 
-                {/* Dark Recessed Printing Dispenser Slit */}
-                <div className="w-[88%] h-2 sm:h-2.5 bg-[#0B0F19] rounded-xs shadow-[inset_0_2px_4px_rgba(0,0,0,0.95)] border border-slate-700/80 flex items-center justify-center relative overflow-hidden">
-                  <div className="w-full h-0.5 bg-black/90" />
-                  {/* Active Printing Feed Glow */}
-                  <motion.div
-                    initial={{ opacity: 0.7, x: '-100%' }}
-                    animate={{ opacity: [0.7, 0.25, 0.7], x: ['-100%', '100%'] }}
-                    transition={{ duration: 1.55, ease: 'linear' }}
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent pointer-events-none"
-                  />
-                </div>
-              </motion.div>
-              {/* Soft Drop Shadow below Metallic Slit */}
-              <div className="h-1 bg-gradient-to-b from-black/50 via-black/20 to-transparent pointer-events-none" />
-            </div>
+                  {/* Dark Recessed Printing Dispenser Slit */}
+                  <div className="w-[88%] h-2 sm:h-2.5 bg-[#0B0F19] rounded-xs shadow-[inset_0_2px_4px_rgba(0,0,0,0.95)] border border-slate-700/80 flex items-center justify-center relative overflow-hidden">
+                    <div className="w-full h-0.5 bg-black/90" />
+                    {/* Active Printing Feed Glow */}
+                    <motion.div
+                      initial={{ opacity: 0.7, x: '-100%' }}
+                      animate={{ opacity: [0.7, 0.25, 0.7], x: ['-100%', '100%'] }}
+                      transition={{ duration: 1.55, ease: 'linear' }}
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent pointer-events-none"
+                    />
+                  </div>
+                </motion.div>
+                {/* Soft Drop Shadow below Metallic Slit */}
+                <div className="h-1 bg-gradient-to-b from-black/50 via-black/20 to-transparent pointer-events-none" />
+              </div>
 
-            {/* =========================================================
+              {/* =========================================================
                 2. PRINTED CONCERT TICKET / BOARDING PASS
                    Smooth continuous printing feed from the silver dispenser
                ========================================================= */}
-            <div className="w-full max-w-[340px] sm:max-w-[390px] -mt-0.5 relative z-20 overflow-hidden">
-              <motion.div
-                initial={{ y: '-100%' }}
-                animate={{ y: 0 }}
-                transition={{
-                  duration: 1.55,
-                  ease: [0.25, 1, 0.35, 1],
-                }}
-                className="w-full"
-              >
-                <div
-                  ref={ticketCardRef}
-                  className="bg-[#FFFFFF] rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.55)] border-2 border-slate-300 text-slate-900 px-4 sm:px-6 pt-3.5 sm:pt-4.5 pb-4 sm:pb-5 relative select-none"
+              <div className="w-full max-w-[340px] sm:max-w-[390px] -mt-0.5 relative z-20 overflow-hidden">
+                <motion.div
+                  initial={{ y: '-100%' }}
+                  animate={{ y: 0 }}
+                  transition={{
+                    duration: 1.55,
+                    ease: [0.25, 1, 0.35, 1],
+                  }}
+                  className="w-full"
                 >
-                {/* 1. Top Dotted Line with Airplane Emblem */}
-                <div className="flex items-center justify-between text-slate-400 pb-2 sm:pb-2.5 border-b border-dotted border-slate-300">
-                  <div className="flex-1 border-b border-dotted border-slate-400" />
-                  <div className="mx-2.5 w-5 h-5 sm:w-5.5 sm:h-5.5 rounded-full bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs">
-                    <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current">
-                      <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1 border-b border-dotted border-slate-400" />
-                </div>
-
-                {/* Subtitle: BOARDING PASS */}
-                <p className="text-[8px] sm:text-[9.5px] font-mono tracking-[0.32em] text-slate-600 font-bold uppercase text-center mt-1.5 sm:mt-2">
-                  B O A R D I N G &nbsp; P A S S
-                </p>
-
-                {/* 2. Main Title: AM2027 WEDDING on Powder Blue Washi Tape Strips (matching reference font & style) */}
-                <div className="flex flex-col items-center my-2 sm:my-2.5 -rotate-[2.2deg]">
-                  {/* Line 1: AM2027 in Impact / Condensed Heavy Black font */}
-                  <div className="relative inline-flex items-center justify-center px-4 sm:px-5 py-0.5">
-                    <svg
-                      viewBox="0 0 160 38"
-                      preserveAspectRatio="none"
-                      className="absolute inset-0 w-full h-full filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.08)] pointer-events-none"
-                    >
-                      {/* Torn Washi Masking Tape with Jagged Edges */}
-                      <path
-                        d="M 5,2 Q 15,0 30,1 L 135,0 Q 150,1 155,3 L 153,10 L 157,18 L 154,27 L 156,34 Q 140,35 120,34 L 25,36 Q 10,35 4,33 L 7,24 L 3,16 L 6,8 Z"
-                        fill="#A0C0D6"
-                        fillOpacity="0.9"
-                      />
-                    </svg>
-                    <span
-                      className="relative z-10 font-black text-2xl sm:text-[34px] text-slate-950 tracking-tight leading-none block select-none uppercase"
-                      style={{ fontFamily: 'Impact, "Arial Narrow Bold", sans-serif' }}
-                    >
-                      AM2027
-                    </span>
-                  </div>
-
-                  {/* Line 2: WEDDING in Impact / Condensed Heavy Black font */}
-                  <div className="relative inline-flex items-center justify-center px-5 sm:px-6 py-0.5 -mt-0.5">
-                    <svg
-                      viewBox="0 0 160 34"
-                      preserveAspectRatio="none"
-                      className="absolute inset-0 w-full h-full filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.08)] pointer-events-none"
-                    >
-                      {/* Torn Washi Masking Tape with Jagged Edges */}
-                      <path
-                        d="M 4,2 Q 18,1 35,2 L 130,1 Q 148,2 156,4 L 154,10 L 157,18 L 153,25 L 155,31 Q 138,32 115,31 L 20,33 Q 8,32 4,30 L 6,22 L 3,13 L 5,6 Z"
-                        fill="#A0C0D6"
-                        fillOpacity="0.9"
-                      />
-                    </svg>
-                    <span
-                      className="relative z-10 font-black text-lg sm:text-[25px] text-slate-950 tracking-wider leading-none block select-none uppercase"
-                      style={{ fontFamily: 'Impact, "Arial Narrow Bold", sans-serif' }}
-                    >
-                      WEDDING
-                    </span>
-                  </div>
-
-                  {/* Subtitle Venue & City matching reference */}
-                  <span className="text-[#0074E2] font-black text-[9px] sm:text-[11px] tracking-[0.22em] uppercase mt-1.5 rotate-[2.2deg]">
-                    LE PASIRI • NONTHABURI
-                  </span>
-                </div>
-
-                {/* 3. 3D Cartoon Bride & Groom wearing Sunglasses (Visual Centerpiece) */}
-                <div className="my-1.5 sm:my-2 flex justify-center">
-                  <div className="relative w-36 h-36 sm:w-48 sm:h-48 max-h-[22vh] flex items-center justify-center">
-                    <img
-                      src="/images/cartoon-couple.png"
-                      alt="Aomsin & Mild Wedding Tour"
-                      className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.20)] hover:scale-105 transition-transform duration-300"
-                      loading="eager"
-                      decoding="async"
-                    />
-                  </div>
-                </div>
-
-                {/* 4. Concert Boarding Pass Grid Table with Thin Black Borders & Layout matching reference */}
-                <div className="border-t border-b border-black text-left font-mono my-2 sm:my-2.5 text-slate-900">
-                  {/* Row 1: Venue & Date */}
-                  <div className="grid grid-cols-2 divide-x divide-black border-b border-black">
-                    <div className="py-1.5 sm:py-2 px-2.5 sm:px-3">
-                      <span className="text-[7.5px] sm:text-[8.5px] text-slate-500 uppercase tracking-wider block font-bold leading-none">VENUE:</span>
-                      <span className="text-[11px] sm:text-[13px] font-black text-slate-900 uppercase block leading-tight mt-1">
-                        LE PASIRI
-                      </span>
-                      <span className="text-[7.5px] sm:text-[8.5px] text-slate-600 uppercase block font-semibold leading-none mt-0.5">NONTHABURI</span>
+                  <div
+                    ref={ticketCardRef}
+                    className="bg-[#FFFFFF] rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.55)] border-2 border-slate-300 text-slate-900 px-4 sm:px-6 pt-3.5 sm:pt-4.5 pb-4 sm:pb-5 relative select-none"
+                  >
+                    {/* 1. Top Dotted Line with Airplane Emblem */}
+                    <div className="flex items-center justify-between text-slate-400 pb-2 sm:pb-2.5 border-b border-dotted border-slate-300">
+                      <div className="flex-1 border-b border-dotted border-slate-400" />
+                      <div className="mx-2.5 w-5 h-5 sm:w-5.5 sm:h-5.5 rounded-full bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current">
+                          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+                        </svg>
+                      </div>
+                      <div className="flex-1 border-b border-dotted border-slate-400" />
                     </div>
-                    <div className="py-1.5 sm:py-2 px-2.5 sm:px-3">
-                      <span className="text-[7.5px] sm:text-[8.5px] text-slate-500 uppercase tracking-wider block font-bold leading-none">DATE:</span>
-                      <span className="text-[11px] sm:text-[13px] font-black text-slate-900 uppercase block leading-tight mt-1">
-                        23 JAN 2027
-                      </span>
-                      <span className="text-[7.5px] sm:text-[8.5px] text-slate-600 uppercase block font-semibold leading-none mt-0.5">SATURDAY</span>
-                    </div>
-                  </div>
 
-                  {/* Row 2: Ceremony & Reception Times */}
-                  <div className="grid grid-cols-2 divide-x divide-black border-b border-black">
-                    <div className="py-1.5 sm:py-2 px-2.5 sm:px-3">
-                      <span className="text-[7.5px] sm:text-[8.5px] text-slate-500 uppercase tracking-wider block font-bold leading-none">CEREMONY TIME:</span>
-                      <span className="text-[11px] sm:text-[13px] font-black text-slate-900 uppercase block mt-1 leading-tight">
-                        15:30
-                      </span>
-                      <span className="text-[7.5px] sm:text-[8.5px] text-slate-600 uppercase block font-semibold leading-none mt-0.5">03:30 PM</span>
-                    </div>
-                    <div className="py-1.5 sm:py-2 px-2.5 sm:px-3">
-                      <span className="text-[7.5px] sm:text-[8.5px] text-slate-500 uppercase tracking-wider block font-bold leading-none">RECEPTION TIME:</span>
-                      <span className="text-[11px] sm:text-[13px] font-black text-slate-900 uppercase block mt-1 leading-tight">
-                        18:30
-                      </span>
-                      <span className="text-[7.5px] sm:text-[8.5px] text-slate-600 uppercase block font-semibold leading-none mt-0.5">06:30 PM</span>
-                    </div>
-                  </div>
-
-                  {/* Row 3: Passenger Guest & Flight Code + QR */}
-                  <div className="py-2.5 sm:py-3 px-3 sm:px-4 w-full">
-                    <span className="text-[8px] sm:text-[9px] text-slate-500 uppercase tracking-wider block font-bold leading-none">
-                      PASSENGER:
-                    </span>
-                    <h3 className="text-base sm:text-xl font-black text-slate-950 tracking-tight block leading-tight mt-1 truncate">
-                      คุณ {submittedData.fullName} {submittedData.nickname ? `(${submittedData.nickname})` : ''}
-                    </h3>
-                    <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                      <span className="text-[8.5px] sm:text-[9.5px] font-black text-[#0074E2] leading-none font-mono">
-                        ADMIT: {submittedData.guestCount} TICKET(S)
-                      </span>
-                      <span className="text-[7px] sm:text-[7.5px] px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 leading-none">
-                        {submittedData.attending === 'yes' ? 'CONFIRMED' : 'DECLINED'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Wishes Section (if provided - max 2 lines with ellipsis) */}
-                {submittedData.wishes && (
-                  <div className="my-1.5 sm:my-2 text-center bg-slate-50 rounded-lg p-1.5 sm:p-2 border border-slate-200 text-slate-700">
-                    <span className="text-[7px] sm:text-[7.5px] uppercase tracking-[0.16em] text-slate-500 font-mono block font-bold leading-none">
-                      GUEST WISH • คำอวยพร
-                    </span>
-                    <p className="text-[8.5px] sm:text-[9.5px] italic text-slate-800 mt-1 leading-snug line-clamp-2 break-words">
-                      &ldquo;{submittedData.wishes}&rdquo;
+                    {/* Subtitle: BOARDING PASS */}
+                    <p className="text-[8px] sm:text-[9.5px] font-mono tracking-[0.32em] text-slate-600 font-bold uppercase text-center mt-1.5 sm:mt-2">
+                      B O A R D I N G &nbsp; P A S S
                     </p>
+
+                    {/* 2. Main Title: AM2027 WEDDING on Powder Blue Washi Tape Strips (matching reference font & style) */}
+                    <div className="flex flex-col items-center my-2 sm:my-2.5 -rotate-[2.2deg]">
+                      {/* Line 1: AM2027 in Impact / Condensed Heavy Black font */}
+                      <div className="relative inline-flex items-center justify-center px-4 sm:px-5 py-0.5">
+                        <svg
+                          viewBox="0 0 160 38"
+                          preserveAspectRatio="none"
+                          className="absolute inset-0 w-full h-full filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.08)] pointer-events-none"
+                        >
+                          {/* Torn Washi Masking Tape with Jagged Edges */}
+                          <path
+                            d="M 5,2 Q 15,0 30,1 L 135,0 Q 150,1 155,3 L 153,10 L 157,18 L 154,27 L 156,34 Q 140,35 120,34 L 25,36 Q 10,35 4,33 L 7,24 L 3,16 L 6,8 Z"
+                            fill="#A0C0D6"
+                            fillOpacity="0.9"
+                          />
+                        </svg>
+                        <span
+                          className="relative z-10 font-black text-2xl sm:text-[34px] text-slate-950 tracking-tight leading-none block select-none uppercase"
+                          style={{ fontFamily: 'Impact, "Arial Narrow Bold", sans-serif' }}
+                        >
+                          AM2027
+                        </span>
+                      </div>
+
+                      {/* Line 2: WEDDING in Impact / Condensed Heavy Black font */}
+                      <div className="relative inline-flex items-center justify-center px-5 sm:px-6 py-0.5 -mt-0.5">
+                        <svg
+                          viewBox="0 0 160 34"
+                          preserveAspectRatio="none"
+                          className="absolute inset-0 w-full h-full filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.08)] pointer-events-none"
+                        >
+                          {/* Torn Washi Masking Tape with Jagged Edges */}
+                          <path
+                            d="M 4,2 Q 18,1 35,2 L 130,1 Q 148,2 156,4 L 154,10 L 157,18 L 153,25 L 155,31 Q 138,32 115,31 L 20,33 Q 8,32 4,30 L 6,22 L 3,13 L 5,6 Z"
+                            fill="#A0C0D6"
+                            fillOpacity="0.9"
+                          />
+                        </svg>
+                        <span
+                          className="relative z-10 font-black text-lg sm:text-[25px] text-slate-950 tracking-wider leading-none block select-none uppercase"
+                          style={{ fontFamily: 'Impact, "Arial Narrow Bold", sans-serif' }}
+                        >
+                          WEDDING
+                        </span>
+                      </div>
+
+                      {/* Subtitle Venue & City matching reference */}
+                      <span className="text-[#0074E2] font-black text-[9px] sm:text-[11px] tracking-[0.22em] uppercase mt-1.5 rotate-[2.2deg]">
+                        LE PASIRI • NONTHABURI
+                      </span>
+                    </div>
+
+                    {/* 3. 3D Cartoon Bride & Groom wearing Sunglasses (Visual Centerpiece) */}
+                    <div className="my-1.5 sm:my-2 flex justify-center">
+                      <div className="relative w-36 h-36 sm:w-48 sm:h-48 max-h-[22vh] flex items-center justify-center">
+                        <img
+                          src="/images/cartoon-couple.png"
+                          alt="Aomsin & Mild Wedding Tour"
+                          className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.20)] hover:scale-105 transition-transform duration-300"
+                          loading="eager"
+                          decoding="async"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 4. Concert Boarding Pass Grid Table with Thin Black Borders & Layout matching reference */}
+                    <div className="border-t border-b border-black text-left font-mono my-2 sm:my-2.5 text-slate-900">
+                      {/* Row 1: Venue & Date */}
+                      <div className="grid grid-cols-2 divide-x divide-black border-b border-black">
+                        <div className="py-1.5 sm:py-2 px-2.5 sm:px-3">
+                          <span className="text-[7.5px] sm:text-[8.5px] text-slate-500 uppercase tracking-wider block font-bold leading-none">VENUE:</span>
+                          <span className="text-[11px] sm:text-[13px] font-black text-slate-900 uppercase block leading-tight mt-1">
+                            LE PASIRI
+                          </span>
+                          <span className="text-[7.5px] sm:text-[8.5px] text-slate-600 uppercase block font-semibold leading-none mt-0.5">NONTHABURI</span>
+                        </div>
+                        <div className="py-1.5 sm:py-2 px-2.5 sm:px-3">
+                          <span className="text-[7.5px] sm:text-[8.5px] text-slate-500 uppercase tracking-wider block font-bold leading-none">DATE:</span>
+                          <span className="text-[11px] sm:text-[13px] font-black text-slate-900 uppercase block leading-tight mt-1">
+                            23 JAN 2027
+                          </span>
+                          <span className="text-[7.5px] sm:text-[8.5px] text-slate-600 uppercase block font-semibold leading-none mt-0.5">SATURDAY</span>
+                        </div>
+                      </div>
+
+                      {/* Row 2: Ceremony & Reception Times */}
+                      <div className="grid grid-cols-2 divide-x divide-black border-b border-black">
+                        <div className="py-1.5 sm:py-2 px-2.5 sm:px-3">
+                          <span className="text-[7.5px] sm:text-[8.5px] text-slate-500 uppercase tracking-wider block font-bold leading-none">CEREMONY TIME:</span>
+                          <span className="text-[11px] sm:text-[13px] font-black text-slate-900 uppercase block mt-1 leading-tight">
+                            15:30
+                          </span>
+                          <span className="text-[7.5px] sm:text-[8.5px] text-slate-600 uppercase block font-semibold leading-none mt-0.5">03:30 PM</span>
+                        </div>
+                        <div className="py-1.5 sm:py-2 px-2.5 sm:px-3">
+                          <span className="text-[7.5px] sm:text-[8.5px] text-slate-500 uppercase tracking-wider block font-bold leading-none">RECEPTION TIME:</span>
+                          <span className="text-[11px] sm:text-[13px] font-black text-slate-900 uppercase block mt-1 leading-tight">
+                            18:30
+                          </span>
+                          <span className="text-[7.5px] sm:text-[8.5px] text-slate-600 uppercase block font-semibold leading-none mt-0.5">06:30 PM</span>
+                        </div>
+                      </div>
+
+                      {/* Row 3: Passenger Guest & Flight Code + QR */}
+                      <div className="py-2.5 sm:py-3 px-3 sm:px-4 w-full">
+                        <span className="text-[8px] sm:text-[9px] text-slate-500 uppercase tracking-wider block font-bold leading-none">
+                          PASSENGER:
+                        </span>
+                        <h3 className="text-base sm:text-xl font-black text-slate-950 tracking-tight block leading-tight mt-1 truncate">
+                          คุณ {submittedData.fullName} {submittedData.nickname ? `(${submittedData.nickname})` : ''}
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                          <span className="text-[8.5px] sm:text-[9.5px] font-black text-[#0074E2] leading-none font-mono">
+                            ADMIT: {submittedData.guestCount} TICKET(S)
+                          </span>
+                          <span className="text-[7px] sm:text-[7.5px] px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 leading-none">
+                            {submittedData.attending === 'yes' ? 'CONFIRMED' : 'DECLINED'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Wishes Section (if provided - max 2 lines with ellipsis) */}
+                    {submittedData.wishes && (
+                      <div className="my-1.5 sm:my-2 text-center bg-slate-50 rounded-lg p-1.5 sm:p-2 border border-slate-200 text-slate-700">
+                        <span className="text-[7px] sm:text-[7.5px] uppercase tracking-[0.16em] text-slate-500 font-mono block font-bold leading-none">
+                          GUEST WISH • คำอวยพร
+                        </span>
+                        <p className="text-[8.5px] sm:text-[9.5px] italic text-slate-800 mt-1 leading-snug line-clamp-2 break-words">
+                          &ldquo;{submittedData.wishes}&rdquo;
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Footer Copyright */}
+                    <div className="text-center pt-2.5 mt-2">
+                      <p className="text-[7.5px] sm:text-[8.5px] font-mono tracking-wider text-slate-400 uppercase">
+                        © AOMSIN &amp; MILD WEDDING. ALL RIGHTS RESERVED.
+                      </p>
+                    </div>
                   </div>
-                )}
-
-                {/* Footer Copyright */}
-                <div className="text-center pt-2.5 mt-2">
-                  <p className="text-[7.5px] sm:text-[8.5px] font-mono tracking-wider text-slate-400 uppercase">
-                    © AOMSIN &amp; MILD WEDDING. ALL RIGHTS RESERVED.
-                  </p>
-                </div>
+                </motion.div>
               </div>
-            </motion.div>
-            </div>
 
-            {/* =========================================================
+              {/* =========================================================
                 3. ACTION BUTTONS (Save Ticket & Close)
                    Appears smoothly right after ticket finishes printing
                ========================================================= */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.56, duration: 0.28, ease: 'easeOut' }}
-              className="w-full max-w-[340px] sm:max-w-[390px] mt-2 sm:mt-3 space-y-1 sm:space-y-1.5 z-30"
-            >
-              {/* Save / Download Ticket Image Button */}
-              <button
-                type="button"
-                onClick={downloadTicketImage}
-                disabled={isDownloadingTicket}
-                className={`w-full py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg active:scale-98 ${isTicketDownloaded
-                  ? 'bg-emerald-600 text-white ring-2 ring-emerald-400'
-                  : 'bg-[#0074E2] hover:bg-[#0060B8] text-white ring-2 ring-[#0074E2]/40 shadow-md shadow-[#0074E2]/25'
-                  }`}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.56, duration: 0.28, ease: 'easeOut' }}
+                className="w-full max-w-[340px] sm:max-w-[390px] mt-2 sm:mt-3 space-y-1 sm:space-y-1.5 z-30"
               >
-                {isTicketDownloaded ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" />
-                    <span>บันทึกบัตรคอนเสิร์ตลงเครื่องแล้ว!</span>
-                  </>
-                ) : (
-                  <>
-                    <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
-                    <span>บันทึกรูปภาพบัตรเชิญ (SAVE IMAGE)</span>
-                  </>
-                )}
-              </button>
+                {/* Save / Download Ticket Image Button */}
+                <button
+                  type="button"
+                  onClick={downloadTicketImage}
+                  disabled={isDownloadingTicket}
+                  className={`w-full py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg active:scale-98 ${isTicketDownloaded
+                    ? 'bg-emerald-600 text-white ring-2 ring-emerald-400'
+                    : 'bg-[#0074E2] hover:bg-[#0060B8] text-white ring-2 ring-[#0074E2]/40 shadow-md shadow-[#0074E2]/25'
+                    }`}
+                >
+                  {isTicketDownloaded ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" />
+                      <span>บันทึกบัตรคอนเสิร์ตลงเครื่องแล้ว!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
+                      <span>บันทึกรูปภาพบัตรเชิญ (SAVE IMAGE)</span>
+                    </>
+                  )}
+                </button>
 
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={closeSuccessModal}
-                className="w-full py-1 sm:py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white/90 text-[11px] sm:text-xs font-medium tracking-wide transition-colors cursor-pointer border border-white/15"
-              >
-                {t('rsvp.done', 'เสร็จสิ้น')}
-              </button>
-            </motion.div>
-          </div>
+                {/* Close Button */}
+                <button
+                  type="button"
+                  onClick={closeSuccessModal}
+                  className="w-full py-1 sm:py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white/90 text-[11px] sm:text-xs font-medium tracking-wide transition-colors cursor-pointer border border-white/15"
+                >
+                  {t('rsvp.done', 'เสร็จสิ้น')}
+                </button>
+              </motion.div>
+            </div>
+          )
         )}
       </dialog>
 
