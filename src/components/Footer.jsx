@@ -1,7 +1,6 @@
 import React from 'react';
 import { ArrowUp, Heart, Sparkles } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
-import RSVPAdminModal from './RSVPAdminModal';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
@@ -52,9 +51,6 @@ export default function Footer() {
           </p>
           <p>&copy; {new Date().getFullYear()} All rights reserved.</p>
         </div>
-
-        {/* Discreet RSVP Admin Access */}
-        <RSVPAdminModal />
       </div>
     </footer>
   );
