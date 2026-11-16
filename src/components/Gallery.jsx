@@ -64,10 +64,10 @@ export default function Gallery() {
   }, [selectedPhoto]);
 
   return (
-    <section id="gallery" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 bg-transparent">
+    <section id="gallery" className="scroll-mt-24 py-10 sm:py-16 px-4 sm:px-6 bg-transparent">
       <div className="max-w-6xl mx-auto">
         {/* Section Header (Korean Minimalist Style) */}
-        <div className="text-center max-w-xl mx-auto mb-16">
+        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -123,6 +123,7 @@ export default function Gallery() {
                       src={photo.src}
                       alt={photo.title}
                       loading="lazy"
+                      decoding="async"
                       className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106 ${
                         photo.objectPosition || 'object-center'
                       }`}
@@ -137,7 +138,7 @@ export default function Gallery() {
                 </div>
 
                 {/* Minimalist Caption Below Window */}
-                <p className="font-editorial-serif text-lg font-semibold text-[#27272A] tracking-wide">
+                <p className="text-lg font-bold text-[#27272A] tracking-wide">
                   {photo.title}
                 </p>
                 <p className="text-xs text-[#71717A] font-light mt-0.5 line-clamp-1">

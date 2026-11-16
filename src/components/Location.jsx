@@ -16,10 +16,10 @@ export default function Location() {
   };
 
   return (
-    <section id="location" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 bg-transparent overflow-hidden">
+    <section id="location" className="scroll-mt-24 py-10 sm:py-16 px-4 sm:px-6 bg-transparent overflow-hidden">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-14">
+        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}

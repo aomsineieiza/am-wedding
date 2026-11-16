@@ -1,107 +1,15 @@
 // Audio player for wedding invitations
-// Plays chosen YouTube song (or audio source) with seamless fallback to procedural ambient acoustic synth
+// Plays the chosen wedding song: 삐그덕 (Seesaw) - Crush Feat. IU
 import { weddingData } from '../data/weddingData';
 
-class AmbientWeddingAudio {
-  constructor() {
-    this.ctx = null;
-    this.isPlaying = false;
-    this.timer = null;
-    this.gainNode = null;
-    this.tempo = 72;
-    this.currentStep = 0;
-
-    this.notes = [
-      [261.63, 329.63, 392.00, 493.88, 523.25],
-      [392.00, 523.25, 659.25],
-      [329.63, 493.88],
-      [392.00, 587.33],
-      [220.00, 261.63, 329.63, 392.00, 493.88],
-      [329.63, 440.00, 659.25],
-      [261.63, 392.00],
-      [329.63, 523.25],
-      [174.61, 261.63, 329.63, 349.23, 440.00],
-      [261.63, 349.23, 523.25],
-      [220.00, 329.63],
-      [261.63, 440.00, 659.25],
-      [196.00, 293.66, 392.00, 440.00, 587.33],
-      [293.66, 392.00, 523.25],
-      [246.94, 392.00],
-      [293.66, 493.88, 659.25],
-    ];
-  }
-
-  init() {
-    if (!this.ctx && typeof window !== 'undefined') {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (AudioCtx) {
-        this.ctx = new AudioCtx();
-        this.gainNode = this.ctx.createGain();
-        this.gainNode.gain.setValueAtTime(0.001, this.ctx.currentTime);
-        this.gainNode.connect(this.ctx.destination);
-      }
+// Immediately close/silence any old web audio synth context that might still be lingering
+if (typeof window !== 'undefined') {
+  try {
+    if (window.__weddingOldAudioCtx) {
+      window.__weddingOldAudioCtx.close();
+      window.__weddingOldAudioCtx = null;
     }
-    if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
-    }
-  }
-
-  playPluck(freq, delay = 0, volume = 0.12) {
-    if (!this.ctx || !this.isPlaying) return;
-    const now = this.ctx.currentTime + delay;
-    const osc = this.ctx.createOscillator();
-    const noteGain = this.ctx.createGain();
-
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(freq, now);
-
-    noteGain.gain.setValueAtTime(0.0001, now);
-    noteGain.gain.exponentialRampToValueAtTime(volume, now + 0.04);
-    noteGain.gain.exponentialRampToValueAtTime(volume * 0.4, now + 0.5);
-    noteGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
-
-    osc.connect(noteGain);
-    noteGain.connect(this.gainNode);
-
-    osc.start(now);
-    osc.stop(now + 2.3);
-  }
-
-  tick() {
-    if (!this.isPlaying) return;
-    const currentChordNotes = this.notes[this.currentStep % this.notes.length];
-    currentChordNotes.forEach((freq, idx) => {
-      this.playPluck(freq, idx * 0.12, 0.08);
-    });
-    this.currentStep = (this.currentStep + 1) % this.notes.length;
-    const stepDurationMs = (60 / this.tempo) * 1000 * 1.5;
-    this.timer = setTimeout(() => this.tick(), stepDurationMs);
-  }
-
-  play() {
-    this.init();
-    if (!this.ctx) return;
-    this.isPlaying = true;
-    const now = this.ctx.currentTime;
-    this.gainNode.gain.cancelScheduledValues(now);
-    this.gainNode.gain.setValueAtTime(this.gainNode.gain.value, now);
-    this.gainNode.gain.linearRampToValueAtTime(0.35, now + 1.2);
-    this.tick();
-  }
-
-  pause() {
-    this.isPlaying = false;
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
-    if (this.gainNode && this.ctx) {
-      const now = this.ctx.currentTime;
-      this.gainNode.gain.cancelScheduledValues(now);
-      this.gainNode.gain.setValueAtTime(this.gainNode.gain.value, now);
-      this.gainNode.gain.linearRampToValueAtTime(0.001, now + 0.8);
-    }
-  }
+  } catch {}
 }
 
 class WeddingAudioManager {
@@ -112,7 +20,6 @@ class WeddingAudioManager {
     this.hasError = false;
     this.player = null;
     this.listeners = new Set();
-    this.fallbackAudio = new AmbientWeddingAudio();
     this.youtubeId = weddingData.music?.youtubeId || 'IVTYOsaO0Mw';
 
     if (typeof window !== 'undefined') {
@@ -184,16 +91,14 @@ class WeddingAudioManager {
             onReady: (event) => {
               this.isPlayerReady = true;
               try {
-                event.target.setVolume(80);
+                event.target.setVolume(85);
               } catch (e) {}
 
               if (this.pendingPlay) {
                 this.pendingPlay = false;
                 try {
                   event.target.playVideo();
-                } catch (e) {
-                  this.fallbackAudio.play();
-                }
+                } catch (e) {}
               }
             },
             onStateChange: (event) => {
@@ -218,11 +123,10 @@ class WeddingAudioManager {
               }
             },
             onError: (err) => {
-              console.warn('YouTube audio player error, fallback to ambient synth', err);
+              console.warn('YouTube audio player error:', err);
               this.hasError = true;
-              if (this.isPlaying) {
-                this.fallbackAudio.play();
-              }
+              this.isPlaying = false;
+              this.notify(false);
             },
           },
         });
@@ -259,11 +163,6 @@ class WeddingAudioManager {
     this.isPlaying = true;
     this.notify(true);
 
-    if (this.hasError) {
-      this.fallbackAudio.play();
-      return;
-    }
-
     if (!this.player) {
       this.initYouTubePlayer();
     }
@@ -272,18 +171,10 @@ class WeddingAudioManager {
       try {
         this.player.playVideo();
       } catch (err) {
-        console.warn('playVideo error, fallback:', err);
-        this.fallbackAudio.play();
+        console.warn('playVideo error:', err);
       }
     } else {
       this.pendingPlay = true;
-      // Fallback timer if YouTube takes too long or is blocked
-      setTimeout(() => {
-        if (this.pendingPlay && !this.isPlayerReady) {
-          console.log('YouTube loading delay, fallback to ambient audio');
-          this.fallbackAudio.play();
-        }
-      }, 4000);
     }
   }
 
@@ -296,9 +187,6 @@ class WeddingAudioManager {
       try {
         this.player.pauseVideo();
       } catch (e) {}
-    }
-    if (this.fallbackAudio.isPlaying) {
-      this.fallbackAudio.pause();
     }
   }
 

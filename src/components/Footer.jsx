@@ -16,12 +16,12 @@ export default function Footer() {
       <div className="max-w-4xl mx-auto flex flex-col items-center text-center relative z-10">
         {/* Monogram emblem */}
         <div className="w-12 h-12 rounded-full bg-[#FAFAFB] text-[#27272A] flex items-center justify-center font-bold text-xs tracking-wider shadow-md mb-5">
-          {couple.bride[0]}♥{couple.groom[0]}
+          {couple.groom[0]}♥{couple.bride[0]}
         </div>
 
         {/* Couple Names */}
         <h3 className="text-xl sm:text-2xl font-medium tracking-[0.25em] uppercase text-[#FAFAFB] mb-2">
-          {couple.bride} <span className="text-sm mx-1">♥</span> {couple.groom}
+          {couple.groom} <span className="text-sm mx-1">♥</span> {couple.bride}
         </h3>
 
         {/* Wedding Date */}
@@ -47,7 +47,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="text-xs text-[#A1A1AA] space-y-1 font-light">
           <p className="flex items-center justify-center gap-1.5">
-            Designed with <Heart className="w-3.5 h-3.5 text-[#E5B5BC] fill-current" /> for {couple.bride} &amp; {couple.groom}&apos;s Family &amp; Friends
+            Designed with <Heart className="w-3.5 h-3.5 text-[#E5B5BC] fill-current" /> for {couple.groom} &amp; {couple.bride}&apos;s Family &amp; Friends
           </p>
           <p>&copy; {new Date().getFullYear()} All rights reserved.</p>
         </div>

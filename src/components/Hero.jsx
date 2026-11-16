@@ -55,7 +55,7 @@ export default function Hero() {
   }, [couple.date]);
 
   return (
-    <header className="relative min-h-screen flex flex-col items-center justify-between pt-24 sm:pt-28 pb-16 px-4 sm:px-6 bg-transparent overflow-hidden">
+    <header className="relative min-h-[90vh] sm:min-h-screen flex flex-col items-center justify-between pt-20 sm:pt-24 pb-8 sm:pb-12 px-4 sm:px-6 bg-transparent overflow-hidden">
       {/* Cool Muted Grey-White Ambient Light */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] lg:w-[780px] h-[320px] sm:h-[600px] lg:h-[780px] bg-[#DCE2E7]/50 rounded-full blur-3xl pointer-events-none" />
 
@@ -79,9 +79,9 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="flex items-center justify-center gap-2.5 sm:gap-3.5 text-[#27272A] text-xs sm:text-sm md:text-base font-medium tracking-[0.38em] uppercase mb-8 sm:mb-10 pl-[0.38em]"
           >
-            <span>{couple.bride}</span>
-            <span className="text-[10px] sm:text-xs text-[#27272A] tracking-normal">♥</span>
             <span>{couple.groom}</span>
+            <span className="text-[10px] sm:text-xs text-[#27272A] tracking-normal">♥</span>
+            <span>{couple.bride}</span>
           </motion.div>
 
           {/* 2. Recessed Oval / Capsule Die-Cut Window Frame (Compact Korean Card Proportions on all screens) */}
@@ -95,12 +95,13 @@ export default function Hero() {
                     <motion.img
                       key={gallery?.[activePhotoIndex]?.src || couple.heroImage}
                       src={gallery?.[activePhotoIndex]?.src || couple.heroImage}
-                      alt={`${couple.bride} and ${couple.groom}`}
+                      alt={`${couple.groom} and ${couple.bride}`}
                       initial={{ opacity: 0, scale: 1.04 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.55, ease: 'easeOut' }}
                       loading="eager"
+                      decoding="async"
                       className={`w-full h-full object-cover ${
                         gallery?.[activePhotoIndex]?.objectPosition || 'object-center'
                       }`}
@@ -163,7 +164,7 @@ export default function Hero() {
           <div className="w-12 sm:w-16 h-[1px] bg-[#E2E5E9] my-6 sm:my-8" />
 
           <div className="space-y-1.5 text-center">
-            <p className="font-editorial-serif text-base sm:text-xl md:text-2xl text-[#27272A] tracking-[0.14em] font-semibold">
+            <p className="text-base sm:text-xl md:text-2xl text-[#27272A] tracking-[0.14em] font-semibold">
               2027 . 01 . 23 &nbsp;SAT &nbsp;15:30
             </p>
             <p className="text-xs sm:text-sm text-[#6B7280] font-normal">
@@ -195,7 +196,7 @@ export default function Hero() {
                 key={idx}
                 className="flex flex-col items-center justify-center py-3 sm:py-4 md:py-5 px-2 rounded-2xl bg-[#FAFAFB] border border-[#E2E5E9] shadow-2xs"
               >
-                <span className="font-editorial-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-[#27272A] leading-none">
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#27272A] leading-none">
                   {unit.value}
                 </span>
                 <span className="text-[9px] sm:text-[10px] tracking-[0.15em] text-[#71717A] mt-1.5 font-medium uppercase">
@@ -215,14 +216,22 @@ export default function Hero() {
         >
           <a
             href="#rsvp"
-            className="px-7 py-3 sm:px-9 sm:py-3.5 rounded-full bg-[#27272A] hover:bg-[#18181B] text-[#FAFAFB] text-xs sm:text-sm font-medium tracking-wider shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
+            className="px-7 py-3 sm:px-9 sm:py-3.5 rounded-full bg-[#27272A] hover:bg-[#18181B] text-[#FAFAFB] text-xs sm:text-sm font-medium tracking-wider shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer active:scale-95"
           >
             <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current text-[#E5B5BC]" />
             <span>{t('hero.rsvpButton', 'RSVP ตอบรับคำเชิญ')}</span>
           </a>
           <a
             href="#schedule"
-            className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-full bg-[#FAFAFB] hover:bg-white text-[#3F3F46] border border-[#E2E5E9] hover:border-[#A1A1AA] text-xs sm:text-sm font-medium tracking-wide transition-all shadow-2xs cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
+            className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-full bg-[#FAFAFB] hover:bg-white text-[#3F3F46] border border-[#E2E5E9] hover:border-[#A1A1AA] text-xs sm:text-sm font-medium tracking-wide transition-all shadow-2xs cursor-pointer active:scale-95"
           >
             {t('hero.scheduleButton', 'ดูกำหนดการพิธี')}
           </a>

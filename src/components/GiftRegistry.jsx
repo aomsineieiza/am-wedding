@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Gift, ChevronDown, Copy, Check, CreditCard, QrCode, X } from 'lucide-react';
+import { Gift, ChevronDown, Copy, Check, CreditCard, Download, QrCode, X } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
-import PromptPayCard from './PromptPayCard';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function GiftRegistry() {
@@ -10,13 +9,62 @@ export default function GiftRegistry() {
   const { bankAccounts } = weddingData;
   const [isOpen, setIsOpen] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(null);
-  const [activeTab, setActiveTab] = useState('bank');
+  const [downloadSuccess, setDownloadSuccess] = useState(false);
   const registrySheetRef = useRef(null);
 
   const copyAccountNumber = (accNumber, index) => {
     navigator.clipboard.writeText(accNumber);
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 2500);
+  };
+
+  const handleDownloadQr = async () => {
+    try {
+      const response = await fetch('/images/kbank-qr.jpg');
+      const blob = await response.blob();
+      const file = new File([blob], 'kbank-qr-kewalin.jpg', { type: 'image/jpeg' });
+
+      // 1. Try Native Share for iOS & Android Photos Gallery
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: 'KBANK PromptPay QR Code - Kewalin',
+            text: 'QR Code สำหรับร่วมอวยพร - Kewalin Charnchanaroj',
+          });
+          setDownloadSuccess(true);
+          setTimeout(() => setDownloadSuccess(false), 2500);
+          return;
+        } catch (shareErr) {
+          if (shareErr.name === 'AbortError') return;
+        }
+      }
+
+      // 2. Fallback to Blob URL download
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'kbank-qr-kewalin.jpg';
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
+      }, 1200);
+
+      setDownloadSuccess(true);
+      setTimeout(() => setDownloadSuccess(false), 2500);
+    } catch {
+      // 3. Fallback to direct anchor link
+      const link = document.createElement('a');
+      link.href = '/images/kbank-qr.jpg';
+      link.download = 'kbank-qr-kewalin.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setDownloadSuccess(true);
+      setTimeout(() => setDownloadSuccess(false), 2500);
+    }
   };
 
   const handleToggleRegistry = () => {
@@ -43,117 +91,118 @@ export default function GiftRegistry() {
   };
 
   const renderAccountsContent = () => (
-    <>
-      {/* Switch between Bank Accounts & PromptPay QR */}
-      <div className="flex justify-center mt-4 sm:mt-8 mb-6">
-        <div className="inline-flex p-1 rounded-full bg-slate-100 sm:bg-white border border-slate-200">
-          <button
-            type="button"
-            onClick={() => setActiveTab('bank')}
-            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-              activeTab === 'bank'
-                ? 'bg-[#0074E2] text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <CreditCard className="w-3.5 h-3.5" />
-            <span>โอนผ่านธนาคาร</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('qr')}
-            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-              activeTab === 'qr'
-                ? 'bg-[#0074E2] text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <QrCode className="w-3.5 h-3.5" />
-            <span>PromptPay QR</span>
-          </button>
-        </div>
-      </div>
+    <div className="mt-4 sm:mt-6 max-w-md mx-auto text-left">
+      {bankAccounts.map((acc, index) => (
+        <div
+          key={index}
+          className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 flex flex-col justify-between hover:border-[#C4DDFB] transition-colors shadow-xs space-y-5"
+        >
+          {/* Bank Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-base font-bold text-slate-900">
+                {lang === 'th' ? acc.bankThai : acc.bank}
+              </p>
+              <p className="text-xs text-[#0074E2] font-medium">
+                {lang === 'th' ? acc.bank : acc.bankThai}
+              </p>
+            </div>
+            <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200">
+              <CreditCard className="w-4 h-4 text-slate-500" />
+            </div>
+          </div>
 
-      {activeTab === 'bank' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-          {bankAccounts.map((acc, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 flex flex-col justify-between hover:border-[#C4DDFB] transition-colors shadow-xs"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <p className="text-base font-bold text-slate-900">
-                    {acc.bank}
-                  </p>
-                  <p className="text-xs text-[#0074E2] font-medium">{acc.bankThai}</p>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200">
-                  <CreditCard className="w-4 h-4 text-slate-500" />
-                </div>
+          {/* Thai QR Payment Card */}
+          {acc.qrCodeImage && (
+            <div className="flex flex-col items-center bg-[#F8FAFC] rounded-2xl p-4 border border-slate-200 text-center">
+              <div className="max-w-[240px] w-full rounded-xl overflow-hidden shadow-sm border border-slate-200 bg-white">
+                <img
+                  src={acc.qrCodeImage}
+                  alt="Thai QR Payment"
+                  className="w-full h-auto object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
+              <p className="text-[11px] text-slate-500 mt-2 font-light">
+                {t('registry.qrHint', 'สแกนผ่านแอปธนาคารได้ทุกธนาคาร หรือแตะค้างที่รูปเพื่อบันทึก')}
+              </p>
 
-              <div className="space-y-1 mb-5">
-                <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">
-                  เลขที่บัญชี
-                </span>
-                <div className="text-xl text-slate-900 font-bold tracking-wider">
-                  {acc.accountNumber}
-                </div>
-                <p className="text-xs text-slate-600 pt-1 font-light">
-                  ชื่อบัญชี: <strong>{acc.accountName}</strong>
-                </p>
-                <p className="text-xs text-slate-600 font-light">
-                  พร้อมเพย์: <strong className="text-[#0074E2]">{acc.promptPay}</strong>
-                </p>
-              </div>
-
+              {/* Download / Save Image Button */}
               <button
                 type="button"
-                onClick={() => copyAccountNumber(acc.cleanNumber, index)}
-                className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                  copiedIndex === index
+                onClick={handleDownloadQr}
+                className={`mt-3 w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  downloadSuccess
                     ? 'bg-emerald-600 text-white'
-                    : 'bg-slate-50 text-slate-800 border border-slate-200 hover:border-[#0074E2] hover:text-[#0074E2]'
+                    : 'bg-[#0074E2] text-white hover:bg-[#0060B8] shadow-xs active:scale-98'
                 }`}
               >
-                {copiedIndex === index ? (
+                {downloadSuccess ? (
                   <>
-                    <Check className="w-3.5 h-3.5" />
-                    <span>คัดลอกเลขบัญชีแล้ว!</span>
+                    <Check className="w-4 h-4" />
+                    <span>{t('registry.qrSaved', 'บันทึกรูป QR Code แล้ว!')}</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5 text-slate-400" />
-                    <span>คัดลอกเลขที่บัญชี</span>
+                    <Download className="w-4 h-4" />
+                    <span>{t('registry.saveQr', 'บันทึกรูป QR Code ลงเครื่อง')}</span>
                   </>
                 )}
               </button>
             </div>
-          ))}
+          )}
+
+          {/* Account Details */}
+          <div className="space-y-1">
+            <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">
+              {t('registry.accountNumber', 'เลขที่บัญชี')}
+            </span>
+            <div className="text-xl text-slate-900 font-bold tracking-wider">
+              {acc.accountNumber}
+            </div>
+            <p className="text-xs text-slate-600 pt-1 font-light">
+              {t('registry.accountName', 'ชื่อบัญชี')}: <strong>{lang === 'th' ? acc.accountNameThai : acc.accountName}</strong>
+            </p>
+            {acc.accountNameThai && (
+              <p className="text-xs text-slate-500 font-light">
+                ({lang === 'th' ? acc.accountName : acc.accountNameThai})
+              </p>
+            )}
+          </div>
+
+          {/* Copy Account Number Button */}
+          <button
+            type="button"
+            onClick={() => copyAccountNumber(acc.cleanNumber, index)}
+            className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              copiedIndex === index
+                ? 'bg-emerald-600 text-white'
+                : 'bg-slate-50 text-slate-800 border border-slate-200 hover:border-[#0074E2] hover:text-[#0074E2]'
+            }`}
+          >
+            {copiedIndex === index ? (
+              <>
+                <Check className="w-3.5 h-3.5" />
+                <span>{t('registry.copiedAccount', 'คัดลอกเลขบัญชีแล้ว!')}</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5 text-slate-400" />
+                <span>{t('registry.copyAccount', 'คัดลอกเลขที่บัญชี')}</span>
+              </>
+            )}
+          </button>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-          {bankAccounts.map((acc, index) => (
-            <PromptPayCard
-              key={index}
-              bank={acc.bank}
-              accountName={acc.accountName}
-              accountNumber={acc.accountNumber}
-              cleanNumber={acc.cleanNumber}
-              promptPayId={acc.promptPay}
-            />
-          ))}
-        </div>
-      )}
-    </>
+      ))}
+    </div>
   );
 
   return (
-    <section id="registry" className="py-20 sm:py-28 px-4 sm:px-6 bg-transparent">
+    <section id="registry" className="py-10 sm:py-16 px-4 sm:px-6 bg-transparent">
       <div className="max-w-3xl mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-14">
+        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -161,9 +210,7 @@ export default function GiftRegistry() {
             transition={{ duration: 0.6 }}
             className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#FAFAFB] text-[#52525B] text-[11px] font-medium tracking-[0.28em] uppercase mb-3 border border-[#E2E5E9]"
           >
-            <span>GIFT REGISTRY</span>
-            <span className="text-[9px]">♥</span>
-            <span>BLESSINGS</span>
+            <span>{t('registry.badge', 'ร่วมแสดงความยินดี')}</span>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -172,10 +219,10 @@ export default function GiftRegistry() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-4xl font-bold text-[#27272A] tracking-tight"
           >
-            {t('registry.title', 'ของขวัญและบัญชีแสดงความยินดี')}
+            {t('registry.title', 'ร่วมแสดงความยินดี')}
           </motion.h2>
           <p className="text-sm text-[#71717A] mt-2 font-normal">
-            {t('registry.subtitle', 'การได้พบและร่วมฉลองกับทุกท่านคือของขวัญที่มีค่าที่สุดสำหรับเรา')}
+            {t('registry.subtitle', 'การได้ร่วมฉลองกับทุกท่านคือความสุขที่มีค่าที่สุดสำหรับเรา')}
           </p>
         </div>
 
@@ -191,9 +238,14 @@ export default function GiftRegistry() {
             <Gift className="w-6 h-6" />
           </div>
 
-          <h3 className="text-xl font-bold text-slate-900 mb-2">Your Presence Is Our Present</h3>
+          <h3 className="text-xl font-bold text-slate-900 mb-2">
+            {t('registry.cardTitle', 'ขอบคุณสำหรับความปรารถนาดี')}
+          </h3>
           <p className="text-sm text-slate-600 font-light leading-relaxed max-w-xl mx-auto mb-8">
-            การมาร่วมแสดงความยินดีของทุกท่านคือเกียรติและความสุขอันสูงสุด หากท่านมีความประสงค์จะร่วมอวยพรเป็นของขวัญเริ่มต้นครอบครัวใหม่ สามารถดูรายละเอียดบัญชีและ PromptPay QR ได้ด้านล่างนี้ค่ะ
+            {t(
+              'registry.cardDesc',
+              'สำหรับท่านที่ประสงค์จะร่วมแสดงความยินดีผ่านการโอนเงิน สามารถดูรายละเอียดบัญชีธนาคารและ QR Code ด้านล่างได้เลย'
+            )}
           </p>
 
           {/* Trigger Accordion / Bottom Sheet Button */}
@@ -204,7 +256,11 @@ export default function GiftRegistry() {
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-slate-200 hover:border-[#0074E2] hover:text-[#0074E2] text-xs sm:text-sm font-semibold text-slate-800 transition-all shadow-xs cursor-pointer"
           >
             <CreditCard className="w-4 h-4 text-[#0074E2]" />
-            <span>{isOpen ? 'ซ่อนรายละเอียดบัญชี' : 'ดูรายละเอียดเลขที่บัญชี & PromptPay'}</span>
+            <span>
+              {isOpen
+                ? t('registry.hideDetails', 'ซ่อนรายละเอียด')
+                : t('registry.showDetails', 'ดูเลขที่บัญชี & QR Code รับเงิน')}
+            </span>
             <ChevronDown
               className={`w-4 h-4 transition-transform duration-300 ${
                 isOpen ? 'rotate-180' : ''
@@ -251,7 +307,7 @@ export default function GiftRegistry() {
               </div>
               <div>
                 <h3 id="registry-sheet-title" className="text-base font-bold text-slate-900">
-                  เลขที่บัญชี &amp; PromptPay
+                  เลขที่บัญชี &amp; QR Code รับเงิน
                 </h3>
                 <p className="text-[11px] text-slate-500">ร่วมแสดงความยินดีแด่คู่บ่าวสาว</p>
               </div>

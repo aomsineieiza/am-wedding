@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Sparkles, CalendarPlus, Check, Sun, Moon, Clock } from 'lucide-react';
+import { Calendar, MapPin, CalendarPlus, Check, Sun, Moon, Clock } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 import { CeremonyAnimatedIcon } from './TimelineIcons';
 import { useLanguage } from '../context/LanguageContext';
@@ -14,7 +14,7 @@ export default function Timeline() {
   const getGoogleCalendarUrl = (item) => {
     const startDate = item.googleCalStart || '20270123T083000Z';
     const endDate = item.googleCalEnd || '20270123T140000Z';
-    const title = encodeURIComponent(`${couple.bride} & ${couple.groom}'s Wedding — ${item.period}`);
+    const title = encodeURIComponent(`${couple.groom} & ${couple.bride}'s Wedding — ${item.period}`);
     const details = encodeURIComponent(`${item.periodThai}\nVenue: ${venue.name} (${item.venueRoom})\nDress Code: ${item.dressCodeNote}`);
     const location = encodeURIComponent(`${venue.name}, ${venue.address}`);
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}&location=${location}`;
@@ -31,7 +31,7 @@ export default function Timeline() {
       'CALSCALE:GREGORIAN',
       'METHOD:PUBLISH',
       'BEGIN:VEVENT',
-      `SUMMARY:${couple.bride} & ${couple.groom}'s Wedding — ${item.period}`,
+      `SUMMARY:${couple.groom} & ${couple.bride}'s Wedding — ${item.period}`,
       `DESCRIPTION:${item.periodThai} at ${venue.name}. Dress Code: ${item.dressCodeNote}`,
       `LOCATION:${venue.name}, ${venue.address}`,
       `DTSTART;TZID=Asia/Bangkok:${dtStart}`,
@@ -45,7 +45,7 @@ export default function Timeline() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `${couple.bride}-${couple.groom}-wedding-${item.id}.ics`);
+    link.setAttribute('download', `${couple.groom}-${couple.bride}-wedding-${item.id}.ics`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -56,9 +56,9 @@ export default function Timeline() {
   const currentSchedule = schedule.find((s) => s.id === activeTab) || schedule[0];
 
   return (
-    <section id="schedule" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 max-w-4xl mx-auto">
+    <section id="schedule" className="scroll-mt-24 py-10 sm:py-16 px-4 sm:px-6 max-w-4xl mx-auto">
       {/* Section Header */}
-      <div className="text-center max-w-xl mx-auto mb-12">
+      <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -66,9 +66,9 @@ export default function Timeline() {
           transition={{ duration: 0.6 }}
           className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#FAFAFB] text-[#52525B] text-[11px] font-medium tracking-[0.28em] uppercase mb-3 border border-[#E2E5E9]"
         >
-          <span>SCHEDULE</span>
+          <span>{lang === 'th' ? 'กำหนดการ' : 'SCHEDULE'}</span>
           <span className="text-[9px]">♥</span>
-          <span>TIMELINE</span>
+          <span>{lang === 'th' ? 'ลำดับพิธี' : 'TIMELINE'}</span>
         </motion.div>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -139,7 +139,7 @@ export default function Timeline() {
             </h3>
             <div className="flex items-center gap-2 text-xs sm:text-sm text-[#71717A] mt-1">
               <MapPin className="w-3.5 h-3.5 text-[#7A98B3]" />
-              <span>{currentSchedule.venueRoom}</span>
+              <span>{lang === 'th' ? (currentSchedule.venueRoomThai || currentSchedule.venueRoom) : currentSchedule.venueRoom}</span>
             </div>
           </div>
 
@@ -191,30 +191,19 @@ export default function Timeline() {
 
               <div className="flex-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-                  <span className="font-editorial-serif text-lg font-semibold text-[#5C7A94] tracking-wider">
+                  <span className="text-lg font-bold text-[#5C7A94] tracking-wider">
                     {item.time}
                   </span>
                   <h4 className="text-base font-semibold text-[#27272A] group-hover:text-[#5C7A94] transition-colors">
-                    {item.title}
+                    {lang === 'th' ? (item.titleThai || item.title) : item.title}
                   </h4>
                 </div>
                 <p className="text-xs sm:text-sm text-[#71717A] mt-0.5 font-normal leading-relaxed">
-                  {item.desc}
+                  {lang === 'th' ? (item.descThai || item.desc) : (item.descEn || item.desc)}
                 </p>
               </div>
             </motion.div>
           ))}
-        </div>
-
-        {/* Dress code note */}
-        <div className="mt-8 pt-6 border-t border-[#E2E5E9] flex flex-wrap items-center justify-between gap-2 text-xs text-[#52525B] bg-white p-4 rounded-2xl border">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#7A98B3]" />
-            <span>Dress Code Note: <strong className="text-[#27272A]">{currentSchedule.dressCodeNote}</strong></span>
-          </div>
-          <a href="#dress-code" className="text-[#5C7A94] hover:text-[#27272A] hover:underline font-semibold">
-            ดูธีมสี &rarr;
-          </a>
         </div>
       </motion.div>
     </section>

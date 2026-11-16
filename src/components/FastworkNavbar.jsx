@@ -11,10 +11,18 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const isScrolled = window.scrollY > 40;
+          setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -29,15 +37,25 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
     weddingAudio.toggle();
   };
 
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    const targetId = href.replace('#', '');
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const navLinks = [
     { label: t('nav.schedule', 'กำหนดการ'), href: '#schedule' },
-    { label: t('nav.gallery', 'แกลเลอรี'), href: '#gallery' },
     { label: t('nav.dressCode', 'ธีมสีแต่งกาย'), href: '#dress-code' },
+    { label: t('nav.gallery', 'แกลเลอรี'), href: '#gallery' },
+    { label: t('nav.album', 'อัลบั้ม'), href: '#album' },
     { label: t('nav.location', 'สถานที่'), href: '#location' },
   ];
 
   return (
-    <header className="fixed top-0 inset-x-0 z-40 transition-all duration-300 pointer-events-none flex justify-center px-3 sm:px-4 py-2.5 sm:py-4 w-full max-w-[100vw]">
+    <header style={{ transform: 'translateZ(0)' }} className="fixed top-0 inset-x-0 z-40 transition-all duration-300 pointer-events-none flex justify-center px-3 sm:px-4 py-2.5 sm:py-4 w-full max-w-[100vw]">
       <div
         className={`pointer-events-auto flex items-center justify-between gap-2 transition-all duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           scrolled
@@ -58,6 +76,7 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
             <a
               key={idx}
               href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
               className="px-3 py-1.5 rounded-full text-xs font-medium text-[#52525B] hover:text-[#27272A] hover:bg-[#EFF1F3] transition-all"
             >
               {item.label}
@@ -117,10 +136,11 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
             )}
           </button>
 
-          {/* Primary RSVP CTA Button */}
+          {/* Primary RSVP CTA Button (Desktop only, mobile has bottom MobileNav) */}
           <a
             href="#rsvp"
-            className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#27272A] dark:bg-[#94AFC4] hover:bg-[#18181B] dark:hover:bg-[#A6BFD2] text-[#FAFAFB] dark:text-[#141619] text-[11px] sm:text-xs font-medium tracking-wider shadow-2xs hover:shadow-md transition-all cursor-pointer whitespace-nowrap"
+            onClick={(e) => handleNavClick(e, '#rsvp')}
+            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#27272A] dark:bg-[#94AFC4] hover:bg-[#18181B] dark:hover:bg-[#A6BFD2] text-[#FAFAFB] dark:text-[#141619] text-[11px] sm:text-xs font-medium tracking-wider shadow-2xs hover:shadow-md transition-all cursor-pointer whitespace-nowrap active:scale-95"
           >
             <Heart className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#E5B5BC] dark:text-[#141619] shrink-0" />
             <span>{t('nav.rsvp', 'RSVP ตอบรับ')}</span>

@@ -58,7 +58,7 @@ export default function PromptPayCard({ bank, promptPayId, accountName, cleanNum
           {/* Center decorative ring monogram emblem */}
           <rect x="38" y="38" width="24" height="24" rx="4" fill="#FFFFFF" />
           <rect x="40" y="40" width="20" height="20" rx="3" fill="#FAF8F5" stroke="#C8B89E" strokeWidth="1.5" />
-          <text x="50" y="54" fontSize="10" textAnchor="middle" fill="#2D2926" fontFamily="serif" fontWeight="bold">
+          <text x="50" y="54" fontSize="10" textAnchor="middle" fill="#2D2926" fontFamily="'Google Sans', sans-serif" fontWeight="bold">
             A&amp;M
           </text>
 

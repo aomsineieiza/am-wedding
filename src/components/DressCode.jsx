@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check, Sparkles, Shirt, ClipboardList, Heart } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -16,10 +16,10 @@ export default function DressCode() {
   };
 
   return (
-    <section id="dress-code" className="scroll-mt-24 py-20 sm:py-28 px-4 sm:px-6 bg-transparent">
+    <section id="dress-code" className="scroll-mt-24 py-10 sm:py-16 px-4 sm:px-6 bg-transparent">
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-14">
+        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -92,49 +92,6 @@ export default function DressCode() {
                 </button>
               ))}
             </div>
-          </div>
-
-          {/* Men & Women Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left pt-6 border-t border-slate-200 mb-8">
-            <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
-              <div className="flex items-center gap-2 mb-1.5 text-slate-900 font-semibold text-sm">
-                <Shirt className="w-4 h-4 text-[#0074E2]" />
-                <span>สุภาพบุรุษ (Gentlemen)</span>
-              </div>
-              <p className="text-xs text-slate-600 leading-relaxed font-light">
-                สูทสากล เบลเซอร์ หรือชุดสุภาพในโทนสีฟ้าหม่น (Dusty Blue), ฟ้าอ่อน, ขาวงาช้าง (Ivory), ครีม หรือน้ำตาลอ่อน (Light Brown)
-              </p>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
-              <div className="flex items-center gap-2 mb-1.5 text-slate-900 font-semibold text-sm">
-                <Sparkles className="w-4 h-4 text-[#0074E2]" />
-                <span>สุภาพสตรี (Ladies)</span>
-              </div>
-              <p className="text-xs text-slate-600 leading-relaxed font-light">
-                ชุดเดรสสั้น/ยาว หรือชุดร่วมสมัยในโทนสีฟ้าหม่น (Dusty Blue), ฟ้าพาสเทล (Pastel Blue), ฟ้าอ่อน (Light Blue), ขาวงาช้าง, ครีม หรือน้ำตาลละมุน
-              </p>
-            </div>
-          </div>
-
-          {/* RSVP Prompt Card */}
-          <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 max-w-lg mx-auto flex flex-col items-center text-center shadow-xs">
-            <div className="w-12 h-12 rounded-xl bg-[#EBF4FE] text-[#0074E2] flex items-center justify-center mb-3">
-              <ClipboardList className="w-6 h-6" />
-            </div>
-
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-light mb-5">
-              เพื่อให้การจัดเตรียมงานและที่นั่งเป็นไปอย่างราบรื่น<br />
-              ขอความกรุณาแขกผู้มีเกียรติตอบรับการเข้าร่วมงานด้วยนะคะ
-            </p>
-
-            <a
-              href="#rsvp"
-              className="px-6 py-3 rounded-full bg-[#0074E2] hover:bg-[#0060B8] text-white text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <Heart className="w-4 h-4 fill-current text-white/90" />
-              <span>RSVP ตอบกลับคำเชิญ</span>
-            </a>
           </div>
         </motion.div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
@@ -47,15 +47,15 @@ const WEDDING_CODE_SNIPPETS = [
       { text: '(', color: 'text-[#64748B]' }
     ],
     [
-      { text: '      bride', color: 'text-[#526477]' },
+      { text: '      groom', color: 'text-[#526477]' },
       { text: ' = ', color: 'text-[#94A3B8]' },
-      { text: '"Kewalin"', color: 'text-[#4E9A74]' },
+      { text: '"Aomsin"', color: 'text-[#4E9A74]' },
       { text: ',', color: 'text-[#94A3B8]' }
     ],
     [
-      { text: '      groom', color: 'text-[#526477]' },
+      { text: '      bride', color: 'text-[#526477]' },
       { text: ' = ', color: 'text-[#94A3B8]' },
-      { text: '"Thitikorn"', color: 'text-[#4E9A74]' },
+      { text: '"Mild"', color: 'text-[#4E9A74]' },
       { text: ',', color: 'text-[#94A3B8]' }
     ],
     [
@@ -76,15 +76,15 @@ const WEDDING_CODE_SNIPPETS = [
       { text: ' {', color: 'text-[#64748B]' }
     ],
     [
-      { text: '  bride', color: 'text-[#526477]' },
+      { text: '  groom', color: 'text-[#526477]' },
       { text: ': ', color: 'text-[#94A3B8]' },
-      { text: '"Kewalin"', color: 'text-[#4E9A74]' },
+      { text: '"Aomsin"', color: 'text-[#4E9A74]' },
       { text: ';', color: 'text-[#94A3B8]' }
     ],
     [
-      { text: '  groom', color: 'text-[#526477]' },
+      { text: '  bride', color: 'text-[#526477]' },
       { text: ': ', color: 'text-[#94A3B8]' },
-      { text: '"Thitikorn"', color: 'text-[#4E9A74]' },
+      { text: '"Mild"', color: 'text-[#4E9A74]' },
       { text: ';', color: 'text-[#94A3B8]' }
     ],
     [
@@ -143,14 +143,14 @@ const WEDDING_CODE_SNIPPETS = [
       { text: '():', color: 'text-[#64748B]' }
     ],
     [
-      { text: '    bride', color: 'text-[#526477]' },
-      { text: ' = ', color: 'text-[#94A3B8]' },
-      { text: '"Kewalin"', color: 'text-[#4E9A74]' }
-    ],
-    [
       { text: '    groom', color: 'text-[#526477]' },
       { text: ' = ', color: 'text-[#94A3B8]' },
-      { text: '"Thitikorn"', color: 'text-[#4E9A74]' }
+      { text: '"Aomsin"', color: 'text-[#4E9A74]' }
+    ],
+    [
+      { text: '    bride', color: 'text-[#526477]' },
+      { text: ' = ', color: 'text-[#94A3B8]' },
+      { text: '"Mild"', color: 'text-[#4E9A74]' }
     ],
     [
       { text: '    date', color: 'text-[#526477]' },
@@ -206,11 +206,12 @@ function CodeTypingBg({ isOpening }) {
     setIsFading(false);
 
     const typeNext = () => {
+      if (isOpening) return;
       if (count < totalChars) {
         count += 1;
         setCharCount(count);
-        // Slower, graceful typing cadence (52ms - 82ms)
-        const delay = 52 + Math.floor(Math.random() * 30);
+        // Slower, graceful typing cadence (60ms - 95ms)
+        const delay = 60 + Math.floor(Math.random() * 35);
         timeoutId = setTimeout(typeNext, delay);
       } else {
         // finished typing, pause for 7.5s, then fade out and switch snippet
@@ -223,9 +224,11 @@ function CodeTypingBg({ isOpening }) {
       }
     };
 
-    timeoutId = setTimeout(typeNext, 700);
+    if (!isOpening) {
+      timeoutId = setTimeout(typeNext, 700);
+    }
     return () => clearTimeout(timeoutId);
-  }, [snippetIndex, totalChars]);
+  }, [snippetIndex, totalChars, isOpening]);
 
   let budget = charCount;
   let cursorRendered = false;
@@ -278,6 +281,42 @@ export default function EnvelopeIntro({ onOpen }) {
   const [flapBehind, setFlapBehind] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
+  // Dynamic vertical centering for mobile Figma cursor between envelope and bottom prompt
+  const envelopeBoxRef = useRef(null);
+  const bottomPromptRef = useRef(null);
+  const [cursorBottomPx, setCursorBottomPx] = useState(null);
+
+  useEffect(() => {
+    const updateCursorPosition = () => {
+      if (typeof window === 'undefined') return;
+      if (window.innerWidth < 640) {
+        if (envelopeBoxRef.current && bottomPromptRef.current) {
+          const envRect = envelopeBoxRef.current.getBoundingClientRect();
+          const promptRect = bottomPromptRef.current.getBoundingClientRect();
+          const envBottom = envRect.bottom;
+          const promptTop = promptRect.top;
+          if (promptTop > envBottom) {
+            const midY = (envBottom + promptTop) / 2;
+            const bottomDist = window.innerHeight - midY - 12;
+            setCursorBottomPx(Math.max(55, Math.round(bottomDist)));
+            return;
+          }
+        }
+      }
+      setCursorBottomPx(null);
+    };
+
+    updateCursorPosition();
+    window.addEventListener('resize', updateCursorPosition);
+    const t1 = setTimeout(updateCursorPosition, 100);
+    const t2 = setTimeout(updateCursorPosition, 450);
+    return () => {
+      window.removeEventListener('resize', updateCursorPosition);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [isOpen, isOpening]);
+
   const handleScreenTap = () => {
     if (isOpening) return;
     setIsOpening(true);
@@ -310,7 +349,7 @@ export default function EnvelopeIntro({ onOpen }) {
         <motion.div
           key="powder-blue-showcase-envelope"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.06, filter: 'blur(10px)' }}
+          exit={{ opacity: 0, scale: 1.03 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           onClick={handleScreenTap}
           className="fixed inset-0 z-50 w-screen h-dvh flex flex-col items-center justify-center p-4 sm:p-8 figjam-bg overflow-hidden select-none cursor-pointer"
@@ -350,7 +389,7 @@ export default function EnvelopeIntro({ onOpen }) {
           <div className="relative z-30 pt-2 sm:pt-4 flex items-center justify-center pointer-events-none">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/95 border border-slate-200/90 shadow-xs text-[11px] sm:text-xs font-medium text-slate-700">
               <span className="w-2 h-2 rounded-full bg-[#7A98B3]" />
-              <span>{couple.bride} &amp; {couple.groom} — Wedding Invitation Board</span>
+              <span>{couple.groom} &amp; {couple.bride} — Wedding Invitation Board</span>
               <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-500 font-mono">
                 23.01.2027
               </span>
@@ -382,7 +421,10 @@ export default function EnvelopeIntro({ onOpen }) {
                     y: { duration: 6.5, repeat: Infinity, ease: 'easeInOut' },
                   }
             }
-            className="absolute bottom-[10%] sm:bottom-[13%] md:bottom-[15%] right-[6%] sm:right-[12%] md:right-[16%] z-30 pointer-events-none select-none flex items-start"
+            className={`absolute ${cursorBottomPx !== null ? '' : 'bottom-[19%]'} sm:bottom-[13%] md:bottom-[15%] right-[6%] sm:right-[12%] md:right-[16%] z-30 pointer-events-none select-none flex items-start transition-[bottom] duration-150`}
+            style={{
+              bottom: cursorBottomPx !== null ? `${cursorBottomPx}px` : undefined,
+            }}
           >
             {/* Figma Cursor Arrow Tip */}
             <svg
@@ -413,6 +455,7 @@ export default function EnvelopeIntro({ onOpen }) {
              =============================================================== */}
           <div className="relative my-auto z-20 flex flex-col items-center justify-center pt-[180px] sm:pt-[220px] md:pt-[245px] scale-[0.88] min-[390px]:scale-95 sm:scale-95 lg:scale-100 transition-transform">
             <motion.div
+              ref={envelopeBoxRef}
               initial={{ opacity: 0, y: 24, rotate: -3.5, scale: 0.95 }}
               animate={{
                 opacity: 1,
@@ -441,6 +484,8 @@ export default function EnvelopeIntro({ onOpen }) {
                 <img
                   src="/images/cartoon-couple.png?v=2"
                   alt="Aomsin & Mild 3D Cartoon"
+                  decoding="async"
+                  loading="eager"
                   className="w-full h-auto object-contain select-none pointer-events-none"
                   draggable="false"
                 />
@@ -521,9 +566,9 @@ export default function EnvelopeIntro({ onOpen }) {
 
                 {/* 1. Spaced-Out Minimalist Couple Names + Solid Tiny Heart */}
                 <div className="relative z-10 flex items-center justify-center gap-1.5 sm:gap-2.5 text-[#27272A] text-[9px] sm:text-xs font-medium tracking-[0.32em] uppercase pl-[0.32em]">
-                  <span>{couple.bride}</span>
-                  <span className="text-[7px] sm:text-[9px] text-[#27272A] tracking-normal">♥</span>
                   <span>{couple.groom}</span>
+                  <span className="text-[7px] sm:text-[9px] text-[#27272A] tracking-normal">♥</span>
+                  <span>{couple.bride}</span>
                 </div>
 
                 {/* 2. Recessed Oval / Capsule Die-Cut Window Frame */}
@@ -533,7 +578,8 @@ export default function EnvelopeIntro({ onOpen }) {
                       <div className="diecut-window-inner w-full h-full rounded-full overflow-hidden relative bg-[#E5E7EB]">
                         <img
                           src={couple.heroImage}
-                          alt={`${couple.bride} and ${couple.groom}`}
+                          alt={`${couple.groom} and ${couple.bride}`}
+                          decoding="async"
                           className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 rounded-full shadow-[inset_0_2px_6px_rgba(15,23,42,0.14)] pointer-events-none" />
@@ -610,7 +656,8 @@ export default function EnvelopeIntro({ onOpen }) {
                     textAnchor="middle"
                     fill="#64748B"
                     fontSize="7.5"
-                    fontFamily="monospace"
+                    fontFamily="'Google Sans', sans-serif"
+                    fontWeight="bold"
                     letterSpacing="0.8"
                   >
                     23.01.27
@@ -632,7 +679,8 @@ export default function EnvelopeIntro({ onOpen }) {
                 <div className="w-16 h-20 sm:w-22 sm:h-26 bg-slate-950 overflow-hidden relative">
                   <img
                     src="/images/prewedding-1.jpg"
-                    alt={`${couple.bride} & ${couple.groom} Stamp`}
+                    alt={`${couple.groom} & ${couple.bride} Stamp`}
+                    decoding="async"
                     className="w-full h-full object-cover opacity-95 contrast-105"
                   />
                   <div className="absolute bottom-1 right-1.5 text-[7px] font-mono text-white/85 tracking-tighter bg-black/50 px-1 rounded-xs">
@@ -688,8 +736,8 @@ export default function EnvelopeIntro({ onOpen }) {
                   [BETTER TOGETHER • 23.01]
                 </span>
 
-                <div className="font-calligraphy text-4xl sm:text-6xl md:text-[64px] text-slate-950 leading-[0.88] tracking-normal mt-1 sm:mt-1.5 drop-shadow-[0_1px_0_rgba(255,255,255,0.5)]">
-                  {couple.bride} &amp; {couple.groom}!
+                <div className="font-parisienne text-3xl sm:text-5xl md:text-[56px] text-slate-950 leading-[1.05] tracking-normal mt-1 sm:mt-1.5 drop-shadow-[0_1px_0_rgba(255,255,255,0.5)]">
+                  {couple.groom} &amp; {couple.bride}!
                 </div>
               </div>
             </div>
@@ -700,6 +748,7 @@ export default function EnvelopeIntro({ onOpen }) {
           <div className="relative z-30 pb-3 sm:pb-5 flex flex-col items-center text-center min-h-[44px]">
             {!isOpening && (
               <motion.div
+                ref={bottomPromptRef}
                 animate={{ y: [0, -4, 0] }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 text-xs sm:text-sm font-semibold text-slate-800 shadow-md"
