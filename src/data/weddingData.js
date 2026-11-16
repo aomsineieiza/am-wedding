@@ -14,7 +14,7 @@ export const weddingData = {
     brideFull: "Aomsin P.",
     groomFull: "Mild T.",
     initials: "A & M",
-    hashtag: "#AomsinMild2027",
+    hashtag: "#AMWedding",
     quote: "Every love story is beautiful, but ours is our favorite.",
     date: "2027-01-23T15:30:00+07:00", // Wedding date ISO string (23/01/2027 15:30)
     dateFormatted: "Saturday, January 23, 2027",
