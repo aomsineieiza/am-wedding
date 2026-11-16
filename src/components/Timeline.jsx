@@ -12,9 +12,8 @@ export default function Timeline() {
   const [calendarAdded, setCalendarAdded] = useState(false);
 
   const getGoogleCalendarUrl = (item) => {
-    const isMorning = item.id === 'morning-ceremony';
-    const startDate = isMorning ? '20270123T003000Z' : '20270123T103000Z';
-    const endDate = isMorning ? '20270123T043000Z' : '20270123T160000Z';
+    const startDate = item.googleCalStart || '20270123T083000Z';
+    const endDate = item.googleCalEnd || '20270123T140000Z';
     const title = encodeURIComponent(`${couple.bride} & ${couple.groom}'s Wedding — ${item.period}`);
     const details = encodeURIComponent(`${item.periodThai}\nVenue: ${venue.name} (${item.venueRoom})\nDress Code: ${item.dressCodeNote}`);
     const location = encodeURIComponent(`${venue.name}, ${venue.address}`);
@@ -22,9 +21,8 @@ export default function Timeline() {
   };
 
   const downloadIcsFile = (item) => {
-    const isMorning = item.id === 'morning-ceremony';
-    const dtStart = isMorning ? '20270123T073000' : '20270123T173000';
-    const dtEnd = isMorning ? '20270123T113000' : '20270123T230000';
+    const dtStart = item.icalStart || '20270123T153000';
+    const dtEnd = item.icalEnd || '20270123T210000';
 
     const icsContent = [
       'BEGIN:VCALENDAR',
@@ -87,33 +85,35 @@ export default function Timeline() {
       </div>
 
       {/* Minimalist Segmented Control Tabs */}
-      <div className="flex justify-center mb-10">
-        <div className="inline-flex p-1.5 rounded-full bg-[#E5E8EC] border border-[#D8DCE2] max-w-full">
-          {schedule.map((item) => {
-            const isActive = activeTab === item.id;
-            const isMorning = item.id === 'morning-ceremony';
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setActiveTab(item.id)}
-                className={`flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-8 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer ${
-                  isActive
-                    ? 'bg-[#FAFAFB] text-[#27272A] shadow-xs border border-[#E2E5E9]'
-                    : 'text-[#52525B] hover:text-[#27272A]'
-                }`}
-              >
-                {isMorning ? (
-                  <Sun className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#27272A]' : 'text-[#71717A]'}`} />
-                ) : (
-                  <Moon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#27272A]' : 'text-[#71717A]'}`} />
-                )}
-                <span>{lang === 'th' ? item.periodThai : item.period}</span>
-              </button>
-            );
-          })}
+      {schedule.length > 1 && (
+        <div className="flex justify-center mb-10">
+          <div className="inline-flex p-1.5 rounded-full bg-[#E5E8EC] border border-[#D8DCE2] max-w-full">
+            {schedule.map((item) => {
+              const isActive = activeTab === item.id;
+              const isMorning = item.id.includes('morning');
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setActiveTab(item.id)}
+                  className={`flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-8 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? 'bg-[#FAFAFB] text-[#27272A] shadow-xs border border-[#E2E5E9]'
+                      : 'text-[#52525B] hover:text-[#27272A]'
+                  }`}
+                >
+                  {isMorning ? (
+                    <Sun className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#27272A]' : 'text-[#71717A]'}`} />
+                  ) : (
+                    <Moon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#27272A]' : 'text-[#71717A]'}`} />
+                  )}
+                  <span>{lang === 'th' ? item.periodThai : item.period}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Schedule Card - Minimalist Matte Paper */}
       <motion.div

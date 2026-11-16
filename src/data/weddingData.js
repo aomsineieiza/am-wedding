@@ -16,7 +16,7 @@ export const weddingData = {
     initials: "A & M",
     hashtag: "#AomsinMild2027",
     quote: "Every love story is beautiful, but ours is our favorite.",
-    date: "2027-01-23T09:09:00+07:00", // Wedding date ISO string (23/01/2027)
+    date: "2027-01-23T15:30:00+07:00", // Wedding date ISO string (23/01/2027 15:30)
     dateFormatted: "Saturday, January 23, 2027",
     thaiDateFormatted: "วันเสาร์ที่ 23 มกราคม 2570",
     tagline: "Together with our families, we joyfully invite you to celebrate our union.",
@@ -52,33 +52,22 @@ export const weddingData = {
 
   schedule: [
     {
-      id: "morning-ceremony",
-      period: "Morning Ceremony",
-      periodThai: "พิธีเช้า",
-      time: "07:30 - 11:30",
+      id: "afternoon-evening-ceremony",
+      period: "Afternoon & Evening Ceremony",
+      periodThai: "พิธีบ่าย-เย็น",
+      time: "15:30 - 21:00",
       venueRoom: "Le Pasiri Glasshouse Hall",
-      dressCodeNote: "Dusty Blue, Pastel Blue, Ivory, Cream & Earth Brown",
-      items: [
-        { time: "07:30", title: "Monk Blessing Ceremony", desc: "พิธีสงฆ์เจริญพระพุทธมนต์เพื่อความเป็นสิริมงคล" },
-        { time: "08:39", title: "Khan Maak Traditional Procession", desc: "ขบวนขันหมากและพิธีสู่ขอ" },
-        { time: "09:09", title: "Auspicious Engagement Ring Exchange", desc: "พิธีสวมแหวนหมั้นตามฤกษ์มงคล" },
-        { time: "10:00", title: "Sacred Water Pouring Ceremony", desc: "พิธีหลั่งน้ำพระพุทธมนต์และประสาทพร" },
-        { time: "11:00", title: "Family Lunch Feast", desc: "รับประทานอาหารร่วมกับครอบครัวและแขกผู้มีเกียรติ" },
-      ],
-    },
-    {
-      id: "evening-reception",
-      period: "Evening Celebration & Party",
-      periodThai: "งานฉลองมงคลสมรส",
-      time: "17:30 - 23:00",
-      venueRoom: "Le Pasiri Grand Glasshouse & Fountain Garden",
       dressCodeNote: "Dusty Blue, Pastel Blue, Light Blue, Ivory, Light Brown & Cream",
+      googleCalStart: "20270123T083000Z", // 15:30 Bangkok (UTC+7)
+      googleCalEnd: "20270123T140000Z",   // 21:00 Bangkok (UTC+7)
+      icalStart: "20270123T153000",
+      icalEnd: "20270123T210000",
       items: [
-        { time: "17:30", title: "Welcome Cocktail & Photo Call", desc: "ลงทะเบียน ถ่ายภาพร่วมกับคู่บ่าวสาว และค็อกเทลต้อนรับ" },
-        { time: "18:45", title: "Grand Entrance & Vow Sharing", desc: "เปิดตัวคู่บ่าวสาวและกล่าวคำมั่นสัญญา" },
-        { time: "19:15", title: "Cake Cutting & Champagne Toast", desc: "พิธีตัดเค้กและฉลองความสุขร่วมกัน" },
-        { time: "19:45", title: "Bouquet Toss & Dinner Banquet", desc: "โยนช่อดอกไม้และร่วมรับประทานอาหารค่ำ" },
-        { time: "21:00", title: "After Party & Live Music", desc: "มินิคอนเสิร์ตและปาร์ตี้เฉลิมฉลองค่ำคืนอันน่าจดจำ" },
+        { time: "15:30", title: "Monk Blessing Ceremony", desc: "พิธีสงฆ์เจริญพระพุทธมนต์เพื่อความเป็นสิริมงคล" },
+        { time: "16:09", title: "Khan Maak Traditional Procession", desc: "ขบวนขันหมากและพิธีสู่ขอ" },
+        { time: "16:39", title: "Auspicious Engagement Ring Exchange", desc: "พิธีสวมแหวนหมั้นตามฤกษ์มงคล" },
+        { time: "17:30", title: "Sacred Water Pouring Ceremony", desc: "พิธีหลั่งน้ำพระพุทธมนต์และประสาทพร" },
+        { time: "18:30", title: "Family Lunch Feast", desc: "รับประทานอาหารร่วมกับครอบครัวและแขกผู้มีเกียรติ" },
       ],
     },
   ],

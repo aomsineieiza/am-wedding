@@ -164,7 +164,7 @@ export default function Hero() {
 
           <div className="space-y-1.5 text-center">
             <p className="font-editorial-serif text-base sm:text-xl md:text-2xl text-[#27272A] tracking-[0.14em] font-semibold">
-              2027 . 01 . 23 &nbsp;SAT &nbsp;07:30
+              2027 . 01 . 23 &nbsp;SAT &nbsp;15:30
             </p>
             <p className="text-xs sm:text-sm text-[#6B7280] font-normal">
               {lang === 'th' ? couple.thaiDateFormatted : couple.dateFormatted} • {lang === 'th' ? venue.name : 'Le Pasiri'}
