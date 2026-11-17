@@ -756,13 +756,13 @@ export default function RSVPForm() {
     // Sync to Google Sheet concurrently
     const syncPromise = weddingData.googleSheetWebAppUrl
       ? fetch(weddingData.googleSheetWebAppUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8',
-          },
-          body: JSON.stringify(payload),
-        }).catch((err) => console.error('Google Sheets sync error:', err))
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify(payload),
+      }).catch((err) => console.error('Google Sheets sync error:', err))
       : Promise.resolve();
 
     const startTime = performance.now();
@@ -798,18 +798,18 @@ export default function RSVPForm() {
               console.error('Storage error:', err);
             }
 
-          if (successDialogRef.current) {
-            successDialogRef.current.showModal();
-            playPrinterSoundEffect();
-            setTimeout(triggerModalConfetti, 120);
-          }
-        }, 280);
-      });
-    }
-  };
+            if (successDialogRef.current) {
+              successDialogRef.current.showModal();
+              playPrinterSoundEffect();
+              setTimeout(triggerModalConfetti, 120);
+            }
+          }, 280);
+        });
+      }
+    };
 
-  requestAnimationFrame(updateProgress);
-};
+    requestAnimationFrame(updateProgress);
+  };
 
   const closeSuccessModal = () => {
     if (successDialogRef.current) {
@@ -1233,19 +1233,17 @@ export default function RSVPForm() {
                                         handleSelectGuestOption(opt.value);
                                         setIsGuestDropdownOpen(false);
                                       }}
-                                      className={`w-full min-h-[56px] flex items-center justify-between p-3.5 rounded-2xl border text-left transition-all active:scale-[0.99] cursor-pointer ${
-                                        isSelected
-                                          ? 'border-[#0074E2] dark:border-[#38BDF8] bg-[#F0F7FF] dark:bg-[#0074E2]/15 ring-2 ring-[#0074E2]/25'
-                                          : 'border-slate-200/80 dark:border-slate-800 bg-white dark:bg-[#1A1D23] hover:bg-slate-50 dark:hover:bg-[#252A32]'
-                                      }`}
+                                      className={`w-full min-h-[56px] flex items-center justify-between p-3.5 rounded-2xl border text-left transition-all active:scale-[0.99] cursor-pointer ${isSelected
+                                        ? 'border-[#0074E2] dark:border-[#38BDF8] bg-[#F0F7FF] dark:bg-[#0074E2]/15 ring-2 ring-[#0074E2]/25'
+                                        : 'border-slate-200/80 dark:border-slate-800 bg-white dark:bg-[#1A1D23] hover:bg-slate-50 dark:hover:bg-[#252A32]'
+                                        }`}
                                     >
                                       <div className="flex items-center gap-3.5">
                                         <div
-                                          className={`w-10 h-10 rounded-xl font-bold flex items-center justify-center text-sm transition-colors shrink-0 ${
-                                            isSelected
-                                              ? 'bg-[#0074E2] dark:bg-[#38BDF8] text-white dark:text-slate-950 shadow-sm'
-                                              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-zinc-200'
-                                          }`}
+                                          className={`w-10 h-10 rounded-xl font-bold flex items-center justify-center text-sm transition-colors shrink-0 ${isSelected
+                                            ? 'bg-[#0074E2] dark:bg-[#38BDF8] text-white dark:text-slate-950 shadow-sm'
+                                            : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-zinc-200'
+                                            }`}
                                         >
                                           {opt.badge || opt.value}
                                         </div>
@@ -1261,11 +1259,10 @@ export default function RSVPForm() {
 
                                       {/* Radio Circle Indicator */}
                                       <div
-                                        className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all shrink-0 mr-1 ${
-                                          isSelected
-                                            ? 'border-[#0074E2] dark:border-[#38BDF8] bg-[#0074E2] dark:bg-[#38BDF8]'
-                                            : 'border-slate-300 dark:border-slate-600'
-                                        }`}
+                                        className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all shrink-0 mr-1 ${isSelected
+                                          ? 'border-[#0074E2] dark:border-[#38BDF8] bg-[#0074E2] dark:bg-[#38BDF8]'
+                                          : 'border-slate-300 dark:border-slate-600'
+                                          }`}
                                       >
                                         {isSelected && <Check className="w-3 h-3 text-white dark:text-slate-950 stroke-[3]" />}
                                       </div>
@@ -1503,11 +1500,10 @@ export default function RSVPForm() {
         aria-labelledby="rsvp-success-title"
         onCancel={(e) => e.preventDefault()}
         onClose={() => setSubmittedData(null)}
-        className={`fixed inset-0 m-auto w-screen h-[100dvh] max-w-none max-h-none bg-transparent border-0 outline-none backdrop:bg-slate-950/85 backdrop:backdrop-blur-md overflow-y-auto overscroll-contain z-50 [&:not([open])]:hidden [&[open]]:flex flex-col items-center no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden ${
-          submittedData?.attending === 'no'
-            ? 'justify-end sm:justify-center p-0 sm:p-4'
-            : 'justify-start sm:justify-center py-2 sm:py-4 px-2 sm:p-4'
-        }`}
+        className={`fixed inset-0 m-auto w-screen h-[100dvh] max-w-none max-h-none bg-transparent border-0 outline-none backdrop:bg-slate-950/85 backdrop:backdrop-blur-md overflow-y-auto overscroll-contain z-50 [&:not([open])]:hidden [&[open]]:flex flex-col items-center no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden ${submittedData?.attending === 'no'
+          ? 'justify-end sm:justify-center p-0 sm:p-4'
+          : 'justify-start sm:justify-center py-2 sm:py-4 px-2 sm:p-4'
+          }`}
       >
         {/* Top-layer In-Dialog Confetti Canvas (renders in browser Top Layer directly ON TOP of modal and backdrop) */}
         <canvas
@@ -1572,8 +1568,8 @@ export default function RSVPForm() {
               <div className="flex flex-col items-center gap-1 mt-1 mb-2.5">
                 <div className="text-slate-400 dark:text-slate-500 text-xs tracking-widest flex items-center gap-1.5">
                   <span className="rotate-[-45deg] inline-block text-xs">✈</span>
-                  <span className="text-[11px] font-medium tracking-[0.2em] text-[#64748B] dark:text-slate-400 uppercase">
-                    {lang === 'th' ? 'เราได้รับคำอวยพรจากคุณแล้ว' : 'THANK YOU FOR YOUR WISHES'}
+                  <span className="text-[11px] font-medium tracking-[0.18em] text-[#64748B] dark:text-slate-400 uppercase">
+                    {lang === 'th' ? 'ได้รับคำอวยพรแล้ว ขอบคุณมากๆ เลยนะ' : 'Wishes Received • Thank You So Much!'}
                   </span>
                 </div>
               </div>
@@ -1584,21 +1580,33 @@ export default function RSVPForm() {
                 <p className="text-sm sm:text-base font-bold text-[#17233B] dark:text-slate-100 truncate">
                   {lang === 'th'
                     ? `ถึง คุณ${submittedData.fullName || 'แขกผู้มีเกียรติ'}${submittedData.nickname ? ` (${submittedData.nickname})` : ''}`
-                    : `To: ${submittedData.fullName || 'Our Beloved Guest'}${submittedData.nickname ? ` (${submittedData.nickname})` : ''}`}
+                    : `Dear ${submittedData.fullName || 'Beloved Guest'}${submittedData.nickname ? ` (${submittedData.nickname})` : ''}`}
                 </p>
 
                 {/* Couple Thank-You Message */}
-                <p className="text-xs sm:text-[13px] text-[#64748B] dark:text-slate-300 italic leading-relaxed font-normal">
-                  {lang === 'th'
-                    ? '“ไม่เป็นไรเลย แม้เราอาจไม่ได้พบกันในวันพิเศษนี้ แต่เรายังคงยินดีที่ได้รับความปรารถนาดีจากคุณ ขอบคุณที่นึกถึงและร่วมเป็นส่วนหนึ่งในความทรงจำของเรา”'
-                    : '“It is completely okay. Even though we won’t see each other on our special day, we are truly grateful for your warm wishes and for being a cherished part of our memories.”'}
+                <p className="text-xs sm:text-[13px] text-[#64748B] dark:text-slate-300 leading-relaxed font-normal">
+                  {lang === 'th' ? (
+                    <>
+                      ไม่เจอกันไม่เป็นไรเลย แค่ส่งใจมาให้กันก็แฮปปี้แล้ว{' '}
+                      <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 inline-block text-rose-500 fill-rose-500 align-[-2px] mx-0.5" />
+                      <br />
+                      ขอบคุณที่ไม่ลืมกัน และแวะมาทำให้วันของเราพิเศษขึ้นนะ
+                    </>
+                  ) : (
+                    <>
+                      No worries at all! Just sending your love makes us so happy{' '}
+                      <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 inline-block text-rose-500 fill-rose-500 align-[-2px] mx-0.5" />
+                      <br />
+                      Thank you for thinking of us and making our day extra special.
+                    </>
+                  )}
                 </p>
 
                 {/* Guest Message Section (Distinct Quote Container) */}
                 {submittedData.wishes && (
                   <div className="bg-[#F8FAFC] dark:bg-slate-900/80 rounded-xl p-3 sm:p-3.5 border border-slate-200/80 dark:border-slate-700/80 text-left">
                     <span className="text-[10px] font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider block mb-1">
-                      {lang === 'th' ? 'คำอวยพรของคุณ' : 'Your Wishes'}
+                      {lang === 'th' ? 'คำอวยพรของคุณ' : 'Your Warm Wishes'}
                     </span>
                     <p className="text-xs sm:text-[13px] text-[#17233B] dark:text-slate-200 italic leading-relaxed break-words line-clamp-4">
                       &ldquo;{submittedData.wishes}&rdquo;
