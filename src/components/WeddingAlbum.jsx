@@ -568,36 +568,36 @@ export default function WeddingAlbum() {
 
     if (sheetIndex === 3 && !isFront) {
       return (
-        <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-9 text-[#111317] relative bg-[#F8F9FA] select-none border-r border-[#DFE2E6]">
+        <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-6 lg:p-8 text-[#111317] relative bg-[#F8F9FA] select-none border-r border-[#DFE2E6] overflow-hidden">
           <div className="flex items-center justify-between text-[10px] text-[#64748B] tracking-[0.2em] uppercase pb-2 border-b border-[#E2E4E8]">
             <span className="font-serif italic font-normal text-xs text-[#111317]">playful days</span>
             <span className="text-[9px] font-mono">언제나 미소로 함께하는 날들</span>
           </div>
 
-          <div className="my-auto flex-1 flex flex-col justify-center py-2">
-            <div className="bg-white p-2.5 sm:p-3 shadow-sm border border-[#E2E4E8] rounded-xs">
-              <div className="aspect-[4/4.8] sm:aspect-[3/4] w-full overflow-hidden bg-slate-100">
+          <div className="my-auto flex-1 flex flex-col justify-center py-1 sm:py-2 min-h-0">
+            <div className="bg-white p-2 sm:p-2.5 shadow-xs border border-[#E2E4E8] rounded-xs">
+              <div className="aspect-[4/3] max-h-[340px] sm:max-h-[380px] w-full overflow-hidden bg-slate-100 rounded-xs">
                 <img
                   src="/images/album/album-11.jpg"
                   alt="Smile With You"
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-cover object-center hover:scale-103 transition-transform duration-500"
                 />
               </div>
             </div>
-            <div className="mt-2.5 text-left">
-              <h4 className="font-serif text-sm sm:text-base font-medium text-[#111317]">
-                Smile With You
-              </h4>
-              <p className="text-[11px] text-[#555B66] mt-0.5 font-light leading-relaxed">
-                너와 함께하는 모든 평범한 날들이 가장 특별한 순간이 되었어.
-              </p>
-            </div>
           </div>
 
-          <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-2 border-t border-[#E2E4E8] font-mono">
-            <span>- 08 -</span>
+          <div className="pt-2 border-t border-[#E2E4E8]">
+            <h4 className="font-serif text-sm sm:text-base font-medium text-[#111317]">
+              Smile With You
+            </h4>
+            <p className="text-[11px] text-[#555B66] mt-0.5 font-light leading-relaxed">
+              너와 함께하는 모든 평범한 날들이 가장 특별한 순간이 되었어.
+            </p>
+            <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-1.5 font-mono">
+              <span>- 08 -</span>
+            </div>
           </div>
         </div>
       );
@@ -610,36 +610,36 @@ export default function WeddingAlbum() {
     // -------------------------------------------------------------
     if (sheetIndex === 4 && isFront) {
       return (
-        <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-9 text-[#111317] relative bg-[#F8F9FA] select-none border-l border-[#DFE2E6]">
+        <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-6 lg:p-8 text-[#111317] relative bg-[#F8F9FA] select-none border-l border-[#DFE2E6] overflow-hidden">
           <div className="flex items-center justify-between text-[10px] text-[#64748B] tracking-[0.2em] uppercase pb-2 border-b border-[#E2E4E8]">
             <span className="font-serif italic font-normal text-xs text-[#111317]">chapter 03</span>
             <span className="text-[9px] font-mono">두 사람의 따뜻한 식탁</span>
           </div>
 
-          <div className="my-auto flex-1 flex flex-col justify-center py-2">
-            <div className="bg-white p-2.5 sm:p-3 shadow-sm border border-[#E2E4E8] rounded-xs">
-              <div className="aspect-[4/4.8] sm:aspect-[3/4] w-full overflow-hidden bg-slate-100">
+          <div className="my-auto flex-1 flex flex-col justify-center py-1 sm:py-2 min-h-0">
+            <div className="bg-white p-2 sm:p-2.5 shadow-xs border border-[#E2E4E8] rounded-xs">
+              <div className="aspect-[4/3] max-h-[340px] sm:max-h-[380px] w-full overflow-hidden bg-slate-100 rounded-xs">
                 <img
                   src="/images/album/album-10.jpg"
                   alt="Sweet Kitchen Recipes"
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-cover object-center hover:scale-103 transition-transform duration-500"
                 />
               </div>
             </div>
-            <div className="mt-2.5 text-left">
-              <h4 className="font-serif text-sm sm:text-base font-medium text-[#111317]">
-                Sweet Kitchen Recipes
-              </h4>
-              <p className="text-[11px] text-[#555B66] mt-0.5 font-light leading-relaxed">
-                함께 요리하고 웃음을 나누며, 우리의 하루하루를 사랑으로 채워가요.
-              </p>
-            </div>
           </div>
 
-          <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-2 border-t border-[#E2E4E8] font-mono">
-            <span>- 09 -</span>
+          <div className="pt-2 border-t border-[#E2E4E8]">
+            <h4 className="font-serif text-sm sm:text-base font-medium text-[#111317]">
+              Sweet Kitchen Recipes
+            </h4>
+            <p className="text-[11px] text-[#555B66] mt-0.5 font-light leading-relaxed">
+              함께 요리하고 웃음을 나누며, 우리의 하루하루를 사랑으로 채워가요.
+            </p>
+            <div className="flex items-center justify-end text-[10px] text-[#949AA5] pt-1.5 font-mono">
+              <span>- 09 -</span>
+            </div>
           </div>
         </div>
       );

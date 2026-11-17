@@ -1287,74 +1287,113 @@ export default function RSVPForm() {
         aria-labelledby="rsvp-success-title"
         onCancel={(e) => e.preventDefault()}
         onClose={() => setSubmittedData(null)}
-        className="fixed inset-0 m-auto max-w-sm w-[94vw] max-h-[100dvh] bg-transparent p-0 border-0 outline-none backdrop:bg-slate-950/85 backdrop:backdrop-blur-md overflow-y-auto overscroll-contain z-50 [&:not([open])]:hidden [&[open]]:flex flex-col items-center justify-start sm:justify-center py-2 sm:py-4 no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="fixed inset-0 m-auto max-w-md w-[94vw] max-h-[100dvh] bg-transparent p-0 border-0 outline-none backdrop:bg-slate-950/85 backdrop:backdrop-blur-md overflow-y-auto overscroll-contain z-50 [&:not([open])]:hidden [&[open]]:flex flex-col items-center justify-start sm:justify-center py-2 sm:py-4 no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
         {submittedData && (
           submittedData.attending === 'no' ? (
             /* =========================================================
-               DECLINE GRATITUDE MODAL (UI Matching Current Theme)
+               DECLINE GRATITUDE MODAL (Redesigned to Match Fastwork Theme)
                ========================================================= */
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              initial={{ opacity: 0, scale: 0.94, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-[28px] p-6 sm:p-8 text-center border border-slate-200 shadow-2xl w-full max-w-[360px] sm:max-w-[400px] my-auto select-none relative"
+              className="relative w-full max-w-[380px] sm:max-w-[410px] bg-white dark:bg-slate-900 rounded-[32px] p-6 sm:p-7 text-center border border-slate-200/90 dark:border-slate-800 shadow-[0_24px_50px_-12px_rgba(0,116,226,0.18),0_12px_24px_-6px_rgba(15,23,42,0.12)] overflow-hidden my-auto select-none"
             >
+              {/* Top Gradient Ribbon Accent matching Fastwork Blue & Wedding Elegance */}
+              <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#0074E2] via-[#38BDF8] to-[#C8B89E]" />
+
+              {/* Ambient Soft Glow Effect */}
+              <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-32 bg-gradient-to-b from-[#EBF4FE] via-sky-50/40 to-transparent dark:from-sky-950/30 dark:via-transparent rounded-full blur-2xl pointer-events-none" />
+
               {/* Top Close Button */}
               <button
                 type="button"
                 onClick={closeSuccessModal}
                 aria-label="Close modal"
-                className="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 flex items-center justify-center transition-all cursor-pointer"
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-95 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 flex items-center justify-center transition-all cursor-pointer z-10"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-4 h-4" />
               </button>
 
-              {/* Green Circular Icon: Hands forming Heart */}
-              <div className="w-16 h-16 rounded-full bg-[#EBF8F2] text-[#059669] flex items-center justify-center mx-auto mb-4 border border-[#A7F3D0]/60 shadow-xs">
-                <HeartHandshake className="w-8 h-8 stroke-[1.8]" />
+              {/* Multilayered Icon Badge with Gentle Halo */}
+              <div className="relative mx-auto mb-4 w-18 h-18 sm:w-20 sm:h-20 flex items-center justify-center">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#EBF4FE] via-sky-50 to-[#FDF2F4] dark:from-blue-950/60 dark:to-slate-800 ring-6 ring-[#EBF4FE]/60 dark:ring-blue-900/30" />
+                <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white dark:bg-slate-800 border border-[#C4DDFB]/80 dark:border-blue-700/40 shadow-xs flex items-center justify-center text-[#0074E2] dark:text-[#38BDF8]">
+                  <HeartHandshake className="w-7 h-7 sm:w-8 sm:h-8 stroke-[1.8]" />
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400 absolute -top-1 -right-0.5 animate-pulse" />
+                </div>
               </div>
 
               {/* Title & Subtitle */}
-              <h3 id="rsvp-success-title" className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+              <h3 id="rsvp-success-title" className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-snug">
                 {lang === 'th' ? 'ขอบคุณที่แจ้งให้เราทราบ' : 'Thank You for Letting Us Know'}
               </h3>
-              <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1">
-                {lang === 'th' ? 'Thank you for letting us know!' : 'ขอบคุณที่แจ้งให้เราทราบ'}
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase mt-1">
+                {lang === 'th' ? 'Thank you for letting us know!' : 'Aomsin & Mild Wedding'}
               </p>
 
-              {/* Green Pill Badge */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF8F2] text-[#047857] text-[11px] sm:text-xs font-semibold border border-[#A7F3D0] mt-3.5 shadow-xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+              {/* Status Pill Badge: Fastwork Signature Style */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EBF4FE] dark:bg-blue-950/60 text-[#0074E2] dark:text-[#38BDF8] text-[11px] sm:text-xs font-bold border border-[#C4DDFB] dark:border-blue-800/60 mt-3 shadow-2xs">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0074E2] dark:bg-[#38BDF8]" />
+                </span>
                 <span>{lang === 'th' ? 'บันทึกคำตอบเรียบร้อยแล้ว' : 'Response Recorded'}</span>
               </div>
 
-              {/* Divider */}
-              <div className="w-12 h-px bg-slate-200 mx-auto my-5" />
+              {/* Elegant Micro-Divider */}
+              <div className="w-16 h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent mx-auto my-4" />
 
-              {/* Message Body */}
-              <div className="space-y-2 text-slate-700 text-xs sm:text-sm leading-relaxed px-1">
-                <p>
+              {/* Warm Message Card */}
+              <div className="bg-slate-50/90 dark:bg-slate-800/60 rounded-2xl p-4 sm:p-4.5 border border-slate-200/80 dark:border-slate-700/60 text-center space-y-2.5">
+                {submittedData.fullName && (
+                  <p className="text-xs sm:text-[13px] font-bold text-slate-800 dark:text-slate-200 truncate">
+                    {lang === 'th'
+                      ? `เรียน คุณ${submittedData.fullName}${submittedData.nickname ? ` (${submittedData.nickname})` : ''}`
+                      : `Dear ${submittedData.fullName}${submittedData.nickname ? ` (${submittedData.nickname})` : ''}`}
+                  </p>
+                )}
+
+                <p className="text-xs sm:text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed">
                   {lang === 'th'
-                    ? 'แม้ไม่ได้พบกันในวันพิเศษนี้ แต่เราขอขอบคุณสำหรับความยินดีและคำอวยพรที่ส่งมาให้'
-                    : "Even though we won't see each other on our special day, thank you so much for your warm wishes and blessings."}
+                    ? 'แม้ไม่ได้พบกันในวันพิเศษนี้ แต่เราขอขอบคุณจากใจสำหรับความยินดีและความปรารถนาดีที่ส่งมอบให้เราสองคนนะคะ'
+                    : "Even though we won't be able to celebrate together in person, thank you so much for your heartfelt blessings and warm wishes."}
                 </p>
-                <p className="text-[#E11D48] font-medium pt-1">
-                  {lang === 'th'
-                    ? 'ขอให้คุณมีความสุขเช่นกัน ♡'
-                    : 'Wishing you all the happiness too ♡'}
-                </p>
+
+                {/* Optional Wishes Preview if guest wrote a blessing */}
+                {submittedData.wishes && (
+                  <div className="bg-white dark:bg-slate-900/80 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/80 text-left shadow-2xs mt-2">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                      <MessageSquare className="w-3 h-3 text-[#0074E2] dark:text-[#38BDF8]" />
+                      <span>{lang === 'th' ? 'คำอวยพรของคุณ' : 'Your Wishes'}</span>
+                    </div>
+                    <p className="text-xs text-slate-700 dark:text-slate-200 italic leading-relaxed break-words line-clamp-3">
+                      &ldquo;{submittedData.wishes}&rdquo;
+                    </p>
+                  </div>
+                )}
+
+                {/* Heartfelt closing blessing */}
+                <div className="flex items-center justify-center gap-1.5 text-xs sm:text-[13px] font-semibold text-rose-500 pt-1">
+                  <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500 animate-pulse shrink-0" />
+                  <span>{lang === 'th' ? 'ขอให้คุณมีความสุขและความอบอุ่นเช่นกันเสมอ' : 'Wishing you endless joy & happiness too'}</span>
+                  <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500 animate-pulse shrink-0" />
+                </div>
               </div>
 
-              {/* Return to Home / Close Button */}
-              <button
-                type="button"
-                onClick={closeSuccessModal}
-                className="w-full mt-6 py-3 px-4 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm transition-all shadow-md active:scale-98 cursor-pointer"
-              >
-                {lang === 'th' ? 'กลับสู่หน้าหลัก' : 'Back to Home'}
-              </button>
+              {/* Fastwork Blue Signature CTA Button */}
+              <div className="mt-5 space-y-2">
+                <button
+                  type="button"
+                  onClick={closeSuccessModal}
+                  className="w-full py-3 sm:py-3.5 px-6 rounded-full bg-[#0074E2] hover:bg-[#0060B8] active:bg-[#00529D] text-white font-bold text-xs sm:text-sm tracking-wide shadow-md shadow-[#0074E2]/25 ring-2 ring-[#0074E2]/20 transition-all duration-200 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Check className="w-4 h-4 stroke-[2.5]" />
+                  <span>{lang === 'th' ? 'กลับสู่หน้าหลัก' : 'Back to Home'}</span>
+                </button>
+              </div>
             </motion.div>
           ) : (
             <div
