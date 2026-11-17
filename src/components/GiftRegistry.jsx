@@ -295,34 +295,40 @@ export default function GiftRegistry() {
       >
         <div
           onClick={(e) => e.stopPropagation()}
-          className="bg-white rounded-t-3xl pt-3 pb-8 px-5 border-t border-slate-200 shadow-2xl max-h-[85vh] overflow-y-auto"
+          className="bg-white rounded-t-3xl border-t border-slate-200 shadow-2xl max-h-[85vh] flex flex-col overflow-hidden"
         >
-          {/* Bottom Sheet Pill Handle */}
-          <div className="w-12 h-1.5 rounded-full bg-slate-300 mx-auto mb-4" />
+          {/* Fixed Bottom Sheet Header */}
+          <div className="pt-3 pb-3 px-5 border-b border-slate-100 bg-white shrink-0">
+            {/* Bottom Sheet Pill Handle */}
+            <div className="w-12 h-1.5 rounded-full bg-slate-300 mx-auto mb-3" />
 
-          <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-100">
-            <div className="flex items-center gap-2 text-left">
-              <div className="w-8 h-8 rounded-full bg-[#EBF4FE] text-[#0074E2] flex items-center justify-center shrink-0">
-                <Gift className="w-4 h-4" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5 text-left">
+                <div className="w-8 h-8 rounded-full bg-[#EBF4FE] text-[#0074E2] flex items-center justify-center shrink-0">
+                  <Gift className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 id="registry-sheet-title" className="text-base font-bold text-slate-900 leading-tight">
+                    เลขที่บัญชี &amp; QR Code รับเงิน
+                  </h3>
+                  <p className="text-[11px] text-slate-500">ร่วมแสดงความยินดีแด่คู่บ่าวสาว</p>
+                </div>
               </div>
-              <div>
-                <h3 id="registry-sheet-title" className="text-base font-bold text-slate-900">
-                  เลขที่บัญชี &amp; QR Code รับเงิน
-                </h3>
-                <p className="text-[11px] text-slate-500">ร่วมแสดงความยินดีแด่คู่บ่าวสาว</p>
-              </div>
+              <button
+                type="button"
+                onClick={() => registrySheetRef.current?.close()}
+                aria-label="Close bottom sheet"
+                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 cursor-pointer shrink-0"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => registrySheetRef.current?.close()}
-              aria-label="Close bottom sheet"
-              className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 cursor-pointer shrink-0"
-            >
-              <X className="w-4 h-4" />
-            </button>
           </div>
 
-          {renderAccountsContent()}
+          {/* Scrollable Content Area */}
+          <div className="flex-1 overflow-y-auto px-5 pt-1 pb-8 overscroll-contain">
+            {renderAccountsContent()}
+          </div>
         </div>
       </dialog>
     </section>

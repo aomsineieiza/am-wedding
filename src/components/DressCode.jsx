@@ -53,17 +53,10 @@ export default function DressCode() {
           transition={{ duration: 0.6 }}
           className="bg-[#FAFAFB] rounded-[32px] p-6 sm:p-10 border border-[#E2E5E9] shadow-[0_20px_50px_-15px_rgba(30,41,59,0.06),inset_0_1px_0_#FFFFFF] text-center"
         >
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
-            {dressCode.title}
-          </h3>
-          <p className="text-sm text-slate-600 leading-relaxed max-w-2xl mx-auto mb-8 font-light">
-            {lang === 'th' ? dressCode.description : 'We joyfully invite you to celebrate in soft dusty blue, pastel blue, light blue, ivory, light brown, and warm cream tones.'}
-          </p>
-
           {/* Color Palette Swatches */}
-          <div className="mb-10">
+          <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-6">
-              คลิกที่วงกลมสีเพื่อคัดลอกรหัสสี (HEX CODE)
+              {lang === 'th' ? 'คลิกที่วงกลมสีเพื่อคัดลอกรหัสสี (HEX CODE)' : 'Click circle to copy hex code'}
             </p>
             <div className="flex flex-wrap items-start justify-center gap-4 sm:gap-6">
               {dressCode.palette.map((color, index) => (
@@ -83,11 +76,19 @@ export default function DressCode() {
                       <Copy className="w-4 h-4 text-black/30 opacity-0 group-hover:opacity-100 transition-opacity" />
                     )}
                   </div>
-                  <span className="mt-2.5 text-xs font-semibold text-slate-800">
-                    {color.name}
+                  {/* Primary Color Name (Bold) */}
+                  <span className="mt-2.5 text-xs font-semibold text-slate-800 leading-tight">
+                    {lang === 'th' ? (color.nameThai || color.name) : color.name}
                   </span>
-                  <span className="text-[11px] text-slate-500 mt-0.5">
-                    {copiedHex === color.hex ? 'คัดลอกแล้ว!' : color.hex}
+
+                  {/* Secondary Color Name (Thin / Light) */}
+                  <span className="text-[11px] font-light text-slate-500 leading-tight">
+                    {lang === 'th' ? color.name : (color.nameThai || color.name)}
+                  </span>
+
+                  {/* Hex Code / Copied Notice */}
+                  <span className="text-[10px] text-slate-400 mt-0.5">
+                    {copiedHex === color.hex ? (lang === 'th' ? 'คัดลอกแล้ว!' : 'Copied!') : color.hex}
                   </span>
                 </button>
               ))}

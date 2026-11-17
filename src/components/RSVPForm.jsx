@@ -21,6 +21,58 @@ export default function RSVPForm() {
   const { couple, venue } = weddingData;
   const guestOptions = getGuestOptions(lang);
   const successDialogRef = useRef(null);
+  const modalConfettiCanvasRef = useRef(null);
+
+  const triggerModalConfetti = () => {
+    try {
+      const canvas = modalConfettiCanvasRef.current;
+      if (!canvas) {
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.55 },
+          colors: ['#0074E2', '#38BDF8', '#FB7185', '#F59E0B', '#10B981'],
+        });
+        return;
+      }
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const myConfetti = confetti.create(canvas, {
+        resize: true,
+        useWorker: false,
+      });
+
+      // 1. Center grand explosion on top of the modal
+      myConfetti({
+        particleCount: 110,
+        spread: 85,
+        origin: { y: 0.5 },
+        colors: ['#0074E2', '#38BDF8', '#FB7185', '#F59E0B', '#10B981', '#A78BFA'],
+      });
+
+      // 2. Dual firework bursts from left and right for festive depth
+      setTimeout(() => {
+        myConfetti({
+          particleCount: 45,
+          angle: 60,
+          spread: 60,
+          origin: { x: 0.08, y: 0.6 },
+          colors: ['#38BDF8', '#FB7185', '#FDE047'],
+        });
+        myConfetti({
+          particleCount: 45,
+          angle: 120,
+          spread: 60,
+          origin: { x: 0.92, y: 0.6 },
+          colors: ['#0074E2', '#FB7185', '#34D399'],
+        });
+      }, 180);
+    } catch (err) {
+      console.error('Confetti error:', err);
+    }
+  };
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -530,7 +582,8 @@ export default function RSVPForm() {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      // Only close on outside click for desktop popover (on mobile, bottom sheet handles its own backdrop/close)
+      if (window.innerWidth >= 640 && dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setIsGuestDropdownOpen(false);
       }
     };
@@ -541,6 +594,16 @@ export default function RSVPForm() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isGuestDropdownOpen]);
+
+  // Lock body scroll when mobile guest bottom sheet is open
+  useEffect(() => {
+    if (!isGuestDropdownOpen || typeof window === 'undefined' || window.innerWidth >= 640) return;
+    const origOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = origOverflow;
     };
   }, [isGuestDropdownOpen]);
 
@@ -623,7 +686,7 @@ export default function RSVPForm() {
     const finalGuestCount =
       formData.attending === 'yes'
         ? formData.isCustomGuestCount
-          ? Number(formData.customGuestCount) || 5
+          ? Math.max(5, Number(formData.customGuestCount) || 5)
           : Number(formData.guestCount)
         : 0;
 
@@ -681,6 +744,7 @@ export default function RSVPForm() {
 
       if (successDialogRef.current) {
         successDialogRef.current.showModal();
+        setTimeout(triggerModalConfetti, 100);
       }
       return;
     }
@@ -734,18 +798,10 @@ export default function RSVPForm() {
               console.error('Storage error:', err);
             }
 
-            if (formData.attending === 'yes') {
-            confetti({
-              particleCount: 120,
-              spread: 80,
-              origin: { y: 0.6 },
-              colors: ['#0074E2', '#38BDF8', '#F59E0B', '#10B981'],
-            });
-          }
-
           if (successDialogRef.current) {
             successDialogRef.current.showModal();
             playPrinterSoundEffect();
+            setTimeout(triggerModalConfetti, 120);
           }
         }, 280);
       });
@@ -946,7 +1002,7 @@ export default function RSVPForm() {
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder={t('rsvp.fullNamePlaceholder', 'เช่น คุณกานต์ พิชญา')}
-                    className={`w-full px-4 py-3 pl-11 rounded-xl bg-white border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all ${errors.fullName ? 'border-rose-400 ring-1 ring-rose-400' : 'border-slate-200'
+                    className={`w-full px-4 py-3 pl-11 rounded-xl bg-white border text-[16px] sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all ${errors.fullName ? 'border-rose-400 ring-1 ring-rose-400' : 'border-slate-200'
                       }`}
                   />
                   <User className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -973,7 +1029,7 @@ export default function RSVPForm() {
                   value={formData.nickname}
                   onChange={handleChange}
                   placeholder={t('rsvp.nicknamePlaceholder', 'เช่น กานต์')}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-[16px] sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -996,7 +1052,7 @@ export default function RSVPForm() {
                   value={formData.contact}
                   onChange={handleChange}
                   placeholder={t('rsvp.phonePlaceholder', '0xx-xxx-xxxx')}
-                  className={`w-full px-4 py-3 pl-11 rounded-xl bg-white border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all tracking-wider ${errors.contact ? 'border-rose-400 ring-1 ring-rose-400' : 'border-slate-200'
+                  className={`w-full px-4 py-3 pl-11 rounded-xl bg-white border text-[16px] sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] focus:border-transparent transition-all tracking-wider ${errors.contact ? 'border-rose-400 ring-1 ring-rose-400' : 'border-slate-200'
                     }`}
                 />
                 <Phone className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -1042,7 +1098,7 @@ export default function RSVPForm() {
                   </button>
                   <Users className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
 
-                  {/* Dropdown Popover */}
+                  {/* Dropdown Popover (Desktop only: hidden sm:block) */}
                   <AnimatePresence>
                     {isGuestDropdownOpen && (
                       <motion.div
@@ -1050,7 +1106,7 @@ export default function RSVPForm() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 6, scale: 0.98 }}
                         transition={{ duration: 0.16, ease: 'easeOut' }}
-                        className="absolute top-full left-0 right-0 mt-2 z-30 bg-white dark:bg-[#1E2228] rounded-2xl border border-slate-200 dark:border-[#2E3440] shadow-xl p-2.5 space-y-1.5"
+                        className="hidden sm:block absolute top-full left-0 right-0 mt-2 z-30 bg-white dark:bg-[#1E2228] rounded-2xl border border-slate-200 dark:border-[#2E3440] shadow-xl p-2.5 space-y-1.5"
                       >
                         {guestOptions.map((opt) => {
                           const isSelected =
@@ -1106,6 +1162,126 @@ export default function RSVPForm() {
                       </motion.div>
                     )}
                   </AnimatePresence>
+
+                  {/* Mobile Bottom Sheet (Portal to document.body) */}
+                  {typeof document !== 'undefined' &&
+                    createPortal(
+                      <AnimatePresence>
+                        {isGuestDropdownOpen && (
+                          <div className="sm:hidden fixed inset-0 z-[70] flex flex-col justify-end">
+                            {/* Backdrop overlay */}
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              onClick={() => setIsGuestDropdownOpen(false)}
+                              className="absolute inset-0 bg-slate-950/65 backdrop-blur-xs"
+                            />
+
+                            {/* Bottom Sheet Drawer */}
+                            <motion.div
+                              initial={{ y: '100%' }}
+                              animate={{ y: 0 }}
+                              exit={{ y: '100%' }}
+                              transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+                              className="relative w-full max-h-[85vh] bg-white dark:bg-[#1E2228] rounded-t-[32px] border-t border-slate-200/80 dark:border-slate-800 shadow-2xl flex flex-col overflow-hidden"
+                            >
+                              {/* Grab Handle */}
+                              <div className="pt-3 pb-1 flex justify-center shrink-0">
+                                <div className="w-12 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600" />
+                              </div>
+
+                              {/* Sheet Header */}
+                              <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100 dark:border-slate-800/80 shrink-0">
+                                <div className="flex items-center gap-2.5">
+                                  <div className="w-9 h-9 rounded-xl bg-[#EBF4FE] dark:bg-blue-950 text-[#0074E2] dark:text-[#38BDF8] flex items-center justify-center shrink-0">
+                                    <Users className="w-4 h-4" />
+                                  </div>
+                                  <div>
+                                    <h3 className="text-base font-bold text-slate-900 dark:text-zinc-100 leading-tight">
+                                      {t('rsvp.selectGuestCount', 'จำนวนผู้เข้าร่วมงาน')}
+                                    </h3>
+                                    <p className="text-xs text-slate-500 dark:text-zinc-400">
+                                      {t('rsvp.selectGuestCountDesc', 'โปรดเลือกจำนวนแขกที่จะมาร่วมงาน')}
+                                    </p>
+                                  </div>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => setIsGuestDropdownOpen(false)}
+                                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 flex items-center justify-center transition-colors cursor-pointer"
+                                  aria-label="Close"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+
+                              {/* Option Items */}
+                              <div className="p-4 overflow-y-auto space-y-2.5 max-h-[55vh] overscroll-contain">
+                                {guestOptions.map((opt) => {
+                                  const isSelected =
+                                    opt.value === 'custom'
+                                      ? formData.isCustomGuestCount
+                                      : !formData.isCustomGuestCount && Number(formData.guestCount) === Number(opt.value);
+
+                                  return (
+                                    <button
+                                      key={opt.value}
+                                      type="button"
+                                      onClick={() => {
+                                        handleSelectGuestOption(opt.value);
+                                        setIsGuestDropdownOpen(false);
+                                      }}
+                                      className={`w-full min-h-[56px] flex items-center justify-between p-3.5 rounded-2xl border text-left transition-all active:scale-[0.99] cursor-pointer ${
+                                        isSelected
+                                          ? 'border-[#0074E2] dark:border-[#38BDF8] bg-[#F0F7FF] dark:bg-[#0074E2]/15 ring-2 ring-[#0074E2]/25'
+                                          : 'border-slate-200/80 dark:border-slate-800 bg-white dark:bg-[#1A1D23] hover:bg-slate-50 dark:hover:bg-[#252A32]'
+                                      }`}
+                                    >
+                                      <div className="flex items-center gap-3.5">
+                                        <div
+                                          className={`w-10 h-10 rounded-xl font-bold flex items-center justify-center text-sm transition-colors shrink-0 ${
+                                            isSelected
+                                              ? 'bg-[#0074E2] dark:bg-[#38BDF8] text-white dark:text-slate-950 shadow-sm'
+                                              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-zinc-200'
+                                          }`}
+                                        >
+                                          {opt.badge || opt.value}
+                                        </div>
+                                        <div>
+                                          <div className="font-bold text-slate-900 dark:text-zinc-100 text-sm leading-tight">
+                                            {opt.label}
+                                          </div>
+                                          <div className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
+                                            {opt.desc}
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* Radio Circle Indicator */}
+                                      <div
+                                        className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all shrink-0 mr-1 ${
+                                          isSelected
+                                            ? 'border-[#0074E2] dark:border-[#38BDF8] bg-[#0074E2] dark:bg-[#38BDF8]'
+                                            : 'border-slate-300 dark:border-slate-600'
+                                        }`}
+                                      >
+                                        {isSelected && <Check className="w-3 h-3 text-white dark:text-slate-950 stroke-[3]" />}
+                                      </div>
+                                    </button>
+                                  );
+                                })}
+                              </div>
+
+                              {/* Safe area padding for iPhone Home bar */}
+                              <div className="pb-8 shrink-0" />
+                            </motion.div>
+                          </div>
+                        )}
+                      </AnimatePresence>,
+                      document.body
+                    )}
                 </div>
 
                 {/* Custom Guest Count Stepper Input (Shown when > 4 guests is selected) */}
@@ -1155,20 +1331,29 @@ export default function RSVPForm() {
                           <input
                             id="customGuestCount"
                             name="customGuestCount"
-                            type="number"
-                            min="5"
-                            max="100"
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             value={formData.customGuestCount}
                             onChange={(e) => {
-                              const val = e.target.value === '' ? '' : Math.max(1, parseInt(e.target.value, 10) || 5);
+                              const cleaned = e.target.value.replace(/\D/g, '');
                               setFormData((prev) => ({
                                 ...prev,
-                                customGuestCount: val,
-                                guestCount: val || 5,
+                                customGuestCount: cleaned,
+                                guestCount: cleaned ? Math.max(5, parseInt(cleaned, 10)) : 5,
+                              }));
+                            }}
+                            onBlur={() => {
+                              const num = parseInt(formData.customGuestCount, 10);
+                              const finalVal = isNaN(num) || num < 5 ? 5 : Math.min(100, num);
+                              setFormData((prev) => ({
+                                ...prev,
+                                customGuestCount: finalVal,
+                                guestCount: finalVal,
                               }));
                             }}
                             placeholder="5"
-                            className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#1E2228] border border-slate-200 dark:border-[#323842] text-sm font-semibold text-slate-900 dark:text-zinc-100 text-center focus:outline-none focus:ring-2 focus:ring-[#0074E2] transition-all"
+                            className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#1E2228] border border-slate-200 dark:border-[#323842] text-[16px] sm:text-sm font-semibold text-slate-900 dark:text-zinc-100 text-center focus:outline-none focus:ring-2 focus:ring-[#0074E2] transition-all"
                           />
                           <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 pointer-events-none">
                             {t('rsvp.unitPerson', 'ท่าน')}
@@ -1213,7 +1398,7 @@ export default function RSVPForm() {
                   value={formData.wishes}
                   onChange={handleChange}
                   placeholder={t('rsvp.wishesPlaceholder', 'พิมพ์ข้อความอวยพรคู่บ่าวสาวที่นี่...')}
-                  className="w-full px-4 py-3 pl-11 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] transition-all resize-none"
+                  className="w-full px-4 py-3 pl-11 rounded-xl bg-white border border-slate-200 text-[16px] sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0074E2] transition-all resize-none"
                 />
                 <MessageSquare className="w-4 h-4 text-slate-400 absolute left-4 top-4" />
               </div>
@@ -1318,57 +1503,83 @@ export default function RSVPForm() {
         aria-labelledby="rsvp-success-title"
         onCancel={(e) => e.preventDefault()}
         onClose={() => setSubmittedData(null)}
-        className="fixed inset-0 m-auto max-w-md w-[94vw] max-h-[100dvh] bg-transparent p-0 border-0 outline-none backdrop:bg-slate-950/85 backdrop:backdrop-blur-md overflow-y-auto overscroll-contain z-50 [&:not([open])]:hidden [&[open]]:flex flex-col items-center justify-start sm:justify-center py-2 sm:py-4 no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className={`fixed inset-0 m-auto w-screen h-[100dvh] max-w-none max-h-none bg-transparent border-0 outline-none backdrop:bg-slate-950/85 backdrop:backdrop-blur-md overflow-y-auto overscroll-contain z-50 [&:not([open])]:hidden [&[open]]:flex flex-col items-center no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden ${
+          submittedData?.attending === 'no'
+            ? 'justify-end sm:justify-center p-0 sm:p-4'
+            : 'justify-start sm:justify-center py-2 sm:py-4 px-2 sm:p-4'
+        }`}
       >
+        {/* Top-layer In-Dialog Confetti Canvas (renders in browser Top Layer directly ON TOP of modal and backdrop) */}
+        <canvas
+          ref={modalConfettiCanvasRef}
+          className="fixed inset-0 w-full h-full pointer-events-none z-[100]"
+          style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 100 }}
+        />
         {submittedData && (
           submittedData.attending === 'no' ? (
             /* =========================================================
-               SUBMISSION SUCCESS & GRATITUDE CONFIRMATION MODAL
+               SUBMISSION SUCCESS & GRATITUDE CONFIRMATION MODAL (Korean Die-Cut Invitation Card Style)
                ========================================================= */
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ y: typeof window !== 'undefined' && window.innerWidth < 640 ? '100%' : 15, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ type: 'spring', damping: 28, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-[380px] sm:max-w-[400px] bg-white dark:bg-slate-900 rounded-[28px] sm:rounded-[32px] p-6 sm:p-7 text-center border border-slate-200/80 dark:border-slate-800 shadow-2xl my-auto select-none"
+              className="relative w-full max-w-full sm:max-w-[420px] bg-[#FAFAFB] dark:bg-slate-900 rounded-t-[32px] sm:rounded-[32px] border-t sm:border border-[#E2E5E9] dark:border-slate-800 shadow-[0_20px_50px_-15px_rgba(30,41,59,0.14)] pt-3 pb-8 px-5 sm:p-7 text-center overflow-y-auto max-h-[92vh] sm:max-h-none sm:my-auto select-none"
             >
+              {/* Grab Handle for Mobile Bottom Sheet */}
+              <div className="sm:hidden w-12 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 mx-auto mb-2 shrink-0" />
+
               {/* Minimalist Top Close Button */}
               <button
                 type="button"
                 onClick={closeSuccessModal}
                 aria-label="Close modal"
-                className="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-95 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 flex items-center justify-center transition-all cursor-pointer z-10"
+                className="absolute top-3.5 right-4 sm:top-4 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-200/70 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-95 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 flex items-center justify-center transition-all cursor-pointer z-10"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
 
-              {/* 1. Header Section: Tearful Chibi Wedding Comfort Illustration */}
-              <div className="relative mx-auto mb-3 w-28 sm:w-32 flex items-center justify-center">
-                <img
-                  src="/images/tearful-chibi-comfort.png"
-                  alt="Tearful Chibi Wedding Comfort"
-                  className="w-full h-auto max-h-36 object-contain select-none filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
-                  loading="eager"
-                  decoding="async"
-                />
+              {/* 1. Korean Minimalist Couple Names Header */}
+              <div className="pt-2 sm:pt-1 pb-1 text-center">
+                <span className="text-xs sm:text-sm font-semibold tracking-[0.28em] text-[#334155] dark:text-zinc-200 uppercase inline-flex items-center gap-2">
+                  <span>{couple.groomEn || 'Aomsin'}</span>
+                  <span className="text-[#334155] dark:text-zinc-200 text-xs">♥</span>
+                  <span>{couple.brideEn || 'Mild'}</span>
+                </span>
               </div>
 
-              {/* Main Heading & Subtitle */}
-              <h3 id="rsvp-success-title" className="text-xl sm:text-2xl font-bold text-[#17233B] dark:text-white tracking-tight leading-snug">
-                {lang === 'th' ? 'เราได้รับคำอวยพรจากคุณแล้ว' : 'We Have Received Your Wishes'}
-              </h3>
-              <p className="text-[11px] sm:text-xs font-semibold text-[#64748B] dark:text-slate-400 tracking-[0.16em] uppercase mt-1">
-                {lang === 'th' ? 'THANK YOU FOR YOUR WISHES' : 'THANK YOU FOR YOUR WISHES'}
-              </p>
-
-              {/* Success Status Pill */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAF4FF] dark:bg-blue-950/60 text-[#0878E8] dark:text-[#38BDF8] text-xs font-medium border border-[#D0E6FF] dark:border-blue-800/60 mt-3 shadow-2xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#0878E8] dark:bg-[#38BDF8]" />
-                <span>{lang === 'th' ? 'ส่งคำอวยพรเรียบร้อยแล้ว' : 'Wishes Sent Successfully'}</span>
+              {/* 2. Korean Airplane Window (Die-Cut Oval Frame) */}
+              <div className="diecut-window-outer rounded-full p-2.5 sm:p-3 w-[150px] sm:w-[165px] aspect-[3/4.1] flex items-center justify-center relative mx-auto my-2.5 shadow-md">
+                {/* Second Fine Embossed Inner Rim */}
+                <div className="w-full h-full rounded-full p-1 border border-[#E5E7EB] dark:border-slate-700 bg-[#F4F5F7] dark:bg-slate-800 flex items-center justify-center">
+                  {/* Deep Die-Cut Window Opening */}
+                  <div className="diecut-window-inner w-full h-full rounded-full overflow-hidden relative bg-[#E5E7EB] dark:bg-slate-700 flex items-center justify-center p-2">
+                    <img
+                      src="/images/tearful-chibi-comfort.png"
+                      alt="Aomsin & Mild"
+                      className="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+                      loading="eager"
+                      decoding="async"
+                    />
+                    {/* Soft Inner Vignette */}
+                    <div className="absolute inset-0 rounded-full shadow-[inset_0_4px_12px_rgba(15,23,42,0.16)] pointer-events-none" />
+                  </div>
+                </div>
               </div>
 
-              {/* 2. Message Card: Clean, warm & personalized */}
-              <div className="bg-[#F8FAFC] dark:bg-slate-800/60 rounded-2xl p-4 sm:p-5 border border-slate-200/70 dark:border-slate-700/60 text-center my-4 space-y-3">
+              {/* 3. Airplane icon + Status Subtitle */}
+              <div className="flex flex-col items-center gap-1 mt-1 mb-2.5">
+                <div className="text-slate-400 dark:text-slate-500 text-xs tracking-widest flex items-center gap-1.5">
+                  <span className="rotate-[-45deg] inline-block text-xs">✈</span>
+                  <span className="text-[11px] font-medium tracking-[0.2em] text-[#64748B] dark:text-slate-400 uppercase">
+                    {lang === 'th' ? 'เราได้รับคำอวยพรจากคุณแล้ว' : 'THANK YOU FOR YOUR WISHES'}
+                  </span>
+                </div>
+              </div>
+
+              {/* 4. Message Card: Clean, warm & personalized */}
+              <div className="bg-white dark:bg-slate-800/80 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-700 text-center my-3 space-y-2.5 shadow-2xs">
                 {/* Highlighted Guest Name */}
                 <p className="text-sm sm:text-base font-bold text-[#17233B] dark:text-slate-100 truncate">
                   {lang === 'th'
@@ -1377,15 +1588,15 @@ export default function RSVPForm() {
                 </p>
 
                 {/* Couple Thank-You Message */}
-                <p className="text-xs sm:text-[13px] text-[#64748B] dark:text-slate-300 leading-relaxed font-normal">
+                <p className="text-xs sm:text-[13px] text-[#64748B] dark:text-slate-300 italic leading-relaxed font-normal">
                   {lang === 'th'
-                    ? 'ขอบคุณจากใจสำหรับคำอวยพรและความปรารถนาดีที่มอบให้เรา แม้ในวันพิเศษนี้เราอาจไม่ได้พบกัน แต่ทุกข้อความมีความหมายกับเรามากจริง ๆ'
-                    : "Thank you from the bottom of our hearts for your warm wishes and blessings. Even though we won't see each other on our special day, every word truly means the world to us."}
+                    ? '“ไม่เป็นไรเลย แม้เราอาจไม่ได้พบกันในวันพิเศษนี้ แต่เรายังคงยินดีที่ได้รับความปรารถนาดีจากคุณ ขอบคุณที่นึกถึงและร่วมเป็นส่วนหนึ่งในความทรงจำของเรา”'
+                    : '“It is completely okay. Even though we won’t see each other on our special day, we are truly grateful for your warm wishes and for being a cherished part of our memories.”'}
                 </p>
 
                 {/* Guest Message Section (Distinct Quote Container) */}
                 {submittedData.wishes && (
-                  <div className="bg-white dark:bg-slate-900/80 rounded-xl p-3 sm:p-3.5 border border-slate-200/80 dark:border-slate-700/80 text-left shadow-2xs">
+                  <div className="bg-[#F8FAFC] dark:bg-slate-900/80 rounded-xl p-3 sm:p-3.5 border border-slate-200/80 dark:border-slate-700/80 text-left">
                     <span className="text-[10px] font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider block mb-1">
                       {lang === 'th' ? 'คำอวยพรของคุณ' : 'Your Wishes'}
                     </span>
@@ -1395,22 +1606,21 @@ export default function RSVPForm() {
                   </div>
                 )}
 
-                {/* 3. Closing Section: Warm ending with soft pink heart */}
-                <div className="flex items-center justify-center gap-1.5 text-xs sm:text-[13px] font-medium text-rose-500 pt-1">
-                  <Heart className="w-3.5 h-3.5 fill-rose-400 text-rose-400 shrink-0" />
+                {/* Warm ending */}
+                <div className="flex items-center justify-center gap-1.5 text-xs sm:text-[13px] font-normal text-[#64748B] dark:text-slate-300 pt-1">
                   <span>
                     {lang === 'th'
-                      ? 'ขอให้คุณมีความสุขและได้รับสิ่งดี ๆ กลับไปเช่นกันนะคะ'
-                      : 'Wishing you endless joy and happiness in return'}
+                      ? 'ขอให้คุณมีความสุขและพบเจอแต่สิ่งดี ๆ เช่นกัน ♡'
+                      : 'Wishing you endless joy and all the very best in return ♡'}
                   </span>
                 </div>
               </div>
 
-              {/* 4. Primary CTA: Large comfortable touch target */}
+              {/* 5. Primary CTA Button (Sleek Matte Black) */}
               <button
                 type="button"
                 onClick={closeSuccessModal}
-                className="w-full min-h-[48px] py-3.5 px-6 rounded-full bg-[#0878E8] hover:bg-[#0667C7] active:bg-[#0556A8] text-white font-bold text-sm tracking-wide shadow-md shadow-[#0878E8]/20 transition-all duration-200 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+                className="w-full min-h-[48px] py-3.5 px-6 rounded-full bg-[#18181B] hover:bg-[#27272A] active:bg-black text-white font-bold text-sm tracking-wide shadow-md shadow-black/15 transition-all duration-200 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2 border border-black/10 dark:border-white/10"
               >
                 <Check className="w-4 h-4 stroke-[2.5]" />
                 <span>{lang === 'th' ? 'กลับสู่หน้าหลัก' : 'Back to Home'}</span>

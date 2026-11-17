@@ -196,14 +196,14 @@ export default function WishesWall() {
               value={newAuthor}
               onChange={(e) => setNewAuthor(e.target.value)}
               placeholder="ชื่อของคุณ (เช่น คุณเป็ด เพื่อนมัธยม)"
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0074E2]"
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[16px] sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0074E2]"
             />
             <textarea
               rows="2"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="เขียนข้อความอวยพรคู่บ่าวสาว..."
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0074E2] resize-none"
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[16px] sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0074E2] resize-none"
             />
             <button
               type="submit"

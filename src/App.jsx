@@ -51,6 +51,30 @@ function WeddingContent() {
     }
   }, [isDark]);
 
+  // Handle iOS Safari auto-zoom reset when user finishes typing / unfocuses
+  useEffect(() => {
+    const handleFocusOut = (e) => {
+      const tag = e?.target?.tagName?.toUpperCase();
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tag)) {
+        const meta = document.querySelector('meta[name="viewport"]');
+        if (meta) {
+          meta.setAttribute(
+            'content',
+            'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
+          );
+        }
+        window.scrollTo({
+          top: window.scrollY,
+          left: 0,
+          behavior: 'smooth',
+        });
+      }
+    };
+
+    window.addEventListener('focusout', handleFocusOut);
+    return () => window.removeEventListener('focusout', handleFocusOut);
+  }, []);
+
   return (
     <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden figjam-bg text-slate-900 dark:text-zinc-100 selection:bg-[#94AFC4]/25 selection:text-[#7A98B3] transition-colors duration-300">
       {/* 1. Envelope Opening Screen (First view - Click to open website) */}

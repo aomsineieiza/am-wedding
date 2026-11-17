@@ -95,6 +95,18 @@ html, body {
   text-rendering: optimizeSpeed;
 }
 
+/* Prevent iOS Safari unwanted auto-zoom on input focus by maintaining minimum 16px font-size on mobile */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="email"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
 /* Off-screen rendering optimization for silky smooth mobile scrolling */
 section {
   content-visibility: auto;

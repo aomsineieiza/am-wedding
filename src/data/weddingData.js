@@ -109,12 +109,12 @@ export const weddingData = {
     description: "ร่วมสร้างบรรยากาศแสนอบอุ่นและละมุนตาในโทนสีฟ้าหม่น (Dusty Blue), ฟ้าพาสเทล (Pastel Blue), ฟ้าอ่อน (Light Blue), ขาวงาช้าง (Ivory), น้ำตาลอ่อน (Light Brown) และสีครีม (Cream)",
     note: "Gentlemen: Classic suit, blazer, or formal attire in soft blue, beige, cream, or light brown tones. Ladies: Elegant dress, gown, or modern contemporary attire in dusty/pastel blue, ivory, cream, or light brown tones.",
     palette: [
-      { name: "Dusty Blue", hex: "#94AFC4", textDark: true },
-      { name: "Pastel Blue", hex: "#B4CEE6", textDark: true },
-      { name: "Light Blue", hex: "#D6EAF4", textDark: true },
-      { name: "Ivory", hex: "#FAF8F0", textDark: true },
-      { name: "Light Brown", hex: "#D2BEA8", textDark: true },
-      { name: "Cream", hex: "#F3ECE1", textDark: true },
+      { name: "Dusty Blue", nameThai: "ฟ้าหม่น", hex: "#94AFC4", textDark: true },
+      { name: "Pastel Blue", nameThai: "ฟ้าพาสเทล", hex: "#B4CEE6", textDark: true },
+      { name: "Light Blue", nameThai: "ฟ้าอ่อน", hex: "#D6EAF4", textDark: true },
+      { name: "Light Brown", nameThai: "น้ำตาลอ่อน", hex: "#D2BEA8", textDark: true },
+      { name: "Cream", nameThai: "ครีม", hex: "#F3ECE1", textDark: true },
+      { name: "Ivory", nameThai: "ขาวงาช้าง", hex: "#FAF8F0", textDark: true },
     ],
   },
 
