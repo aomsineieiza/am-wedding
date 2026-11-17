@@ -612,8 +612,6 @@ export default function RSVPForm() {
     e.preventDefault();
     if (!validate()) return;
 
-    setIsSubmitting(true);
-
     const submittedAt = new Date().toISOString();
     const nameParts = formData.fullName.trim().split(/\s+/);
     const firstName = nameParts[0] || formData.fullName.trim();
@@ -647,28 +645,26 @@ export default function RSVPForm() {
       submittedAt,
     };
 
-    if (weddingData.googleSheetWebAppUrl) {
-      try {
-        await fetch(weddingData.googleSheetWebAppUrl, {
+    // If guest selects "ไม่สะดวกเข้าร่วม" (attending === 'no'): Show decline modal immediately without loading
+    if (formData.attending === 'no') {
+      setIsSubmitting(false);
+      setSubmitProgress(0);
+      setSubmittedData({
+        ...formData,
+        guestCount: 0,
+      });
+
+      // Background sync to Google Sheet
+      if (weddingData.googleSheetWebAppUrl) {
+        fetch(weddingData.googleSheetWebAppUrl, {
           method: 'POST',
           mode: 'no-cors',
           headers: {
             'Content-Type': 'text/plain;charset=utf-8',
           },
           body: JSON.stringify(payload),
-        });
-      } catch (err) {
-        console.error('Google Sheets sync error:', err);
+        }).catch((err) => console.error('Google Sheets sync error:', err));
       }
-    }
-
-    // If guest selects "ไม่สะดวกเข้าร่วม" (attending === 'no'): Show modal immediately without loading
-    if (formData.attending === 'no') {
-      setIsSubmitting(false);
-      setSubmittedData({
-        ...formData,
-        guestCount: 0,
-      });
 
       try {
         const stored = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
@@ -689,7 +685,21 @@ export default function RSVPForm() {
       return;
     }
 
+    // For attending guests: start with 0% and empty bar immediately
     setSubmitProgress(0);
+    setIsSubmitting(true);
+
+    // Sync to Google Sheet concurrently
+    const syncPromise = weddingData.googleSheetWebAppUrl
+      ? fetch(weddingData.googleSheetWebAppUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8',
+          },
+          body: JSON.stringify(payload),
+        }).catch((err) => console.error('Google Sheets sync error:', err))
+      : Promise.resolve();
 
     const startTime = performance.now();
     const duration = 2300; // 2.3 seconds of smooth progress assembly
@@ -702,27 +712,29 @@ export default function RSVPForm() {
       if (progress < 100) {
         requestAnimationFrame(updateProgress);
       } else {
-        setTimeout(() => {
-          setIsSubmitting(false);
-          setSubmittedData({
-            ...formData,
-            guestCount: finalGuestCount,
-          });
-
-          try {
-            const stored = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
-            stored.push({
+        syncPromise.finally(() => {
+          setTimeout(() => {
+            setIsSubmitting(false);
+            setSubmitProgress(0);
+            setSubmittedData({
               ...formData,
               guestCount: finalGuestCount,
-              submittedAt,
             });
-            localStorage.setItem('wedding_rsvps', JSON.stringify(stored));
-            window.dispatchEvent(new Event('rsvp_updated'));
-          } catch (err) {
-            console.error('Storage error:', err);
-          }
 
-          if (formData.attending === 'yes') {
+            try {
+              const stored = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
+              stored.push({
+                ...formData,
+                guestCount: finalGuestCount,
+                submittedAt,
+              });
+              localStorage.setItem('wedding_rsvps', JSON.stringify(stored));
+              window.dispatchEvent(new Event('rsvp_updated'));
+            } catch (err) {
+              console.error('Storage error:', err);
+            }
+
+            if (formData.attending === 'yes') {
             confetti({
               particleCount: 120,
               spread: 80,
@@ -736,11 +748,12 @@ export default function RSVPForm() {
             playPrinterSoundEffect();
           }
         }, 280);
-      }
-    };
-
-    requestAnimationFrame(updateProgress);
+      });
+    }
   };
+
+  requestAnimationFrame(updateProgress);
+};
 
   const closeSuccessModal = () => {
     if (successDialogRef.current) {
@@ -1251,26 +1264,44 @@ export default function RSVPForm() {
                   transition={{ duration: 0.3, ease: 'easeOut' }}
                   className="m-auto flex flex-col items-center justify-center text-center pointer-events-none"
                 >
-                  {/* Minimalist White Animated Wedding Rings (Thinner & Delicate) */}
-                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
-                    <picture>
-                      <source srcSet="/images/wedding-rings-white.webp" type="image/webp" />
-                      <img
-                        src="/images/wedding-rings-white.gif"
-                        alt="Wedding Rings"
-                        className="w-full h-full object-contain filter drop-shadow-[0_2px_16px_rgba(255,255,255,0.35)]"
-                        loading="eager"
-                        decoding="async"
-                      />
-                    </picture>
+                  {/* Animated Chibi Couple Running GIF */}
+                  <div className="relative w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center">
+                    <img
+                      src="/images/wedding-loading.gif"
+                      alt="Aomsin & Mild Loading"
+                      className="w-full h-full object-contain filter drop-shadow-[0_4px_24px_rgba(0,0,0,0.35)] select-none"
+                      loading="eager"
+                      decoding="async"
+                    />
                   </div>
 
-                  {/* Minimalist Loading Text & Status */}
-                  <div className="mt-2 flex flex-col items-center space-y-1">
-                    <span className="text-white font-mono font-bold tracking-widest text-base sm:text-lg">
-                      {submitProgress < 100 ? `${submitProgress}%` : 'READY'}
+                  {/* Minimalist Loading Text, Progress Bar & Status */}
+                  <div className="mt-3 flex flex-col items-center space-y-2">
+                    <span className="text-white font-mono font-bold tracking-widest text-base sm:text-lg drop-shadow-sm uppercase">
+                      {submitProgress === 0
+                        ? 'Loading...'
+                        : submitProgress < 100
+                          ? `Loading... ${submitProgress}%`
+                          : 'READY'}
                     </span>
-                    <span className="text-white/80 text-xs sm:text-sm font-sans tracking-wide">
+
+                    {/* White Progress Bar Track & Filler */}
+                    <div className="w-56 sm:w-72 h-3 sm:h-3.5 bg-white/20 rounded-full overflow-hidden relative border border-white/35 shadow-inner p-0">
+                      <div
+                        className="h-full bg-white rounded-full"
+                        style={{
+                          width: `${Math.min(100, Math.max(0, submitProgress))}%`,
+                          backgroundColor: '#FFFFFF',
+                          height: '100%',
+                          minHeight: '100%',
+                          display: 'block',
+                          minWidth: submitProgress > 0 ? '8px' : '0px',
+                          boxShadow: '0 0 10px rgba(255, 255, 255, 0.95)',
+                        }}
+                      />
+                    </div>
+
+                    <span className="text-white/80 text-xs sm:text-sm font-sans tracking-wide pt-0.5">
                       {lang === 'th' ? 'กำลังเตรียมพิมพ์บัตรเชิญ...' : 'Preparing invitation...'}
                     </span>
                   </div>
@@ -1311,9 +1342,15 @@ export default function RSVPForm() {
                 <X className="w-3.5 h-3.5" />
               </button>
 
-              {/* 1. Header Section: Elegant Heart Icon Badge */}
-              <div className="w-16 h-16 rounded-full bg-[#EAF4FF] dark:bg-blue-950/60 text-[#0878E8] dark:text-[#38BDF8] flex items-center justify-center mx-auto mb-3.5 border border-[#D0E6FF]/70 dark:border-blue-800/50 shadow-xs">
-                <HeartHandshake className="w-8 h-8 stroke-[1.8]" />
+              {/* 1. Header Section: Tearful Chibi Wedding Comfort Illustration */}
+              <div className="relative mx-auto mb-3 w-28 sm:w-32 flex items-center justify-center">
+                <img
+                  src="/images/tearful-chibi-comfort.png"
+                  alt="Tearful Chibi Wedding Comfort"
+                  className="w-full h-auto max-h-36 object-contain select-none filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+                  loading="eager"
+                  decoding="async"
+                />
               </div>
 
               {/* Main Heading & Subtitle */}
