@@ -108,16 +108,15 @@ export default function RSVPForm() {
     const fileName = `wedding-ticket-${rawName}.png`;
     const file = new File([blob], fileName, { type: 'image/png' });
 
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
     const isIOS =
       /iPad|iPhone|iPod/.test(navigator.userAgent) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-    // 1. Desktop Browser: Save image file immediately to Downloads without opening share sheets
-    if (!isMobile) {
+    // 1. Android & Desktop: Direct save/download immediately into device storage & Gallery
+    // On Android, triggering a file download saves it into Downloads / Pictures,
+    // which Android automatically indexes into the Gallery / Google Photos app.
+    // Unlike iOS, Android users do NOT want the System Share Sheet to pop up when clicking "Save Image".
+    if (!isIOS) {
       try {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -126,21 +125,23 @@ export default function RSVPForm() {
         document.body.appendChild(link);
         link.click();
         setTimeout(() => {
-          document.body.removeChild(link);
-          URL.revokeObjectURL(blobUrl);
-        }, 1200);
+          try {
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+          } catch (e) {}
+        }, 60000);
 
         setIsTicketDownloaded(true);
         setTimeout(() => setIsTicketDownloaded(false), 3000);
       } catch (err) {
-        console.error('Desktop download error:', err);
+        console.error('Android / Desktop direct download error:', err);
       } finally {
         setIsDownloadingTicket(false);
       }
       return;
     }
 
-    // 2. Mobile Browser: Native Web Share API (Directly saves to Photos / Camera Roll)
+    // 2. iOS: Use Native Web Share API (which includes the native "Save Image" option directly to Camera Roll)
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       try {
         await navigator.share({
@@ -161,35 +162,13 @@ export default function RSVPForm() {
       }
     }
 
+    // 3. iOS Fallback for In-App Browsers (LINE / FB) or unsupported share
     const blobUrl = URL.createObjectURL(blob);
-
-    // 3. iOS Fallback for HTTP local testing or In-App Browsers (LINE / FB)
-    if (isIOS) {
-      setIosTicketPreview(blobUrl);
-      setShowIosSaveModal(true);
-      setIsTicketDownloaded(true);
-      setTimeout(() => setIsTicketDownloaded(false), 3000);
-      setIsDownloadingTicket(false);
-      return;
-    }
-
-    // 4. Standard Blob URL Download
-    try {
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(() => {
-        document.body.removeChild(link);
-        URL.revokeObjectURL(blobUrl);
-      }, 1200);
-
-      setIsTicketDownloaded(true);
-      setTimeout(() => setIsTicketDownloaded(false), 3000);
-    } finally {
-      setIsDownloadingTicket(false);
-    }
+    setIosTicketPreview(blobUrl);
+    setShowIosSaveModal(true);
+    setIsTicketDownloaded(true);
+    setTimeout(() => setIsTicketDownloaded(false), 3000);
+    setIsDownloadingTicket(false);
   };
 
   const handleAddToCalendar = () => {
@@ -1013,8 +992,8 @@ export default function RSVPForm() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <label
                   className={`flex items-center gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${formData.attending === 'yes'
-                    ? 'border-[#0074E2] bg-[#EBF4FE]/60 ring-2 ring-[#0074E2]/20'
-                    : 'border-slate-200 hover:border-slate-300 bg-white'
+                    ? 'border-[#0074E2] dark:border-[#38BDF8] bg-[#EBF4FE]/70 dark:bg-[#0074E2]/20 ring-2 ring-[#0074E2]/25 dark:ring-[#38BDF8]/30'
+                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 bg-white dark:bg-[#20242C]'
                     }`}
                 >
                   <input
@@ -1026,27 +1005,27 @@ export default function RSVPForm() {
                     className="sr-only"
                   />
                   <div
-                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${formData.attending === 'yes'
-                      ? 'border-[#0074E2] bg-[#0074E2]'
-                      : 'border-slate-300'
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${formData.attending === 'yes'
+                      ? 'border-[#0074E2] dark:border-[#38BDF8] bg-[#0074E2] dark:bg-[#0074E2]'
+                      : 'border-slate-300 dark:border-slate-500 bg-transparent'
                       }`}
                   >
                     {formData.attending === 'yes' && (
-                      <span className="w-2 h-2 rounded-full bg-white" />
+                      <span className="w-2 h-2 rounded-full !bg-white" style={{ backgroundColor: '#FFFFFF' }} />
                     )}
                   </div>
                   <div>
-                    <span className="text-sm font-semibold text-slate-900 block">
+                    <span className="text-sm font-semibold text-slate-900 dark:text-zinc-100 block">
                       {t('rsvp.accept', 'ยินดีเข้าร่วมงาน (Joyfully Accept)')}
                     </span>
-                    <span className="text-xs text-slate-500">{t('rsvp.acceptDesc', 'พร้อมไปร่วมฉลองความสุข')}</span>
+                    <span className="text-xs text-slate-500 dark:text-zinc-400">{t('rsvp.acceptDesc', 'พร้อมไปร่วมฉลองความสุข')}</span>
                   </div>
                 </label>
 
                 <label
                   className={`flex items-center gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${formData.attending === 'no'
-                    ? 'border-slate-800 bg-slate-100 ring-2 ring-slate-800/10'
-                    : 'border-slate-200 hover:border-slate-300 bg-white'
+                    ? 'border-slate-800 dark:border-slate-400 bg-slate-100 dark:bg-slate-800/80 ring-2 ring-slate-800/10 dark:ring-slate-400/30'
+                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 bg-white dark:bg-[#20242C]'
                     }`}
                 >
                   <input
@@ -1058,20 +1037,20 @@ export default function RSVPForm() {
                     className="sr-only"
                   />
                   <div
-                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${formData.attending === 'no'
-                      ? 'border-slate-800 bg-slate-800'
-                      : 'border-slate-300'
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${formData.attending === 'no'
+                      ? 'border-slate-800 dark:border-slate-400 bg-slate-800 dark:bg-slate-600'
+                      : 'border-slate-300 dark:border-slate-500 bg-transparent'
                       }`}
                   >
                     {formData.attending === 'no' && (
-                      <span className="w-2 h-2 rounded-full bg-white" />
+                      <span className="w-2 h-2 rounded-full !bg-white" style={{ backgroundColor: '#FFFFFF' }} />
                     )}
                   </div>
                   <div>
-                    <span className="text-sm font-semibold text-slate-900 block">
+                    <span className="text-sm font-semibold text-slate-900 dark:text-zinc-100 block">
                       {t('rsvp.decline', 'ไม่สะดวกเข้าร่วม (Decline)')}
                     </span>
-                    <span className="text-xs text-slate-500">{t('rsvp.declineDesc', 'ขอส่งกำลังใจร่วมยินดี')}</span>
+                    <span className="text-xs text-slate-500 dark:text-zinc-400">{t('rsvp.declineDesc', 'ขอส่งกำลังใจร่วมยินดี')}</span>
                   </div>
                 </label>
               </div>
@@ -1807,7 +1786,7 @@ export default function RSVPForm() {
                 >
                   <div
                     ref={ticketCardRef}
-                    className="bg-[#FFFFFF] rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.55)] border-2 border-slate-300 text-slate-900 px-4 sm:px-6 pt-3.5 sm:pt-4.5 pb-4 sm:pb-5 relative select-none"
+                    className="wedding-ticket-paper bg-[#FFFFFF] rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.55)] border-2 border-slate-300 text-slate-900 px-4 sm:px-6 pt-3.5 sm:pt-4.5 pb-4 sm:pb-5 relative select-none"
                   >
                     {/* 1. Top Dotted Line with Airplane Emblem */}
                     <div className="flex items-center justify-between text-slate-400 pb-2 sm:pb-2.5 border-b border-dotted border-slate-300">

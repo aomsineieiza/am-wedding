@@ -281,6 +281,81 @@ html.dark .envelope-paper-card * {
   border-color: #F1F5F9;
 }
 
+/* Keep physical Wedding Ticket pristine white paper with solid black/dark ink in Dark Mode */
+html.dark .wedding-ticket-paper {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+}
+html.dark .wedding-ticket-paper [class*="text-slate-950"],
+html.dark .wedding-ticket-paper [class*="text-slate-900"] {
+  color: #020617 !important;
+}
+html.dark .wedding-ticket-paper [class*="text-slate-800"] {
+  color: #1E293B !important;
+}
+html.dark .wedding-ticket-paper [class*="text-slate-700"] {
+  color: #334155 !important;
+}
+html.dark .wedding-ticket-paper [class*="text-slate-600"] {
+  color: #475569 !important;
+}
+html.dark .wedding-ticket-paper [class*="text-slate-500"] {
+  color: #64748B !important;
+}
+html.dark .wedding-ticket-paper [class*="text-slate-400"] {
+  color: #94A3B8 !important;
+}
+html.dark .wedding-ticket-paper [class*="text-[#0074E2]"] {
+  color: #0074E2 !important;
+}
+html.dark .wedding-ticket-paper [class*="border-black"] {
+  border-color: #000000 !important;
+}
+html.dark .wedding-ticket-paper [class*="divide-black"] > :not([hidden]) ~ :not([hidden]) {
+  border-color: #000000 !important;
+}
+html.dark .wedding-ticket-paper [class*="border-slate-400"] {
+  border-color: #94A3B8 !important;
+}
+html.dark .wedding-ticket-paper [class*="border-slate-300"] {
+  border-color: #CBD5E1 !important;
+}
+html.dark .wedding-ticket-paper [class*="border-slate-200"] {
+  border-color: #E2E8F0 !important;
+}
+html.dark .wedding-ticket-paper [class*="bg-slate-50"] {
+  background-color: #F8FAFC !important;
+}
+html.dark .wedding-ticket-paper [class*="bg-slate-900"] {
+  background-color: #0F172A !important;
+  color: #FFFFFF !important;
+}
+html.dark .wedding-ticket-paper [class*="border-emerald-200"] {
+  border-color: #A7F3D0 !important;
+}
+html.dark .wedding-ticket-paper [class*="bg-emerald-50"] {
+  background-color: #ECFDF5 !important;
+}
+html.dark .wedding-ticket-paper [class*="text-emerald-700"] {
+  color: #047857 !important;
+}
+html.dark .wedding-ticket-paper [class*="border-rose-200"] {
+  border-color: #FECDD3 !important;
+}
+html.dark .wedding-ticket-paper [class*="bg-rose-50"] {
+  background-color: #FFF1F2 !important;
+}
+html.dark .wedding-ticket-paper [class*="text-rose-700"] {
+  color: #BE123C !important;
+}
+
+/* Radio button active dot */
+html.dark .radio-dot-white,
+html.dark [class*="!bg-white"] {
+  background-color: #FFFFFF !important;
+}
+
 /* Dark Mode Scrollbar */
 html.dark ::-webkit-scrollbar-track {
   background: #131519;
