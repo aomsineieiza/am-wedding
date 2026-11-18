@@ -28,7 +28,7 @@ export default function MobileNav() {
       style={{ transform: 'translate3d(-50%, 0, 0)', willChange: 'transform' }}
       className="fixed bottom-4 left-1/2 z-40 sm:hidden w-[94vw] max-w-md"
     >
-      <div className="bg-[#FAFAFB]/95 backdrop-blur-xl border border-[#E2E5E9] shadow-xl shadow-slate-900/10 rounded-full px-3 py-2 flex items-center justify-between">
+      <div className="bg-white/70 dark:bg-[#16191F]/70 backdrop-blur-2xl backdrop-saturate-180 border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_1px_rgba(255,255,255,0.8)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.08)] rounded-full px-3 py-2 flex items-center justify-between">
         {navItems.map((item, idx) => {
           const Icon = item.icon;
           if (item.primary) {
@@ -39,7 +39,7 @@ export default function MobileNav() {
                 onClick={(e) => handleNavClick(e, item.href)}
                 className="flex items-center gap-1 px-4 py-2 rounded-full bg-[#27272A] text-[#FAFAFB] text-xs font-semibold shadow-xs active:scale-95 transition-transform"
               >
-                <Icon className="w-3.5 h-3.5 fill-current" />
+                <Icon className="w-3.5 h-3.5 fill-current text-[#C5E0E8]" />
                 <span>RSVP</span>
               </a>
             );

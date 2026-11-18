@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, HeartHandshake, Send, CheckCircle2, User, Phone, Users, MessageSquare, AlertCircle, X, Sparkles, ChevronDown, Download, Check, Printer, ExternalLink } from 'lucide-react';
+import { Heart, HeartHandshake, Send, CheckCircle2, User, Phone, Users, MessageSquare, AlertCircle, X, Sparkles, ChevronDown, Download, Check, Printer, ExternalLink, CalendarPlus } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { toBlob as htmlToBlob } from 'html-to-image';
 import { weddingData } from '../data/weddingData';
@@ -91,6 +91,7 @@ export default function RSVPForm() {
   const [submittedData, setSubmittedData] = useState(null);
   const [isDownloadingTicket, setIsDownloadingTicket] = useState(false);
   const [isTicketDownloaded, setIsTicketDownloaded] = useState(false);
+  const [isCalendarAdded, setIsCalendarAdded] = useState(false);
   const [iosTicketPreview, setIosTicketPreview] = useState(null);
   const [showIosSaveModal, setShowIosSaveModal] = useState(false);
   const [isGuestDropdownOpen, setIsGuestDropdownOpen] = useState(false);
@@ -189,6 +190,62 @@ export default function RSVPForm() {
     } finally {
       setIsDownloadingTicket(false);
     }
+  };
+
+  const handleAddToCalendar = () => {
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    const scheduleItem = weddingData.schedule?.[0] || {};
+    const startDate = scheduleItem.googleCalStart || '20270123T083000Z';
+    const endDate = scheduleItem.googleCalEnd || '20270123T140000Z';
+    const dtStart = scheduleItem.icalStart || '20270123T153000';
+    const dtEnd = scheduleItem.icalEnd || '20270123T210000';
+
+    if (isIOS) {
+      // 1. iOS: Apple Calendar via .ics file download (native iOS "Add to Calendar" prompt)
+      const icsContent = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//AM Wedding//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        `SUMMARY:${couple.groom} & ${couple.bride}'s Wedding`,
+        `DESCRIPTION:งานแต่งงาน ${couple.groom} & ${couple.bride} ณ ${venue.name}. Dress Code: ${scheduleItem.dressCodeNote || ''}`,
+        `LOCATION:${venue.name}, ${venue.address}`,
+        `DTSTART;TZID=Asia/Bangkok:${dtStart}`,
+        `DTEND;TZID=Asia/Bangkok:${dtEnd}`,
+        'STATUS:CONFIRMED',
+        'END:VEVENT',
+        'END:VCALENDAR',
+      ].join('\r\n');
+
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${couple.groom}-${couple.bride}-wedding.ics`);
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }, 1500);
+    } else {
+      // 2. Android & Desktop: Open Google Calendar / OS Calendar
+      const title = encodeURIComponent(`${couple.groom} & ${couple.bride}'s Wedding`);
+      const details = encodeURIComponent(
+        `งานแต่งงาน ${couple.groom} & ${couple.bride}\nVenue: ${venue.name} (${scheduleItem.venueRoom || ''})\nDress Code: ${scheduleItem.dressCodeNote || ''}`
+      );
+      const location = encodeURIComponent(`${venue.name}, ${venue.address}`);
+      const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}&location=${location}`;
+      window.open(gcalUrl, '_blank', 'noopener,noreferrer');
+    }
+
+    setIsCalendarAdded(true);
+    setTimeout(() => setIsCalendarAdded(false), 3000);
   };
 
   const render4KCanvasFallback = (onComplete) => {
@@ -311,7 +368,7 @@ export default function RSVPForm() {
 
         // 5. 3D Cartoon Couple Image
         let currentY = 264;
-        if (coupleImg && coupleImg.complete && coupleImg.naturalWidth > 0) {
+        if (coupleImg && (coupleImg.naturalWidth > 0 || coupleImg.width > 0)) {
           const imgSize = 310;
           ctx.save();
           ctx.shadowColor = 'rgba(0, 0, 0, 0.20)';
@@ -523,21 +580,52 @@ export default function RSVPForm() {
         }, 'image/png', 1.0);
       };
 
-      const coupleImg = new Image();
-      coupleImg.crossOrigin = 'anonymous';
-      coupleImg.src = '/images/cartoon-couple.png';
+      // High-precision couple image resolution (100% bulletproof for iOS Safari)
+      const resolveCoupleImage = async () => {
+        // 1. Direct DOM lookup (image is already loaded & rendered on screen)
+        const domImg =
+          ticketCardRef.current?.querySelector('img[src*="cartoon-couple"]') ||
+          ticketCardRef.current?.querySelector('img') ||
+          document.querySelector('img[src*="cartoon-couple"]');
 
-      let isRendered = false;
-      const doRender = () => {
-        if (!isRendered) {
-          isRendered = true;
-          renderCanvas(coupleImg);
+        if (domImg && domImg.complete && domImg.naturalWidth > 0) {
+          return domImg;
         }
+
+        // 2. Fetch via Blob -> ObjectURL (bypasses iOS WebKit CORS/cache restrictions)
+        try {
+          const res = await fetch('/images/cartoon-couple.png');
+          if (res.ok) {
+            const blob = await res.blob();
+            const objectUrl = URL.createObjectURL(blob);
+            const img = new Image();
+            img.src = objectUrl;
+            await new Promise((resolve) => {
+              img.onload = () => resolve();
+              img.onerror = () => resolve();
+              setTimeout(resolve, 2000);
+            });
+            if (img.complete && img.naturalWidth > 0) {
+              return img;
+            }
+          }
+        } catch (fetchErr) {
+          console.warn('Fetch blob couple image fallback:', fetchErr);
+        }
+
+        // 3. Fallback standard Image (NO crossOrigin to prevent Safari taint failure on local asset)
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(img.naturalWidth > 0 ? img : null);
+          img.onerror = () => resolve(null);
+          img.src = '/images/cartoon-couple.png';
+          setTimeout(() => resolve(null), 1500);
+        });
       };
 
-      coupleImg.onload = doRender;
-      coupleImg.onerror = doRender;
-      setTimeout(doRender, 1000);
+      resolveCoupleImage().then((img) => {
+        renderCanvas(img);
+      });
     } catch (err) {
       console.error('Canvas render error:', err);
       setIsDownloadingTicket(false);
@@ -549,18 +637,22 @@ export default function RSVPForm() {
     setIsDownloadingTicket(true);
 
     try {
-      // 1. Primary Strategy: Capture the exact DOM card element at 4K UHD (2160px width)
-      if (ticketCardRef.current) {
+      // On iOS devices, always use high-precision 4K Canvas rendering directly
+      // because html-to-image uses SVG foreignObject which iOS WebKit notoriously blocks images inside
+      const isIOS =
+        /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      if (!isIOS && ticketCardRef.current) {
         try {
           const el = ticketCardRef.current;
           const targetWidth = 2160;
           const pixelRatio = targetWidth / Math.max(el.offsetWidth, 300);
 
           const blob = await htmlToBlob(el, {
-            pixelRatio,
+            pixelRatio: Math.min(pixelRatio, 3),
             quality: 1.0,
             backgroundColor: '#FFFFFF',
-            cacheBust: true,
           });
 
           if (blob && blob.size > 2000) {
@@ -1569,7 +1661,7 @@ export default function RSVPForm() {
                 <div className="text-slate-400 dark:text-slate-500 text-xs tracking-widest flex items-center gap-1.5">
                   <span className="rotate-[-45deg] inline-block text-xs">✈</span>
                   <span className="text-[11px] font-medium tracking-[0.18em] text-[#64748B] dark:text-slate-400 uppercase">
-                    {lang === 'th' ? 'ได้รับคำอวยพรแล้ว ขอบคุณมากๆ เลยนะ' : 'Wishes Received • Thank You So Much!'}
+                    {lang === 'th' ? 'ขอบคุณสำหรับคำอวยพร' : 'Thank You For Your Warm Wishes'}
                   </span>
                 </div>
               </div>
@@ -1579,28 +1671,42 @@ export default function RSVPForm() {
                 {/* Highlighted Guest Name */}
                 <p className="text-sm sm:text-base font-bold text-[#17233B] dark:text-slate-100 truncate">
                   {lang === 'th'
-                    ? `ถึง คุณ${submittedData.fullName || 'แขกผู้มีเกียรติ'}${submittedData.nickname ? ` (${submittedData.nickname})` : ''}`
-                    : `Dear ${submittedData.fullName || 'Beloved Guest'}${submittedData.nickname ? ` (${submittedData.nickname})` : ''}`}
+                    ? `ถึง คุณ ${submittedData.fullName?.trim() || 'แขกผู้มีเกียรติ'}${submittedData.nickname ? ` (${submittedData.nickname})` : ''}`
+                    : `Dear ${submittedData.fullName?.trim() || 'Beloved Guest'}${submittedData.nickname ? ` (${submittedData.nickname})` : ''}`}
                 </p>
 
                 {/* Couple Thank-You Message */}
-                <p className="text-xs sm:text-[13px] text-[#64748B] dark:text-slate-300 leading-relaxed font-normal">
+                <div className="text-xs sm:text-[13px] text-[#64748B] dark:text-slate-300 leading-relaxed font-normal space-y-2">
                   {lang === 'th' ? (
                     <>
-                      ไม่เจอกันไม่เป็นไรเลย แค่ส่งใจมาให้กันก็แฮปปี้แล้ว{' '}
-                      <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 inline-block text-rose-500 fill-rose-500 align-[-2px] mx-0.5" />
-                      <br />
-                      ขอบคุณที่ไม่ลืมกัน และแวะมาทำให้วันของเราพิเศษขึ้นนะ
+                      <p className="flex flex-col items-center">
+                        <span className="block">ไม่เป็นไรเลยนะ แม้จะไม่ได้มาร่วมงาน</span>
+                        <span className="inline-flex items-center justify-center gap-1 flex-wrap">
+                          <span>แต่แค่ได้รับคำอวยพรจากคุณ เราก็ดีใจมากแล้ว</span>
+                          <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-500 fill-rose-500 shrink-0" />
+                        </span>
+                      </p>
+                      <p className="flex flex-col items-center">
+                        <span className="block">ขอบคุณที่ยังนึกถึงกัน</span>
+                        <span className="block">และส่งความรู้สึกดี ๆ มาให้ในวันสำคัญของเรา</span>
+                      </p>
                     </>
                   ) : (
                     <>
-                      No worries at all! Just sending your love makes us so happy{' '}
-                      <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 inline-block text-rose-500 fill-rose-500 align-[-2px] mx-0.5" />
-                      <br />
-                      Thank you for thinking of us and making our day extra special.
+                      <p className="flex flex-col items-center">
+                        <span className="block">No worries at all that you cannot join us,</span>
+                        <span className="inline-flex items-center justify-center gap-1 flex-wrap">
+                          <span>just receiving your warm wishes already means so much to us</span>
+                          <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-500 fill-rose-500 shrink-0" />
+                        </span>
+                      </p>
+                      <p className="flex flex-col items-center">
+                        <span className="block">Thank you so much for thinking of us</span>
+                        <span className="block">and sending your love on our special day.</span>
+                      </p>
                     </>
                   )}
-                </p>
+                </div>
 
                 {/* Guest Message Section (Distinct Quote Container) */}
                 {submittedData.wishes && (
@@ -1619,7 +1725,7 @@ export default function RSVPForm() {
                   <span>
                     {lang === 'th'
                       ? 'ขอให้คุณมีความสุขและพบเจอแต่สิ่งดี ๆ เช่นกัน ♡'
-                      : 'Wishing you endless joy and all the very best in return ♡'}
+                      : 'Wishing you endless happiness and all the very best in return ♡'}
                   </span>
                 </div>
               </div>
@@ -1628,9 +1734,8 @@ export default function RSVPForm() {
               <button
                 type="button"
                 onClick={closeSuccessModal}
-                className="w-full min-h-[48px] py-3.5 px-6 rounded-full bg-[#18181B] hover:bg-[#27272A] active:bg-black text-white font-bold text-sm tracking-wide shadow-md shadow-black/15 transition-all duration-200 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2 border border-black/10 dark:border-white/10"
+                className="w-full min-h-[48px] py-3.5 px-6 rounded-full bg-[#18181B] hover:bg-[#27272A] active:bg-black text-white font-bold text-sm tracking-wide shadow-md shadow-black/15 transition-all duration-200 active:scale-[0.98] cursor-pointer flex items-center justify-center border border-black/10 dark:border-white/10"
               >
-                <Check className="w-4 h-4 stroke-[2.5]" />
                 <span>{lang === 'th' ? 'กลับสู่หน้าหลัก' : 'Back to Home'}</span>
               </button>
             </motion.div>
@@ -1874,28 +1979,55 @@ export default function RSVPForm() {
                 transition={{ delay: 1.56, duration: 0.28, ease: 'easeOut' }}
                 className="w-full max-w-[340px] sm:max-w-[390px] mt-2 sm:mt-3 space-y-1 sm:space-y-1.5 z-30"
               >
-                {/* Save / Download Ticket Image Button */}
-                <button
-                  type="button"
-                  onClick={downloadTicketImage}
-                  disabled={isDownloadingTicket}
-                  className={`w-full py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg active:scale-98 ${isTicketDownloaded
-                    ? 'bg-emerald-600 text-white ring-2 ring-emerald-400'
-                    : 'bg-[#0074E2] hover:bg-[#0060B8] text-white ring-2 ring-[#0074E2]/40 shadow-md shadow-[#0074E2]/25'
+                {/* 2-Column Action Buttons: [Add to Calendar] on Left, [Save Image] on Right */}
+                <div className="grid grid-cols-2 gap-2 w-full">
+                  {/* Add to Calendar Button (Left) */}
+                  <button
+                    type="button"
+                    onClick={handleAddToCalendar}
+                    className={`py-2 sm:py-2.5 px-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md active:scale-98 ${
+                      isCalendarAdded
+                        ? 'bg-emerald-600 text-white ring-2 ring-emerald-400'
+                        : 'bg-white hover:bg-slate-100 text-slate-800 border border-slate-200'
                     }`}
-                >
-                  {isTicketDownloaded ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" />
-                      <span>บันทึกบัตรคอนเสิร์ตลงเครื่องแล้ว!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
-                      <span>บันทึกรูปภาพบัตรเชิญ (SAVE IMAGE)</span>
-                    </>
-                  )}
-                </button>
+                  >
+                    {isCalendarAdded ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] shrink-0" />
+                        <span className="truncate">{lang === 'th' ? 'เพิ่มสำเร็จ!' : 'Added!'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <CalendarPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0074E2] shrink-0" />
+                        <span className="truncate">{lang === 'th' ? 'เพิ่มลงปฏิทิน' : 'Calendar'}</span>
+                      </>
+                    )}
+                  </button>
+
+                  {/* Save / Download Ticket Image Button (Right) */}
+                  <button
+                    type="button"
+                    onClick={downloadTicketImage}
+                    disabled={isDownloadingTicket}
+                    className={`py-2 sm:py-2.5 px-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md active:scale-98 ${
+                      isTicketDownloaded
+                        ? 'bg-emerald-600 text-white ring-2 ring-emerald-400'
+                        : 'bg-[#0074E2] hover:bg-[#0060B8] text-white ring-2 ring-[#0074E2]/40 shadow-md shadow-[#0074E2]/25'
+                    }`}
+                  >
+                    {isTicketDownloaded ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3] shrink-0" />
+                        <span className="truncate">{lang === 'th' ? 'บันทึกแล้ว!' : 'Saved!'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5] shrink-0" />
+                        <span className="truncate">{lang === 'th' ? 'บันทึกรูปภาพ' : 'Save Image'}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
 
                 {/* Close Button */}
                 <button

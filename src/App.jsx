@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Mail } from 'lucide-react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import EnvelopeIntro from './components/EnvelopeIntro';
 import FastworkNavbar from './components/FastworkNavbar';
@@ -95,7 +96,7 @@ function WeddingContent() {
           onClick={handleReopenEnvelope}
           className="flex fixed bottom-20 right-3.5 sm:bottom-6 sm:right-6 z-40 px-3.5 py-2 rounded-full bg-white/90 dark:bg-[#1E2228]/90 backdrop-blur-md border border-slate-200 dark:border-[#323842] text-xs font-medium text-slate-700 dark:text-zinc-200 hover:text-[#7A98B3] hover:border-[#94AFC4] shadow-md transition-all cursor-pointer items-center gap-1.5 active:scale-95"
         >
-          <span>✉️</span>
+          <Mail className="w-3.5 h-3.5 shrink-0" />
           <span>{t('nav.envelope', 'ซองจดหมาย')}</span>
         </button>
       )}

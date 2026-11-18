@@ -230,7 +230,7 @@ export default function WeddingAlbum() {
         <div className="h-full flex-1 w-full flex flex-col justify-between p-4 sm:p-7 lg:p-10 text-[#111317] relative bg-[#F5F6F8] overflow-hidden select-none border-l border-[#DFE2E6]">
           {/* Vertical Editorial Title Running Down Left Edge */}
           <div
-            className="absolute left-2 sm:left-4 top-8 sm:top-12 font-serif text-3xl sm:text-4xl lg:text-5xl text-[#111317] tracking-[0.08em] pointer-events-none origin-top-left -rotate-90 translate-y-44 sm:translate-y-56 whitespace-nowrap opacity-90"
+            className="absolute left-1.5 sm:left-3.5 top-[185px] sm:top-[220px] lg:top-[240px] font-serif text-[28px] sm:text-[34px] lg:text-[38px] text-[#111317] tracking-[0.06em] pointer-events-none origin-top-left -rotate-90 whitespace-nowrap opacity-90 select-none"
             style={{ fontStyle: 'italic' }}
           >
             the wedding
@@ -296,8 +296,9 @@ export default function WeddingAlbum() {
 
             <div className="w-10 h-px bg-[#CBD0D8] mx-auto my-2" />
 
-            <p className="text-xs sm:text-sm font-serif italic text-[#4B515B] max-w-xs mx-auto leading-relaxed">
-              &ldquo;When two people are meant for each other, no time is too long, no distance is too far.&rdquo;
+            <p className="text-xs sm:text-sm font-serif italic text-[#4B515B] max-w-xs sm:max-w-sm mx-auto leading-relaxed">
+              &ldquo;Perhaps we didn&apos;t meet sooner because we were meant to meet when the time was right.
+              <br className="hidden sm:inline" /> Every moment was leading us to this.&rdquo;
             </p>
 
             <div className="text-[11px] font-sans text-[#64748B] tracking-widest pt-2 uppercase">

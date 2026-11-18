@@ -14,9 +14,15 @@ export default function Footer() {
   return (
     <footer className="py-16 sm:py-20 px-4 sm:px-6 bg-[#27272A] text-[#D4D4D8] relative overflow-hidden pb-24 sm:pb-20 border-t border-[#E2E5E9]">
       <div className="max-w-4xl mx-auto flex flex-col items-center text-center relative z-10">
-        {/* Monogram emblem */}
-        <div className="w-12 h-12 rounded-full bg-[#FAFAFB] text-[#27272A] flex items-center justify-center font-bold text-xs tracking-wider shadow-md mb-5">
-          {couple.groom[0]}♥{couple.bride[0]}
+        {/* Monogram Logo: Elegant White Calligraphic M */}
+        <div className="mb-4 sm:mb-5 flex items-center justify-center">
+          <img
+            src="/images/Elegant White Calligraphic M.png"
+            alt="Aomsin & Mild Monogram"
+            className="h-12 sm:h-14 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(255,255,255,0.12)]"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
 
         {/* Couple Names */}

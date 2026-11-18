@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
+import { Pointer } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 import { weddingAudio } from '../utils/audioPlayer';
 
@@ -753,7 +753,7 @@ export default function EnvelopeIntro({ onOpen }) {
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 text-xs sm:text-sm font-semibold text-slate-800 shadow-md"
               >
-                <Sparkles className="w-4 h-4 text-[#0074E2]" />
+                <Pointer className="w-4 h-4 text-[#0074E2]" />
                 <span>แตะส่วนใดก็ได้ของซองจดหมายเพื่อเปิดการ์ด • Tap anywhere</span>
               </motion.div>
             )}
