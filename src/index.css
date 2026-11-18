@@ -267,12 +267,16 @@ html.dark main [class*="text-[#0074E2]"] {
   color: #94AFC4 !important;
 }
 
-/* Primary Buttons in Dark Mode (Switch from Charcoal #27272A to Luminous Dusty Blue #94AFC4) */
+/* Primary Buttons in Dark Mode: Fastwork Blue #0074E2 with crisp white text */
 html.dark main a[class*="bg-[#27272A]"],
 html.dark main button[class*="bg-[#27272A]"],
 html.dark nav a[class*="bg-[#27272A]"] {
-  background-color: #94AFC4 !important;
-  color: #131519 !important;
+  background-color: #0074E2 !important;
+  color: #FFFFFF !important;
+}
+html.dark nav a[class*="bg-[#27272A]"] svg,
+html.dark main a[class*="bg-[#27272A]"] svg {
+  color: #FFFFFF !important;
 }
 
 /* Keep Envelope Showcase Card crisp white in Dark Mode */

@@ -37,9 +37,9 @@ export default function MobileNav() {
                 key={idx}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="flex items-center gap-1 px-4 py-2 rounded-full bg-[#27272A] text-[#FAFAFB] text-xs font-semibold shadow-xs active:scale-95 transition-transform"
+                className="flex items-center gap-1 px-4 py-2 rounded-full bg-[#0074E2] hover:bg-[#0060B8] text-white text-xs font-semibold shadow-xs active:scale-95 transition-transform"
               >
-                <Icon className="w-3.5 h-3.5 fill-current text-[#C5E0E8]" />
+                <Icon className="w-3.5 h-3.5 fill-current text-white" />
                 <span>RSVP</span>
               </a>
             );

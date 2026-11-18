@@ -220,9 +220,9 @@ export default function Hero() {
               e.preventDefault();
               document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
-            className="px-7 py-3 sm:px-9 sm:py-3.5 rounded-full bg-[#27272A] hover:bg-[#18181B] text-[#FAFAFB] text-xs sm:text-sm font-medium tracking-wider shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer active:scale-95"
+            className="px-7 py-3 sm:px-9 sm:py-3.5 rounded-full bg-[#0074E2] hover:bg-[#0060B8] text-white text-xs sm:text-sm font-medium tracking-wider shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer active:scale-95"
           >
-            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current text-[#C5E0E8]" />
+            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current text-white" />
             <span>{t('hero.rsvpButton', 'RSVP ตอบรับคำเชิญ')}</span>
           </a>
           <a

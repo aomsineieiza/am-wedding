@@ -140,9 +140,9 @@ export default function FastworkNavbar({ isDark = false, onToggleDark }) {
           <a
             href="#rsvp"
             onClick={(e) => handleNavClick(e, '#rsvp')}
-            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#27272A] dark:bg-[#94AFC4] hover:bg-[#18181B] dark:hover:bg-[#A6BFD2] text-[#FAFAFB] dark:text-[#141619] text-[11px] sm:text-xs font-medium tracking-wider shadow-2xs hover:shadow-md transition-all cursor-pointer whitespace-nowrap active:scale-95"
+            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#0074E2] hover:bg-[#0060B8] text-white text-[11px] sm:text-xs font-medium tracking-wider shadow-2xs hover:shadow-md transition-all cursor-pointer whitespace-nowrap active:scale-95"
           >
-            <Heart className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#C5E0E8] dark:text-[#141619] shrink-0" />
+            <Heart className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-white shrink-0" />
             <span>{t('nav.rsvp', 'RSVP ตอบรับ')}</span>
           </a>
         </div>
