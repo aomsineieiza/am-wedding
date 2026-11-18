@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, CalendarPlus, Check, Sun, Moon, Clock } from 'lucide-react';
+import { Calendar, MapPin, CalendarPlus, Check, Sun, Moon, Clock, Info } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 import { CeremonyAnimatedIcon } from './TimelineIcons';
 import { useLanguage } from '../context/LanguageContext';
@@ -172,6 +172,17 @@ export default function Timeline() {
               )}
             </button>
           </div>
+        </div>
+
+        {/* Schedule Disclaimers / Note */}
+        <div className="flex items-center gap-2 mb-5 px-3.5 py-2.5 rounded-2xl bg-[#F4F6F9] dark:bg-slate-800/50 border border-[#E4E7EB] dark:border-slate-700/60 text-xs text-[#64748B] dark:text-zinc-400">
+          <Info className="w-3.5 h-3.5 text-[#7A98B3] shrink-0" />
+          <span>
+            {t(
+              'timeline.scheduleNote',
+              'เวลาอาจมีการคลาดเคลื่อนได้บ้างเล็กน้อยตามพิธีและลำดับขั้นตอนหน้างาน'
+            )}
+          </span>
         </div>
 
         {/* Timeline Items with Animated Lottie-Style Vector Icons */}

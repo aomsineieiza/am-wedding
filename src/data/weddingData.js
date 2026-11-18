@@ -80,24 +80,24 @@ export const weddingData = {
         },
         {
           time: "16:59",
-          title: "Auspicious Engagement Ring Exchange",
-          titleThai: "พิธีสวมแหวนหมั้นตามฤกษ์มงคล",
+          title: "Engagement Ring Exchange Ceremony",
+          titleThai: "พิธีสวมแหวนหมั้น",
           desc: "พิธีสวมแหวนหมั้นและแลกคำมั่นสัญญา",
-          descEn: "Auspicious engagement and wedding ring exchange ceremony"
+          descEn: "Engagement ring exchange and heartfelt vows ceremony"
         },
         {
           time: "17:39",
-          title: "Sacred Water Pouring Ceremony",
-          titleThai: "พิธีรดน้ำสังข์และประสาทพร",
+          title: "Water Pouring Ceremony",
+          titleThai: "พิธีรดน้ำสังข์",
           desc: "พิธีหลั่งน้ำพระพุทธมนต์และประสาทพร (รดน้ำสังข์)",
-          descEn: "Sacred lustral water pouring and blessing ceremony"
+          descEn: "Traditional Thai water pouring and blessing ceremony"
         },
         {
           time: "18:30",
-          title: "Celebration Dinner Feast",
-          titleThai: "รับประทานอาหารร่วมกัน",
-          desc: "รับประทานอาหารร่วมกับครอบครัวและแขกผู้มีเกียรติ",
-          descEn: "Celebration dinner feast with beloved family and guests"
+          title: "Wedding Celebration & Dinner",
+          titleThai: "งานเลี้ยงฉลองพร้อมรับประทานอาหาร",
+          desc: "งานเลี้ยงฉลองมงคลสมรสและรับประทานอาหารร่วมกัน",
+          descEn: "Wedding celebration reception and dinner with beloved family and guests"
         },
       ],
     },

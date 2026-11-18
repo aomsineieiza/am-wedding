@@ -47,6 +47,7 @@ export const translations = {
       addedSuccess: 'บันทึกลงปฏิทินเรียบร้อยแล้ว!',
       room: 'สถานที่',
       dressCodeTheme: 'ธีมสีการแต่งกาย',
+      scheduleNote: 'เวลาอาจมีการคลาดเคลื่อนได้บ้างเล็กน้อยตามพิธีและลำดับขั้นตอนหน้างาน',
     },
     gallery: {
       badge: 'MEMORIES & MOMENTS',
@@ -204,6 +205,7 @@ export const translations = {
       addedSuccess: 'Calendar file downloaded!',
       room: 'Hall',
       dressCodeTheme: 'Dress Code Theme',
+      scheduleNote: 'Schedule times may vary slightly depending on actual ceremony flow and proceedings.',
     },
     gallery: {
       badge: 'MEMORIES & MOMENTS',
