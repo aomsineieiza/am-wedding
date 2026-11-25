@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP Table Sign Studio — A & M Wedding</title>
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Web Card Typography: Parisienne (Calligraphy) & Google Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Parisienne&display=swap" rel="stylesheet">
+  
+  <!-- QRCode.js CDN for client-side QR generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    /* =========================================================
+       1. GOOGLE SANS LOCAL & CDN FALLBACKS (AM-WEDDING DESIGN SYSTEM)
+       ========================================================= */
+    @font-face {
+      font-family: 'Google Sans';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url('../../public/fonts/google-sans-latin.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    @font-face {
+      font-family: 'Google Sans';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url('../../public/fonts/google-sans-thai.woff2') format('woff2');
+      unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+    }
+
+    :root {
+      /* am-wedding Design System Tokens */
+      --color-fw-blue: #0074E2;
+      --color-fw-blue-hover: #0060B8;
+      --color-fw-blue-subtle: #EBF4FE;
+      --color-fw-blue-border: #C4DDFB;
+      
+      --color-fw-dark: #111827;
+      --color-fw-charcoal: #18181B;
+      --color-fw-muted: #71717A;
+      --color-fw-subtle: #A1A1AA;
+      
+      --color-champagne: #C8B89E;
+      --color-champagne-dark: #8F7240;
+      --color-champagne-light: #F4EFEB;
+      --color-gold-hairline: rgba(200, 184, 158, 0.55);
+
+      --card-bg: #FFFFFF;
+      --card-cream: #FAF8F5;
+      
+      --font-main: "Google Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-parisienne: "Parisienne", cursive;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* FigJam / Fastwork Canvas Dot-Grid Background from am-wedding/src */
+    body {
+      font-family: var(--font-main);
+      background-color: #F4F5F7;
+      background-image: radial-gradient(#C8D0DA 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      background-position: 0 0;
+      color: #27272A;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* =========================================================
+       APPLICATION WORKSPACE (FASTWORK / FIGJAM UI STUDIO)
+       ========================================================= */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+      width: 100vw;
+    }
+
+    /* Left Control Sidebar */
+    .control-sidebar {
+      width: 410px;
+      min-width: 350px;
+      max-width: 440px;
+      background: #FFFFFF;
+      border-right: 1px solid #E2E8F0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+      max-height: 100vh;
+      z-index: 50;
+      box-shadow: 4px 0 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .brand-header {
+      padding-bottom: 14px;
+      border-bottom: 1px solid #F1F5F9;
+    }
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      background: var(--color-fw-blue-subtle);
+      border: 1px solid var(--color-fw-blue-border);
+      color: var(--color-fw-blue);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border-radius: 9999px;
+      margin-bottom: 8px;
+    }
+    .brand-title {
+      font-family: var(--font-main);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-fw-dark);
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--color-fw-muted);
+      margin-top: 3px;
+    }
+
+    /* Form Fields */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .form-label-hint {
+      font-size: 10px;
+      color: var(--color-fw-subtle);
+      text-transform: none;
+      font-weight: 400;
+      letter-spacing: normal;
+    }
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-family: inherit;
+      color: var(--color-fw-dark);
+      background: #FFFFFF;
+      transition: all 0.15s ease;
+    }
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--color-fw-blue);
+      box-shadow: 0 0 0 3px rgba(0, 116, 226, 0.15);
+    }
+    .form-textarea {
+      resize: vertical;
+      min-height: 70px;
+      line-height: 1.45;
+      font-family: var(--font-main);
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    /* Fastwork Presets */
+    .presets-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .preset-btn {
+      padding: 5px 11px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .preset-btn:hover {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+      color: var(--color-fw-dark);
+    }
+    .preset-btn.active {
+      background: var(--color-fw-blue-subtle);
+      border-color: var(--color-fw-blue-border);
+      color: var(--color-fw-blue);
+      font-weight: 700;
+    }
+
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* Print & Actions */
+    .action-panel {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid #F1F5F9;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-print {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 13px 18px;
+      background: var(--color-fw-blue);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 116, 226, 0.35);
+      transition: all 0.2s ease;
+    }
+    .btn-print:hover {
+      background: var(--color-fw-blue-hover);
+      box-shadow: 0 6px 18px rgba(0, 116, 226, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-print:active {
+      transform: translateY(0);
+    }
+    .print-tip {
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--color-fw-muted);
+      background: #F8FAFC;
+      border: 1px dashed #CBD5E1;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    /* Preview Canvas Area */
+    .preview-canvas {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      position: relative;
+      overflow: auto;
+    }
+
+    .canvas-toolbar {
+      position: absolute;
+      top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      z-index: 20;
+    }
+    .zoom-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-fw-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .zoom-slider {
+      width: 100px;
+      accent-color: var(--color-fw-blue);
+      cursor: pointer;
+    }
+    .zoom-value {
+      font-size: 11px;
+      font-weight: 700;
+      color: #334155;
+      min-width: 32px;
+    }
+    .btn-icon {
+      background: none;
+      border: none;
+      padding: 4px 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .btn-icon:hover {
+      background: #F1F5F9;
+      color: var(--color-fw-dark);
+    }
+
+    /* Card Viewport */
+    .card-viewport {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease-out;
+      transform-origin: center center;
+    }
+
+    /* =========================================================
+       LUXURY 5x7 WEDDING CARD (MATCHING AM-WEDDING DESIGN SYSTEM)
+       Exact Dimensions: 5.0in wide × 7.0in tall
+       ========================================================= */
+    .wedding-card {
+      width: 5in;
+      height: 7in;
+      min-width: 5in;
+      min-height: 7in;
+      max-width: 5in;
+      max-height: 7in;
+      background-color: var(--card-cream);
+      color: var(--color-fw-charcoal);
+      position: relative;
+      padding: 0.28in;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 
+        0 28px 65px -16px rgba(30, 41, 59, 0.15),
+        0 4px 16px -2px rgba(30, 41, 59, 0.06),
+        inset 0 1px 0 #FFFFFF;
+      border-radius: 3px;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Subtle Suede Paper Grain Texture from EnvelopeIntro */
+    .wedding-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(180, 146, 90, 0.04) 1px, transparent 0);
+      background-size: 4px 4px;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    /* Arch Frame with Champagne Gold Hairline (Ref. Image 1 Style) */
+    .arch-frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border: 1.3px solid var(--color-champagne);
+      border-radius: 999px 999px 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.38in 0.28in 0.28in 0.28in;
+      z-index: 2;
+    }
+
+    /* Midpoint Gold Diamonds on Arch Verticals */
+    .diamond-accent {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      background: var(--color-champagne);
+      transform: translateY(-50%) rotate(45deg);
+      z-index: 5;
+    }
+    .diamond-left {
+      left: -4.1px;
+      top: 50%;
+    }
+    .diamond-right {
+      right: -4.1px;
+      top: 50%;
+    }
+    .diamond-accent::after {
+      content: "";
+      position: absolute;
+      inset: 1.5px;
+      background: var(--card-cream);
+    }
+
+    /* =========================================================
+       FINE-LINE BOTANICAL ART (MATCHING IMAGE 1)
+       ========================================================= */
+    .botanical-art {
+      position: absolute;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Top-Right Curve Botanical: Chrysanthemum / Dahlia Blooms */
+    .botanical-top-right {
+      top: -10px;
+      right: -14px;
+      width: 124px;
+      height: 124px;
+    }
+
+    /* Bottom-Left Corner Botanical: Clustered Garden Blooms & Leaves */
+    .botanical-bottom-left {
+      bottom: -18px;
+      left: -18px;
+      width: 138px;
+      height: 138px;
+    }
+
+    /* =========================================================
+       TYPOGRAPHIC LAYOUT (OPTIMIZED PROPORTIONS)
+       ========================================================= */
+    .card-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-top: 0.02in;
+    }
+
+    /* "Reserved" in Parisienne (Official Web Calligraphy) */
+    .calligraphy-reserved {
+      font-family: var(--font-parisienne);
+      font-size: 52px;
+      line-height: 1;
+      color: var(--color-fw-charcoal);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    /* Thai Subtitle Badge under Reserved */
+    .thai-header-sub {
+      font-family: var(--font-main);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--color-champagne-dark);
+      text-transform: uppercase;
+      margin-top: 2px;
+      padding-left: 0.22em;
+    }
+
+    /* Card Body: Balanced Center Hero Block */
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex: 1;
+      width: 100%;
+      margin: 0.06in 0 0.08in 0;
+    }
+
+    .table-label-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5px;
+      width: 100%;
+    }
+
+    .table-line {
+      text-align: center;
+      width: 100%;
+      word-break: break-word;
+    }
+
+    /* English Lines (Top) */
+    .line-type-prefix {
+      font-family: var(--font-main);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      color: var(--color-champagne-dark);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      padding-left: 0.38em;
+    }
+
+    .line-type-main {
+      font-family: var(--font-main);
+      font-size: 35px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--color-fw-charcoal);
+      line-height: 1.06;
+      text-transform: uppercase;
+      padding-left: 0.14em;
+    }
+
+    .line-type-sub {
+      font-family: var(--font-main);
+      font-size: 23px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--color-fw-charcoal);
+      line-height: 1.15;
+      text-transform: uppercase;
+      margin-top: 2px;
+      padding-left: 0.22em;
+    }
+
+    .line-generic {
+      font-family: var(--font-main);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--color-fw-charcoal);
+      line-height: 1.25;
+      text-transform: uppercase;
+      padding-left: 0.14em;
+    }
+
+    /* Thai Subtitle Line (Bottom) */
+    .table-line-thai {
+      font-family: var(--font-main);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: #3F3C37;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .table-line-thai::before,
+    .table-line-thai::after {
+      content: "";
+      width: 16px;
+      height: 0.6px;
+      background: var(--color-gold-hairline);
+    }
+
+    /* =========================================================
+       DUAL QR CODES: CLEAN BORDERLESS WITH VERTICAL DIVIDER
+       ========================================================= */
+    .qr-section-minimal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.16in;
+      width: 100%;
+    }
+
+    /* Script Intro with Heart + Thai Sub */
+    .qr-header-script {
+      font-family: var(--font-parisienne);
+      font-size: 23px;
+      color: var(--color-fw-charcoal);
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .qr-header-script svg {
+      width: 11px;
+      height: 11px;
+      fill: none;
+      stroke: var(--color-champagne-dark);
+      stroke-width: 1.6;
+    }
+
+    .qr-header-thai-sub {
+      font-family: var(--font-main);
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--color-champagne-dark);
+      margin-bottom: 9px;
+      margin-top: 2px;
+    }
+
+    /* Side-by-side QRs with Vertical Hairline Divider (Image 2 Style) */
+    .qr-pair-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      position: relative;
+    }
+
+    .qr-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* QR Code Canvas Target */
+    .qr-pure-target {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .qr-pure-target canvas, .qr-pure-target img {
+      width: 56px !important;
+      height: 56px !important;
+      display: block;
+    }
+
+    /* Center Badge (Google Sans) */
+    .qr-center-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 17px;
+      height: 17px;
+      background-color: var(--card-cream);
+      border: 1px solid var(--color-champagne);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: var(--font-main);
+      font-size: 4px;
+      font-weight: 700;
+      color: var(--color-fw-charcoal);
+      line-height: 0.95;
+      letter-spacing: -0.1px;
+      box-shadow: 0 0 0 1px #FFFFFF;
+      pointer-events: none;
+    }
+
+    /* Bilingual Labels (English Top, Thai Bottom) */
+    .qr-label-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 5px;
+      gap: 1px;
+    }
+    .qr-label-en {
+      font-family: var(--font-main);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--color-fw-charcoal);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .qr-label-th {
+      font-family: var(--font-main);
+      font-size: 8px;
+      font-weight: 500;
+      color: var(--color-fw-muted);
+      white-space: nowrap;
+    }
+
+    /* Vertical Hairline Divider */
+    .qr-vertical-divider {
+      width: 1px;
+      height: 54px;
+      background: linear-gradient(180deg, transparent 0%, rgba(200, 184, 158, 0.5) 20%, rgba(200, 184, 158, 0.5) 80%, transparent 100%);
+    }
+
+    /* =========================================================
+       CARD FOOTER: COUPLE NAMES (ENGLISH ONLY) & DATE
+       ========================================================= */
+    .card-footer {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 0.08in;
+    }
+
+    /* Spaced-Out Minimalist Couple Names from am-wedding/src */
+    .footer-names {
+      font-family: var(--font-main);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      color: var(--color-fw-charcoal);
+      text-transform: uppercase;
+      line-height: 1.25;
+      padding-left: 0.32em;
+    }
+
+    .footer-date {
+      font-family: var(--font-main);
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      color: var(--color-champagne-dark);
+      text-transform: uppercase;
+      line-height: 1.25;
+      margin-top: 3px;
+      padding-left: 0.26em;
+    }
+
+    .footer-tag {
+      font-family: var(--font-main);
+      font-size: 7.5px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: #94A3B8;
+      margin-top: 2px;
+      padding-left: 0.18em;
+    }
+
+    /* =========================================================
+       PRINT STYLES: EXACT 5x7 INCH OUTPUT
+       ========================================================= */
+    @page {
+      size: 5in 7in;
+      margin: 0;
+    }
+
+    @media print {
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      html, body {
+        width: 5in !important;
+        height: 7in !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        overflow: hidden !important;
+      }
+
+      /* Hide entire UI screen chrome */
+      .control-sidebar,
+      .canvas-toolbar,
+      .no-print {
+        display: none !important;
+      }
+
+      .app-container {
+        display: block !important;
+        position: relative !important;
+        width: 5in !important;
+        height: 7in !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .preview-canvas {
+        display: block !important;
+        position: static !important;
+        width: 5in !important;
+        height: 7in !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: none !important;
+        overflow: hidden !important;
+      }
+
+      .card-viewport {
+        transform: none !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 5in !important;
+        height: 7in !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .wedding-card {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 5in !important;
+        height: 7in !important;
+        min-width: 5in !important;
+        min-height: 7in !important;
+        max-width: 5in !important;
+        max-height: 7in !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    }
+
+    /* Responsive controls */
+    @media (max-width: 900px) {
+      .app-container {
+        flex-direction: column-reverse;
+      }
+      .control-sidebar {
+        width: 100%;
+        max-width: 100%;
+        max-height: none;
+        border-right: none;
+        border-top: 1px solid #E2E8F0;
+      }
+      .preview-canvas {
+        min-height: 75vh;
+        padding: 60px 16px 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- =========================================================
+         LEFT CONTROL PANEL (FASTWORK DESIGN SYSTEM)
+         ========================================================= -->
+    <aside class="control-sidebar no-print">
+      <div class="brand-header">
+        <span class="brand-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+          A &amp; M Wedding • Studio
+        </span>
+        <h1 class="brand-title">VIP Table Sign Studio</h1>
+        <p class="brand-sub">5in × 7in • Luxury Minimal Bilingual Card (Le Pasiri)</p>
+      </div>
+
+      <!-- Quick Bilingual Presets -->
+      <div class="form-group">
+        <label class="form-label">
+          Bilingual Presets (ปุ่มเลือกชุดข้อความ)
+        </label>
+        <div class="presets-container">
+          <button type="button" class="preset-btn active" 
+                  data-preset-en="FOR THE&#10;VIP&#10;FAMILY" 
+                  data-preset-th="สำหรับครอบครัว VIP">VIP Family</button>
+          
+          <button type="button" class="preset-btn" 
+                  data-preset-en="GROOM'S&#10;IMMEDIATE&#10;FAMILY" 
+                  data-preset-th="สำหรับครอบครัวเจ้าบ่าว">Groom's Immediate</button>
+          
+          <button type="button" class="preset-btn" 
+                  data-preset-en="BRIDE'S&#10;IMMEDIATE&#10;FAMILY" 
+                  data-preset-th="สำหรับครอบครัวเจ้าสาว">Bride's Immediate</button>
+          
+          <button type="button" class="preset-btn" 
+                  data-preset-en="FOR THE&#10;GROOM'S FAMILY" 
+                  data-preset-th="สำหรับญาติเจ้าบ่าว">Groom's Relatives</button>
+          
+          <button type="button" class="preset-btn" 
+                  data-preset-en="FOR THE&#10;BRIDE'S FAMILY" 
+                  data-preset-th="สำหรับญาติเจ้าสาว">Bride's Relatives</button>
+          
+          <button type="button" class="preset-btn" 
+                  data-preset-en="RESERVED FOR&#10;SPECIAL GUESTS" 
+                  data-preset-th="สำหรับแขกผู้มีเกียรติ">Special Guests</button>
+          
+          <button type="button" class="preset-btn" 
+                  data-preset-en="FOR THE&#10;BRIDAL PARTY" 
+                  data-preset-th="สำหรับเพื่อนเจ้าบ่าวเจ้าสาว">Bridal Party</button>
+
+          <button type="button" class="preset-btn" 
+                  data-preset-en="TABLE 01&#10;HONORARY VIP" 
+                  data-preset-th="โต๊ะที่ 1 • แขกพิเศษ VIP">Table 01 VIP</button>
+        </div>
+      </div>
+
+      <!-- Table Label Customizer -->
+      <div class="form-group">
+        <label class="form-label" for="tableLabelEnInput">
+          1. Table Label English (ด้านบน)
+          <span class="form-label-hint">Multi-line</span>
+        </label>
+        <textarea id="tableLabelEnInput" class="form-textarea" placeholder="FOR THE&#10;VIP&#10;FAMILY">FOR THE
+VIP
+FAMILY</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="tableLabelThInput">
+          2. Table Label Thai (ด้านล่าง)
+        </label>
+        <input type="text" id="tableLabelThInput" class="form-input" value="สำหรับครอบครัว VIP">
+      </div>
+
+      <!-- Header Thai Subtitle -->
+      <div class="form-group">
+        <label class="form-label" for="headerSubThInput">
+          Header Thai Subtitle (ใต้คำว่า Reserved)
+        </label>
+        <input type="text" id="headerSubThInput" class="form-input" value="สำรองที่นั่งพิเศษ">
+      </div>
+
+      <!-- Couple Names & Wedding Date -->
+      <div class="grid-2col">
+        <div class="form-group">
+          <label class="form-label" for="coupleNamesInput">Couple Names (ภาษาอังกฤษ)</label>
+          <input type="text" id="coupleNamesInput" class="form-input" value="AOMSIN & MILD">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="weddingDateInput">Wedding Date (วันที่จัดงาน)</label>
+          <input type="text" id="weddingDateInput" class="form-input" value="23 JANUARY 2027 • LE PASIRI">
+        </div>
+      </div>
+
+      <!-- Dual QR Code Links -->
+      <div class="form-group">
+        <label class="form-label" for="menuUrlInput">
+          Menu QR Link (เมนูอาหาร)
+        </label>
+        <input type="url" id="menuUrlInput" class="form-input" value="https://am-wedding.vercel.app/#menu">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="povUrlInput">
+          POV Camera QR Link (กล้องแขก)
+        </label>
+        <input type="url" id="povUrlInput" class="form-input" value="https://pov.camera/am-wedding">
+      </div>
+
+      <!-- Actions & Print Trigger -->
+      <div class="action-panel">
+        <button type="button" id="btnPrint" class="btn-print">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          Print / Save as PDF (พิมพ์การ์ด)
+        </button>
+
+        <div class="print-tip">
+          <strong>ตั้งค่าก่อนพิมพ์:</strong> เลือก <em>Destination</em> เป็น <strong>Save as PDF</strong>, ขนาดกระดาษ <strong>5×7 in</strong> (หรือ Letter/A4 กำหนด Margins: None) และเปิด <strong>Background graphics</strong>
+        </div>
+      </div>
+    </aside>
+
+    <!-- =========================================================
+         RIGHT PREVIEW CANVAS (FIGJAM DOT-GRID BACKGROUND)
+         ========================================================= -->
+    <main class="preview-canvas">
+      
+      <!-- Screen Toolbar -->
+      <div class="canvas-toolbar no-print">
+        <span class="zoom-label">Preview Zoom:</span>
+        <input type="range" id="zoomSlider" class="zoom-slider" min="60" max="140" value="100">
+        <span id="zoomValue" class="zoom-value">100%</span>
+        <button type="button" class="btn-icon" id="btnFitScreen" title="Reset Zoom">Fit</button>
+      </div>
+
+      <!-- Viewport with Zoom transform -->
+      <div class="card-viewport" id="cardViewport">
+
+        <!-- =====================================================
+             5in × 7in WEDDING TABLE SIGN CARD
+             (Bilingual Top/Bottom • Le Pasiri Glasshouse Edition)
+             ===================================================== -->
+        <article class="wedding-card" id="weddingCard">
+
+          <!-- Arch Frame with Champagne Gold Hairline -->
+          <div class="arch-frame">
+
+            <!-- Midpoint Diamond Accents -->
+            <div class="diamond-accent diamond-left"></div>
+            <div class="diamond-accent diamond-right"></div>
+
+            <!-- Custom Botanical Art (Top-Right): Dahlia / Chrysanthemum Blooms -->
+            <svg class="botanical-art botanical-top-right" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 130 C25 90, 60 40, 120 16" stroke="#C8B89E" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M68 52 C82 36, 96 26, 125 24" stroke="#C8B89E" stroke-width="0.95" stroke-linecap="round"/>
+              
+              <!-- Lower Blossom -->
+              <g transform="translate(108, 48) rotate(-20)">
+                <ellipse cx="0" cy="0" rx="4" ry="12" stroke="#C8B89E" stroke-width="0.85" fill="rgba(250,248,245,0.85)"/>
+                <ellipse cx="0" cy="0" rx="3.5" ry="11" stroke="#C8B89E" stroke-width="0.75" transform="rotate(30)"/>
+                <ellipse cx="0" cy="0" rx="3.5" ry="11" stroke="#C8B89E" stroke-width="0.75" transform="rotate(-30)"/>
+                <ellipse cx="0" cy="0" rx="3" ry="10" stroke="#C8B89E" stroke-width="0.7" transform="rotate(60)"/>
+                <ellipse cx="0" cy="0" rx="3" ry="10" stroke="#C8B89E" stroke-width="0.7" transform="rotate(-60)"/>
+                <circle cx="0" cy="0" r="2.5" stroke="#C8B89E" stroke-width="0.7" fill="#C8B89E"/>
+              </g>
+
+              <!-- Upper Blossom -->
+              <g transform="translate(122, 18) rotate(15)">
+                <ellipse cx="0" cy="0" rx="4.5" ry="13" stroke="#C8B89E" stroke-width="0.9" fill="rgba(250,248,245,0.85)"/>
+                <ellipse cx="0" cy="0" rx="3.8" ry="12" stroke="#C8B89E" stroke-width="0.8" transform="rotate(32)"/>
+                <ellipse cx="0" cy="0" rx="3.8" ry="12" stroke="#C8B89E" stroke-width="0.8" transform="rotate(-32)"/>
+                <circle cx="0" cy="0" r="2.8" stroke="#C8B89E" stroke-width="0.75" fill="#C8B89E"/>
+              </g>
+
+              <!-- Slender Leaflets -->
+              <path d="M48 76 C40 68, 42 58, 50 62 C56 65, 54 72, 48 76 Z" stroke="#C8B89E" stroke-width="0.8" fill="rgba(200,184,158,0.08)"/>
+              <path d="M72 54 C66 45, 72 38, 78 42 C84 46, 80 52, 72 54 Z" stroke="#C8B89E" stroke-width="0.8" fill="rgba(200,184,158,0.08)"/>
+              <path d="M92 40 C88 32, 95 26, 100 30 C104 34, 98 38, 92 40 Z" stroke="#C8B89E" stroke-width="0.75" fill="rgba(200,184,158,0.08)"/>
+            </svg>
+
+            <!-- Custom Botanical Art (Bottom-Left): Garden Blooms & Leaves -->
+            <svg class="botanical-art botanical-bottom-left" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 138 C24 95, 42 62, 56 36" stroke="#C8B89E" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M36 105 C60 92, 90 92, 120 102" stroke="#C8B89E" stroke-width="0.9" stroke-linecap="round"/>
+
+              <!-- Main Open Blossom -->
+              <g transform="translate(34, 114)">
+                <ellipse cx="0" cy="0" rx="6" ry="14" stroke="#C8B89E" stroke-width="0.9" fill="rgba(250,248,245,0.85)"/>
+                <ellipse cx="0" cy="0" rx="5.5" ry="13" stroke="#C8B89E" stroke-width="0.8" transform="rotate(35)"/>
+                <ellipse cx="0" cy="0" rx="5.5" ry="13" stroke="#C8B89E" stroke-width="0.8" transform="rotate(-35)"/>
+                <ellipse cx="0" cy="0" rx="4.8" ry="12" stroke="#C8B89E" stroke-width="0.75" transform="rotate(70)"/>
+                <circle cx="0" cy="0" r="3.5" stroke="#C8B89E" stroke-width="0.8" fill="#C8B89E"/>
+              </g>
+
+              <!-- Secondary Blossom -->
+              <g transform="translate(48, 86) rotate(-15)">
+                <ellipse cx="0" cy="0" rx="4.5" ry="11" stroke="#C8B89E" stroke-width="0.8" fill="rgba(250,248,245,0.85)"/>
+                <ellipse cx="0" cy="0" rx="4" ry="10" stroke="#C8B89E" stroke-width="0.75" transform="rotate(40)"/>
+                <ellipse cx="0" cy="0" rx="4" ry="10" stroke="#C8B89E" stroke-width="0.75" transform="rotate(-40)"/>
+                <circle cx="0" cy="0" r="2.8" stroke="#C8B89E" stroke-width="0.7" fill="#C8B89E"/>
+              </g>
+
+              <!-- Top Flower Bud -->
+              <g transform="translate(58, 42)">
+                <path d="M0 -8 C-6 0, -5 8, 0 10 C5 8, 6 0, 0 -8 Z" stroke="#C8B89E" stroke-width="0.85" fill="rgba(250,248,245,0.8)"/>
+                <path d="M-2 -5 C-1 0, -1 6, 0 8" stroke="#C8B89E" stroke-width="0.7"/>
+                <path d="M2 -5 C1 0, 1 6, 0 8" stroke="#C8B89E" stroke-width="0.7"/>
+              </g>
+
+              <!-- Foliage Leaves -->
+              <path d="M22 88 C12 78, 14 66, 24 70 C32 74, 28 84, 22 88 Z" stroke="#C8B89E" stroke-width="0.8" fill="rgba(200,184,158,0.08)"/>
+              <path d="M72 96 C84 94, 94 98, 92 108 C84 112, 76 104, 72 96 Z" stroke="#C8B89E" stroke-width="0.8" fill="rgba(200,184,158,0.08)"/>
+            </svg>
+
+            <!-- Card Header: Bilingual "Reserved" (Parisienne) + "สำรองที่นั่งพิเศษ" (Google Sans) -->
+            <header class="card-header">
+              <h2 id="cardReservedHeader" class="calligraphy-reserved">Reserved</h2>
+              <div id="cardHeaderSubTh" class="thai-header-sub">สำรองที่นั่งพิเศษ</div>
+            </header>
+
+            <!-- Card Body: Centered Bilingual Table Label (English Top, Thai Bottom) -->
+            <section class="card-body">
+              <div class="table-label-display">
+                <!-- English Lines (Top) rendered by JS in Google Sans -->
+                <div id="tableLabelEnContainer">
+                  <div class="table-line line-type-prefix">FOR THE</div>
+                  <div class="table-line line-type-main">VIP</div>
+                  <div class="table-line line-type-sub">FAMILY</div>
+                </div>
+
+                <!-- Thai Subtitle Line (Bottom) -->
+                <div id="tableLabelThDisplay" class="table-line-thai">สำหรับครอบครัว VIP</div>
+              </div>
+
+              <!-- =====================================================
+                   DUAL QR CODES: BILINGUAL TOP / BOTTOM (IMAGE 2 STYLE)
+                   ===================================================== -->
+              <div class="qr-section-minimal">
+                <!-- Script Intro with Heart (Top) + Thai sub (Bottom) -->
+                <div class="qr-header-script">
+                  Scan to explore
+                  <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </div>
+                <div class="qr-header-thai-sub">สแกนดูเมนูอาหาร &amp; กล้องถ่ายรูปแขก</div>
+
+                <!-- Side-by-Side Dual QR Codes with Center Vertical Hairline -->
+                <div class="qr-pair-container">
+                  <!-- QR 1: Menu (EN Top, TH Bottom) -->
+                  <div class="qr-col">
+                    <div class="qr-pure-target">
+                      <div id="menuQrContainer"></div>
+                      <div class="qr-center-badge">SCAN<br>MENU</div>
+                    </div>
+                    <div class="qr-label-stack">
+                      <span class="qr-label-en">Menu</span>
+                      <span class="qr-label-th">เมนูอาหาร</span>
+                    </div>
+                  </div>
+
+                  <!-- Vertical Hairline Divider -->
+                  <div class="qr-vertical-divider"></div>
+
+                  <!-- QR 2: POV Camera (EN Top, TH Bottom) -->
+                  <div class="qr-col">
+                    <div class="qr-pure-target">
+                      <div id="povQrContainer"></div>
+                      <div class="qr-center-badge">POV<br>CAM</div>
+                    </div>
+                    <div class="qr-label-stack">
+                      <span class="qr-label-en">POV Camera</span>
+                      <span class="qr-label-th">กล้องถ่ายรูปแขก</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </section>
+
+            <!-- Card Footer: Couple Names (English Only) & Wedding Date -->
+            <footer class="card-footer">
+              <div id="footerCoupleNames" class="footer-names">AOMSIN &amp; MILD</div>
+              <div id="footerWeddingDate" class="footer-date">23 JANUARY 2027 • LE PASIRI</div>
+              <div class="footer-tag">#AMWedding</div>
+            </footer>
+
+          </div><!-- /.arch-frame -->
+        </article><!-- /.wedding-card -->
+
+      </div><!-- /.card-viewport -->
+    </main>
+  </div>
+
+  <!-- =========================================================
+       APPLICATION LOGIC & DYNAMIC CONTROLS
+       ========================================================= -->
+  <script>
+    (function () {
+      // DOM Elements
+      const tableLabelEnInput = document.getElementById('tableLabelEnInput');
+      const tableLabelEnContainer = document.getElementById('tableLabelEnContainer');
+      const tableLabelThInput = document.getElementById('tableLabelThInput');
+      const tableLabelThDisplay = document.getElementById('tableLabelThDisplay');
+      
+      const headerSubThInput = document.getElementById('headerSubThInput');
+      const cardHeaderSubTh = document.getElementById('cardHeaderSubTh');
+
+      const coupleNamesInput = document.getElementById('coupleNamesInput');
+      const footerCoupleNames = document.getElementById('footerCoupleNames');
+
+      const weddingDateInput = document.getElementById('weddingDateInput');
+      const footerWeddingDate = document.getElementById('footerWeddingDate');
+
+      const menuUrlInput = document.getElementById('menuUrlInput');
+      const povUrlInput = document.getElementById('povUrlInput');
+      const menuQrContainer = document.getElementById('menuQrContainer');
+      const povQrContainer = document.getElementById('povQrContainer');
+      const btnPrint = document.getElementById('btnPrint');
+      const zoomSlider = document.getElementById('zoomSlider');
+      const zoomValue = document.getElementById('zoomValue');
+      const btnFitScreen = document.getElementById('btnFitScreen');
+      const cardViewport = document.getElementById('cardViewport');
+      const presetButtons = document.querySelectorAll('.preset-btn');
+
+      // QR Code instances
+      let menuQrInstance = null;
+      let povQrInstance = null;
+
+      // Render Multi-line English Table Label (Top) in Google Sans Hierarchy
+      function renderTableLabelEn(text) {
+        tableLabelEnContainer.innerHTML = '';
+        const rawLines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+        if (rawLines.length === 0) {
+          const emptyLine = document.createElement('div');
+          emptyLine.className = 'table-line line-type-main';
+          emptyLine.textContent = 'TABLE';
+          tableLabelEnContainer.appendChild(emptyLine);
+          return;
+        }
+
+        if (rawLines.length === 3) {
+          const l1 = document.createElement('div');
+          l1.className = 'table-line line-type-prefix';
+          l1.textContent = rawLines[0];
+
+          const l2 = document.createElement('div');
+          l2.className = 'table-line line-type-main';
+          l2.textContent = rawLines[1];
+
+          const l3 = document.createElement('div');
+          l3.className = 'table-line line-type-sub';
+          l3.textContent = rawLines[2];
+
+          tableLabelEnContainer.appendChild(l1);
+          tableLabelEnContainer.appendChild(l2);
+          tableLabelEnContainer.appendChild(l3);
+        } else if (rawLines.length === 2) {
+          const isPrefix = /^(for\s+the|reserved\s+for|welcome\s+to)$/i.test(rawLines[0]);
+          const l1 = document.createElement('div');
+          l1.className = isPrefix ? 'table-line line-type-prefix' : 'table-line line-type-main';
+          l1.textContent = rawLines[0];
+
+          const l2 = document.createElement('div');
+          l2.className = isPrefix ? 'table-line line-type-main' : 'table-line line-type-sub';
+          l2.textContent = rawLines[1];
+
+          tableLabelEnContainer.appendChild(l1);
+          tableLabelEnContainer.appendChild(l2);
+        } else if (rawLines.length === 1) {
+          const l1 = document.createElement('div');
+          l1.className = 'table-line line-type-main';
+          l1.style.fontSize = rawLines[0].length > 10 ? '24px' : '32px';
+          l1.textContent = rawLines[0];
+          tableLabelEnContainer.appendChild(l1);
+        } else {
+          rawLines.forEach((lineText, idx) => {
+            const line = document.createElement('div');
+            line.className = 'table-line line-generic';
+            line.style.fontSize = `${Math.max(15, 22 - (rawLines.length * 2))}px`;
+            line.textContent = lineText;
+            tableLabelEnContainer.appendChild(line);
+          });
+        }
+      }
+
+      // Render Thai Table Label (Bottom) in Google Sans Thai
+      function renderTableLabelTh(text) {
+        if (!text || text.trim() === '') {
+          tableLabelThDisplay.style.display = 'none';
+        } else {
+          tableLabelThDisplay.style.display = 'flex';
+          tableLabelThDisplay.textContent = text.trim();
+        }
+      }
+
+      // Generate Clean, Borderless QR Codes
+      function updateMenuQr(url) {
+        menuQrContainer.innerHTML = '';
+        try {
+          menuQrInstance = new QRCode(menuQrContainer, {
+            text: url || 'https://am-wedding.vercel.app/#menu',
+            width: 220,  // High resolution for 300+ DPI print sharpness
+            height: 220,
+            colorDark: '#18181B',
+            colorLight: '#FAF8F5',
+            correctLevel: QRCode.CorrectLevel.H // 30% error correction preserves center badge
+          });
+        } catch (e) {
+          console.error('Menu QR generation error:', e);
+        }
+      }
+
+      function updatePovQr(url) {
+        povQrContainer.innerHTML = '';
+        try {
+          povQrInstance = new QRCode(povQrContainer, {
+            text: url || 'https://pov.camera/am-wedding',
+            width: 220,
+            height: 220,
+            colorDark: '#18181B',
+            colorLight: '#FAF8F5',
+            correctLevel: QRCode.CorrectLevel.H
+          });
+        } catch (e) {
+          console.error('POV QR generation error:', e);
+        }
+      }
+
+      // Live Customization Listeners
+      tableLabelEnInput.addEventListener('input', (e) => {
+        renderTableLabelEn(e.target.value);
+        presetButtons.forEach(btn => btn.classList.remove('active'));
+      });
+
+      tableLabelThInput.addEventListener('input', (e) => {
+        renderTableLabelTh(e.target.value);
+        presetButtons.forEach(btn => btn.classList.remove('active'));
+      });
+
+      headerSubThInput.addEventListener('input', (e) => {
+        cardHeaderSubTh.textContent = e.target.value || '';
+        cardHeaderSubTh.style.display = e.target.value ? 'block' : 'none';
+      });
+
+      coupleNamesInput.addEventListener('input', (e) => {
+        footerCoupleNames.textContent = e.target.value || 'AOMSIN & MILD';
+      });
+
+      weddingDateInput.addEventListener('input', (e) => {
+        footerWeddingDate.textContent = e.target.value || '23 JANUARY 2027 • LE PASIRI';
+      });
+
+      menuUrlInput.addEventListener('input', (e) => {
+        updateMenuQr(e.target.value.trim());
+      });
+
+      povUrlInput.addEventListener('input', (e) => {
+        updatePovQr(e.target.value.trim());
+      });
+
+      // Bilingual Presets handler
+      presetButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          presetButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const presetEn = btn.getAttribute('data-preset-en');
+          const presetTh = btn.getAttribute('data-preset-th');
+
+          tableLabelEnInput.value = presetEn;
+          tableLabelThInput.value = presetTh;
+
+          renderTableLabelEn(presetEn);
+          renderTableLabelTh(presetTh);
+        });
+      });
+
+      // Print / PDF Trigger
+      btnPrint.addEventListener('click', () => {
+        window.print();
+      });
+
+      // Zoom Controls
+      function setZoom(val) {
+        const scale = val / 100;
+        cardViewport.style.transform = `scale(${scale})`;
+        zoomValue.textContent = `${val}%`;
+      }
+
+      zoomSlider.addEventListener('input', (e) => {
+        setZoom(e.target.value);
+      });
+
+      btnFitScreen.addEventListener('click', () => {
+        zoomSlider.value = 100;
+        setZoom(100);
+      });
+
+      // Initial render on page load
+      renderTableLabelEn(tableLabelEnInput.value);
+      renderTableLabelTh(tableLabelThInput.value);
+      function initQRs() {
+        if (typeof QRCode !== 'undefined') {
+          updateMenuQr(menuUrlInput.value);
+          updatePovQr(povUrlInput.value);
+        } else {
+          setTimeout(initQRs, 80);
+        }
+      }
+      initQRs();
+    })();
+  </script>
+</body>
+</html>
